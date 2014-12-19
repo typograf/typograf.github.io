@@ -418,8 +418,11 @@ var App = {
             } catch(e) {
                 return;
             }
+            
+            console.log(e, data);
 
             if(data && data.service === 'typograf' && data.command === 'execute') {
+                console.log('execute');
                 e.target.postMessage(JSON.stringify({
                     service: 'typograf',
                     command: 'return',
