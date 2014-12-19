@@ -422,7 +422,7 @@ var App = {
             console.log(e, data);
 
             if(data && data.service === 'typograf' && data.command === 'execute') {
-                console.log('execute');
+                console.log('execute', e.target);
                 e.target.postMessage(JSON.stringify({
                     service: 'typograf',
                     command: 'return',
