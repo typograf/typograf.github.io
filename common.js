@@ -332,11 +332,9 @@ var App = {
             var els = this._getCheckboxes();
 
             for(var i = 0; i < els.length; i++) {
-                var el = els[i],
-                    id = el.dataset['id'],
-                    ch = el.checked;
+                var id = els[i].dataset['id'];
 
-                if(ch) {
+                if(el.checked) {
                     typograf.enable(id);
                 } else {
                     typograf.disable(id);
@@ -413,6 +411,23 @@ var App = {
         el.value = this.prefs.lang;
     },
     _events: function() {
+        addEvent(window, 'message', (function(e) {
+            var data;
+            try {
+                data = JSON.parse(e.data);
+            } catch(e) {
+                return;
+            }
+
+            if(data && data.service === 'typograf' && data.command === 'execute') {
+                e.target.postMessage(JSON.stringify({
+                    service: 'typograf',
+                    command: 'return',
+                    text: typograf.execute(data.text, {lang: this.prefs.lang})
+                }), '*');
+            }
+        }).bind(this));
+
         addEvent('.set-prefs', 'click', (function() {
             var el = $('.set-prefs'),
                 clSelected = 'set-prefs_selected';
