@@ -418,12 +418,9 @@ var App = {
             } catch(e) {
                 return;
             }
-            
-            console.log(e, data);
 
             if(data && data.service === 'typograf' && data.command === 'execute') {
-                console.log('execute', e.target);
-                e.target.postMessage(JSON.stringify({
+                e.source.postMessage(JSON.stringify({
                     service: 'typograf',
                     command: 'return',
                     text: typograf.execute(data.text, {lang: this.prefs.lang})
