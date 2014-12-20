@@ -154,6 +154,12 @@ var App = {
     init: function() {
         this.isMobile = document.body.className.search('page_is-mobile') > -1;
 
+        if(window.location.hash === '#!prefs') {
+            setTimeout((function() {
+                this._onprefs();
+            }).bind(this), 1);
+        }
+
         if(!this.isMobile) {
             this._setValue(getHashParam('text') || '');
         }
@@ -334,7 +340,7 @@ var App = {
             for(var i = 0; i < els.length; i++) {
                 var id = els[i].dataset['id'];
 
-                if(el.checked) {
+                if(els[i].checked) {
                     typograf.enable(id);
                 } else {
                     typograf.disable(id);
@@ -392,7 +398,7 @@ var App = {
         return $('.input__text').value;
     },
     _updateValue: function(value) {
-        if(!this.isMobile) {
+        if(!this.isMobile && window.location.hash !== '#!prefs') {
             window.location.hash = '#!text=' + window.encodeURIComponent(truncateString(value, 512));
         }
 
@@ -428,18 +434,22 @@ var App = {
             }
         }).bind(this));
 
-        addEvent('.set-prefs', 'click', (function() {
+        this._onprefs = (function() {
             var el = $('.set-prefs'),
                 clSelected = 'set-prefs_selected';
 
             if(hasClass(el, clSelected)) {
+                window.location.hash = '#';
                 setTimeout(function() {
                     App.execute();
                 }, 0);
+            } else {
+                window.location.hash = '#!prefs';
             }
             toggleClass(el, clSelected);
             this.prefs.toggle();
-        }).bind(this));
+        }).bind(this);
+        addEvent('.set-prefs', 'click', this._onprefs);
 
         if(!this.isMobile) {
             addEvent('.result__as-text', 'click', function() {
