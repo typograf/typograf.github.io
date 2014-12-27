@@ -193,7 +193,7 @@ var App = {
             $('.input__text').value = res;
         } else {
             $('.result__html').innerHTML = res.replace(/(\u00A0|&nbsp;|&#160;)/g, '<span class="nbsp">\u00A0</span>');
-            $('.result__text').innerHTML = res;
+            $('.result__text').value = res;
         }
     },
     prefs: {
