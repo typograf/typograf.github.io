@@ -179,6 +179,7 @@ var App = {
         try {
             rules = JSON.parse(localStorage.getItem('settings.rules'));
             this.prefs.lang = localStorage.getItem('settings.lang');
+            this.prefs.mode = localStorage.getItem('settings.mode');
         } catch(e) {}
 
         if(rules && typeof rules === 'object' && Array.isArray(rules.disabled) && Array.isArray(rules.enabled)) {
@@ -188,9 +189,13 @@ var App = {
         }
 
         this.prefs.lang = this.prefs.lang || 'ru';
+        this.prefs.mode = this.prefs.mode || '';
     },
     execute: function() {
-        var res = typograf.execute(this._getValue(), {lang: this.prefs.lang});
+        var res = typograf.execute(this._getValue(), {
+                lang: this.prefs.lang,
+                mode: this.prefs.mode
+        });
 
         if(this.isMobile) {
             $('.input__text').value = res;
@@ -207,6 +212,7 @@ var App = {
             hide('.input');
 
             $('.prefs__set-lang').value = this.lang;
+            $('.prefs__set-mode').value = this.mode;
 
             this._synchronizeMainCheckbox();
         },
@@ -240,6 +246,7 @@ var App = {
                 }));
 
                 localStorage.setItem('settings.lang', this.lang);
+                localStorage.setItem('settings.mode', this.mode);
             } catch(e) {}
         },
         byDefault: function() {
@@ -327,6 +334,11 @@ var App = {
 
             App._updateLang();
         },
+        changeMode: function() {
+            this.mode = $('.prefs__set-mode').value;
+            this._build();
+            this.saveToLocalStorage();
+        },
         _getCheckboxes: function() {
             return $('.prefs__rules').querySelectorAll('input');
         },
@@ -382,6 +394,8 @@ var App = {
         _events: function() {
             addEvent('.prefs__set-lang', 'change', this.changeLang.bind(this));
 
+            addEvent('.prefs__set-mode', 'change', this.changeMode.bind(this));
+
             addEvent('.prefs__rules', 'click', this._clickRule.bind(this));
 
             addEvent('.prefs__all-rules', 'click', this._selectAll.bind(this));
@@ -429,7 +443,10 @@ var App = {
                 e.source.postMessage(JSON.stringify({
                     service: 'typograf',
                     command: 'return',
-                    text: typograf.execute(data.text, {lang: this.prefs.lang})
+                    text: typograf.execute(data.text, {
+                        lang: this.prefs.lang,
+                        mode: this.prefs.mode
+                    })
                 }), '*');
             }
         }).bind(this));

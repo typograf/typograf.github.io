@@ -157,7 +157,7 @@ input, textarea
     padding: 5px;
     cursor: pointer;
     color: gray;
-    
+
     display: none;
 
     -moz-user-select: none;
@@ -277,7 +277,7 @@ input, textarea
     margin-bottom: 0.7em;
 }
 
-.prefs__lang
+.prefs__lang, .prefs__mode
 {
     border-bottom: 1px solid #eaeaea;
     margin-bottom: 1em;
