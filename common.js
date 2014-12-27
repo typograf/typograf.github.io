@@ -88,21 +88,13 @@ function toggle(el) {
     }
 }
 
-function getPrefix(str) {
+function getGroupName(str) {
     var prefix = str.split('/');
-    if(prefix.length === 2) {
-        prefix = '';
-    } else {
-        prefix = prefix[1];
-    }
-
-    return prefix;
+    return prefix.length === 2 ? '' : prefix[1];
 }
 
-function getLangPrefix(str) {
-    var prefix = str.split('/');
-
-    return prefix[0];
+function getRuleLang(str) {
+    return str.split('/')[0];
 }
 
 function getHashParams(param) {
@@ -269,6 +261,19 @@ var App = {
 
             this.saveToLocalStorage();
         },
+        groupTitle: {
+            dash: 'Тире и дефис',
+            date: 'Дата',
+            html: 'HTML',
+            money: 'Деньги',
+            nbsp: 'Неразрывный пробел',
+            'number': 'Числа и математические выражения',
+            optalign: 'Висячая пунктуация',
+            other: 'Прочее',
+            punctuation: 'Пунктуация',
+            space: 'Пробел',
+            sym: 'Символы'
+        },
         _build: function() {
             var rules = Typograf.prototype._rules,
                 html = '';
@@ -283,31 +288,34 @@ var App = {
                     return -1;
                 }
 
-                var prefixA = getPrefix(a.name),
-                    prefixB = getPrefix(b.name);
+                var groupA = getGroupName(a.name),
+                    groupB = getGroupName(b.name);
 
-                if(prefixA > prefixB) {
+                if(groupA > groupB) {
                     return 1;
-                } else if(prefixA === prefixB) {
+                } else if(groupA === groupB) {
                     return 0;
                 } else {
                     return -1;
                 }
             });
 
-            var oldPrefix = '';
-            buf.forEach(function(rule) {
+            var oldGroup = '';
+            buf.forEach(function(rule, i) {
                 var name = rule.name,
-                    pr = getPrefix(name),
-                    langPr = getLangPrefix(name);
+                    group = getGroupName(name),
+                    ruleLang = getRuleLang(name);
 
-                if(this.lang !== langPr && langPr !== 'common') {
+                if(ruleLang !== this.lang && ruleLang !== 'common') {
                     return;
                 }
 
-                if(pr !== oldPrefix) {
-                    oldPrefix = pr;
-                    html += '<div class="prefs__clear"></div>';
+                if(group !== oldGroup) {
+                    oldGroup = group;
+                    if(i) {
+                        html += '</fieldset>';
+                    }
+                    html += '<fieldset class="prefs__fieldset"><legend class="prefs__legend">' + this.groupTitle[group] + '</legend>';
                 }
 
                 var title = escapeHTML(rule.title),
@@ -317,6 +325,8 @@ var App = {
 
                 html += '<div class="prefs__rule"><input type="checkbox"' + checked + ' id="' + id + '" data-id="' + name + '" /> <label for="' + id + '">' + title + '</label></div>';
             }, this);
+
+            html += '</fieldset>';
 
             $('.prefs__rules').innerHTML = html;
         },

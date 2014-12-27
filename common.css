@@ -114,13 +114,13 @@ input, textarea
     font-style: italic;
 }
 
-.prefs__clear
+.prefs__fieldset
 {
-    height: 1em;
-    border-bottom: 1px solid #eaeaea;
     clear: both;
     margin-top: 1em;
     margin-bottom: 1em;
+    border: 1px solid #00ACC7;
+    border-radius: 5px;
 }
 
 .prefs__rule
@@ -157,7 +157,7 @@ input, textarea
     padding: 5px;
     cursor: pointer;
     color: gray;
-    
+
     display: none;
 
     -moz-user-select: none;
@@ -237,7 +237,7 @@ input, textarea
 
 .page_is-desktop .prefs__rule
 {
-    width: 40%;
+    width: 44%;
     padding-right: 1em;
 }
 
