@@ -89,8 +89,7 @@ function toggle(el) {
 }
 
 function getGroupName(str) {
-    var prefix = str.split('/');
-    return prefix.length === 2 ? '' : prefix[1];
+    return str.split('/')[1];
 }
 
 function getRuleLang(str) {
@@ -265,77 +264,55 @@ var App = {
             }
 
             $('.prefs__all-rules').checked = false;
+            $('.prefs__set-mode').value = '';
 
             this.saveToLocalStorage();
         },
         groupTitle: {
-            dash: 'Тире и дефис',
-            date: 'Дата',
-            html: 'HTML',
-            money: 'Деньги',
-            nbsp: 'Неразрывный пробел',
-            'number': 'Числа и математические выражения',
-            optalign: 'Висячая пунктуация',
-            other: 'Прочее',
-            punctuation: 'Пунктуация',
-            space: 'Пробел',
-            sym: 'Символы'
-        },
-        _build: function() {
-            var rules = Typograf.prototype._rules,
-                html = '';
-
-            var buf = [];
-            rules.forEach(function(el) {
-                buf.push(el);
-            });
-
-            buf.sort(function(a, b) {
-                if(!a.name || !b.name) {
-                    return -1;
-                }
-
-                var groupA = getGroupName(a.name),
-                    groupB = getGroupName(b.name);
-
-                if(groupA > groupB) {
-                    return 1;
-                } else if(groupA === groupB) {
-                    return 0;
-                } else {
-                    return -1;
-                }
-            });
-
-            var oldGroup = '';
-            buf.forEach(function(rule, i) {
-                var name = rule.name,
-                    group = getGroupName(name),
-                    ruleLang = getRuleLang(name);
-
-                if(ruleLang !== this.lang && ruleLang !== 'common') {
-                    return;
-                }
-
-                if(group !== oldGroup) {
-                    oldGroup = group;
-                    if(i) {
-                        html += '</fieldset>';
-                    }
-                    html += '<fieldset class="prefs__fieldset"><legend class="prefs__legend">' + this.groupTitle[group] + '</legend>';
-                }
-
-                var title = escapeHTML(rule.title),
-                    id = 'setting-' + name,
-                    ch = typograf.enabled(name),
-                    checked = ch ? ' checked="checked"' : '';
-
-                html += '<div class="prefs__rule"><input type="checkbox"' + checked + ' id="' + id + '" data-id="' + name + '" /> <label for="' + id + '">' + title + '</label></div>';
-            }, this);
-
-            html += '</fieldset>';
-
-            $('.prefs__rules').innerHTML = html;
+            punctuation: {
+                title: 'Пунктуация',
+                index: 1
+            },
+            optalign: {
+                title: 'Висячая пунктуация',
+                index: 2
+            },
+            dash: {
+                title: 'Тире и дефис',
+                index: 3
+            },
+            nbsp: {
+                title: 'Неразрывный пробел',
+                index: 4
+            },
+            space: {
+                title: 'Пробел',
+                index: 5
+            },
+            html: {
+                title: 'HTML',
+                index: 6
+            },
+            date: {
+                title: 'Дата',
+                index: 7
+            },
+            money: {
+                title: 'Деньги',
+                index: 8
+            },
+            'number': {
+                title: 'Числа и математические выражения',
+                index: 9
+            },
+            sym: {
+                title: 'Символы',
+                index: 10
+            },
+            other: {
+                title: 'Прочее',
+                index: 11
+            }
         },
         changeLang: function() {
             this.lang = $('.prefs__set-lang').value;
@@ -348,6 +325,78 @@ var App = {
             this.mode = $('.prefs__set-mode').value;
             this._build();
             this.saveToLocalStorage();
+        },
+        _build: function() {
+            var rules = Typograf.prototype._rules,
+                that = this;
+
+            var buf = [];
+            rules.forEach(function(el) {
+                buf.push(el);
+            });
+
+            buf.sort(function(a, b) {
+                return a.title > b.title ? 1 : -1;
+            });
+
+            buf.sort(function(a, b) {
+                if(!a.name || !b.name) {
+                    return -1;
+                }
+
+                var indexA = that.groupTitle[getGroupName(a.name)].index,
+                    indexB = that.groupTitle[getGroupName(b.name)].index;
+
+                if(indexA > indexB) {
+                    return 1;
+                } else if(indexA === indexB) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            });
+
+            var currentGroupName,
+                currentGroup,
+                groups = [];
+            buf.forEach(function(rule, i) {
+                var groupName = getGroupName(rule.name),
+                    ruleLang = getRuleLang(rule.name);
+
+                if(ruleLang !== this.lang && ruleLang !== 'common') {
+                    return;
+                }
+
+                if(groupName !== currentGroupName) {
+                    currentGroupName = groupName;
+                    currentGroup = [];
+                    groups.push(currentGroup);
+                }
+
+                currentGroup.push(rule);
+            }, this);
+
+            var html = '';
+            groups.forEach(function(group) {
+                var groupName = getGroupName(group[0].name),
+                    groupTitle = this.groupTitle[groupName].title;
+
+                html += '<fieldset class="prefs__fieldset"><legend class="prefs__legend">' + groupTitle + '</legend>';
+
+                group.forEach(function(rule) {
+                    var title = escapeHTML(rule.title),
+                        name = rule.name,
+                        id = 'setting-' + name,
+                        ch = typograf.enabled(name),
+                        checked = ch ? ' checked="checked"' : '';
+
+                    html += '<div class="prefs__rule"><input type="checkbox"' + checked + ' id="' + id + '" data-id="' + name + '" /> <label for="' + id + '">' + title + '</label></div>';
+                }, this);
+
+                html += '</fieldset>';
+            }, this);
+
+            $('.prefs__rules').innerHTML = html;
         },
         _getCheckboxes: function() {
             return $('.prefs__rules').querySelectorAll('input');
