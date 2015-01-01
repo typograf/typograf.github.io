@@ -138,7 +138,10 @@ function addEvent(elem, type, callback) {
     }
 }
 
-var typograf = new Typograf();
+var typograf = new Typograf(),
+    typografPrefs = new Typograf({lang: 'ru', mode: 'digit'});
+
+typografPrefs.disable('*').enable(['common/nbsp/*', 'ru/nbsp/*']);
 
 var App = {
     isMobile: false,
@@ -379,12 +382,12 @@ var App = {
             var html = '';
             groups.forEach(function(group) {
                 var groupName = getGroupName(group[0].name),
-                    groupTitle = this.groupTitle[groupName].title;
+                    groupTitle = typografPrefs.execute(this.groupTitle[groupName].title);
 
                 html += '<fieldset class="prefs__fieldset"><legend class="prefs__legend">' + groupTitle + '</legend>';
 
                 group.forEach(function(rule) {
-                    var title = escapeHTML(rule.title),
+                    var title = typografPrefs.execute(escapeHTML(rule.title)),
                         name = rule.name,
                         id = 'setting-' + name,
                         ch = typograf.enabled(name),
