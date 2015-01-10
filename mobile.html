@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Типограф</title>
+        <title data-text-id="typograf">Типограф</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <meta charset="utf-8" />
         <link rel="stylesheet" href="common.css" type="text/css" />
@@ -11,43 +11,49 @@
     </head>
     <body class="page_is-mobile">
         <header class="header">
-            <h1 class="header__title">Типограф</h1>
+            <h1 class="header__title" data-text-id="typograf">Типограф</h1>
             <div class="current-lang"></div>
             <div title="Настройки" class="set-prefs"></div>
         </header>
         <div class="container">
             <div class="prefs">
-                <div class="prefs__title">Настройки</div>
+                <div class="prefs__title" data-text-id="prefs">Настройки</div>
                 <div class="prefs__items">
+                    <div class="prefs__lang-ui">
+                        <span data-text-id="lang-ui">Язык интерфейса:</span> <select class="prefs__set-lang-ui">
+                            <option value="ru">RU</option>
+                            <option value="en">EN</option>
+                        </select>
+                    </div>
                     <div class="prefs__lang">
-                        Язык правил: <select class="prefs__set-lang">
+                        <span data-text-id="lang-rule">Язык правил:</span> <select class="prefs__set-lang">
                             <option value="ru">RU</option>
                             <option value="en">EN</option>
                         </select>
                     </div>
                     <div class="prefs__mode">
-                        HTML-сущности: <select class="prefs__set-mode">
+                        <span data-text-id="html-entities">HTML-сущности:</span> <select class="prefs__set-mode">
                             <option value="">UTF-8</option>
-                            <option value="name">имена</option>
-                            <option value="digit">цифры</option>
+                            <option value="name" data-text-id="names">имена</option>
+                            <option value="digit" data-text-id="digits">цифры</option>
                         </select>
                     </div>
                     <div class="prefs__top">
-                        <input type="checkbox" class="prefs__all-rules" id="prefs__all-rules" autocomplete="off" /> <label for="prefs__all-rules">Выбрать все</label>
-                        <input type="button" class="prefs__default" value="По умолчанию" />
+                        <input type="checkbox" class="prefs__all-rules" id="prefs__all-rules" autocomplete="off" /> <label for="prefs__all-rules" data-text-id="select-all">Выбрать все</label>
+                        <input type="button" class="prefs__default" data-value-id="default" value="По умолчанию" />
                     </div>
                     <div class="prefs__rules"></div>
                 </div>
                 <div class="prefs__cap"></div>
             </div>
             <div class="input">
-                <div class="input__label">Текст:</div>
+                <div class="input__label" data-text-id="text:">Текст:</div>
 
                 <div class="input__container">
                     <textarea class="input__text" autofocus="autofocus"></textarea>
-                    <div class="input__clear" title="Очистить">&times;</div>
+                    <div class="input__clear" data-title-id="clear" title="Очистить">&times;</div>
                 </div>
-                <input type="button" class="input__execute" value="Типографировать" />
+                <input type="button" class="input__execute" data-value-id="to-typograf" value="Типографировать" />
             </div>
         </div>
         <script src="https://rawgit.com/typograf/typograf/master/dist/typograf.js" defer="defer"></script>

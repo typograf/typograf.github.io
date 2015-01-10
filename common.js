@@ -144,6 +144,9 @@ var typograf = new Typograf(),
 typografPrefs.disable('*').enable(['common/nbsp/*', 'ru/nbsp/*']);
 
 var App = {
+    getText: function(id, lang) {
+        return this._texts[id][lang];
+    },
     isMobile: false,
     init: function() {
         this.isMobile = document.body.className.search('page_is-mobile') > -1;
@@ -161,6 +164,8 @@ var App = {
         this.loadFromLocalStorage();
 
         this._updateLang();
+        
+        this.prefs.changeLangUI();
 
         this._events();
 
@@ -173,6 +178,7 @@ var App = {
         try {
             rules = JSON.parse(localStorage.getItem('settings.rules'));
             this.prefs.lang = localStorage.getItem('settings.lang');
+            this.prefs.langUI = localStorage.getItem('settings.langUI');
             this.prefs.mode = localStorage.getItem('settings.mode');
         } catch(e) {}
 
@@ -183,12 +189,13 @@ var App = {
         }
 
         this.prefs.lang = this.prefs.lang || 'ru';
+        this.prefs.langUI = this.prefs.langUI || 'ru';
         this.prefs.mode = this.prefs.mode || '';
     },
     execute: function() {
         var res = typograf.execute(this._getValue(), {
-                lang: this.prefs.lang,
-                mode: this.prefs.mode
+            lang: this.prefs.lang,
+            mode: this.prefs.mode
         });
 
         if(this.isMobile) {
@@ -206,6 +213,7 @@ var App = {
             hide('.input');
 
             $('.prefs__set-lang').value = this.lang;
+            $('.prefs__set-lang-ui').value = this.langUI;
             $('.prefs__set-mode').value = this.mode;
 
             this._synchronizeMainCheckbox();
@@ -240,6 +248,7 @@ var App = {
                 }));
 
                 localStorage.setItem('settings.lang', this.lang);
+                localStorage.setItem('settings.langUI', this.langUI);
                 localStorage.setItem('settings.mode', this.mode);
             } catch(e) {}
         },
@@ -323,6 +332,29 @@ var App = {
             this.saveToLocalStorage();
 
             App._updateLang();
+            
+        },
+        changeLangUI: function() {
+            this.langUI = $('.prefs__set-lang-ui').value;
+
+            var els = document.querySelectorAll('[data-text-id]'),
+                item;
+            for(var i = 0; i < els.length; i++) {
+                item = els[i];
+                item.innerHTML = App.getText(item.dataset.textId, this.langUI);
+            }
+            
+            els = document.querySelectorAll('[data-value-id]');
+            for(var i = 0; i < els.length; i++) {
+                item = els[i];
+                item.value = App.getText(item.dataset.valueId, this.langUI);
+            }
+
+            els = document.querySelectorAll('[data-title-id]');
+            for(var i = 0; i < els.length; i++) {
+                item = els[i];
+                item.title = App.getText(item.dataset.titleId, this.langUI);
+            }
         },
         changeMode: function() {
             this.mode = $('.prefs__set-mode').value;
@@ -456,6 +488,8 @@ var App = {
         _events: function() {
             addEvent('.prefs__set-lang', 'change', this.changeLang.bind(this));
 
+            addEvent('.prefs__set-lang-ui', 'change', this.changeLangUI.bind(this));
+
             addEvent('.prefs__set-mode', 'change', this.changeMode.bind(this));
 
             addEvent('.prefs__rules', 'click', this._clickRule.bind(this));
@@ -463,6 +497,68 @@ var App = {
             addEvent('.prefs__all-rules', 'click', this._selectAll.bind(this));
 
             addEvent('.prefs__default', 'click', this.byDefault.bind(this));
+        }
+    },
+    _texts: {
+        typograf: {
+            en: 'Typograf',
+            ru: 'Типограф'
+        },
+        'to-typograf': {
+            en: 'Execute',
+            ru: 'Типографировать'
+        },
+        prefs: {
+            en: 'Settings',
+            ru: 'Настройки'
+        },
+        'lang-rule': {
+            en: 'Language of rules:',
+            ru: 'Язык правил:'
+        },
+        'lang-ui': {
+            en: 'Language of UI:',
+            ru: 'Язык интерфейса:'
+        },
+        'html-entities': {
+            en: 'HTML entities:',
+            ru: 'HTML-сущности:'
+        },
+        names: {
+            en: 'names',
+            ru: 'имена'
+        },
+        digits: {
+            en: 'digits',
+            ru: 'цифры'
+        },
+        'select-all': {
+            en: 'Select all',
+            ru: 'Выбрать всё'
+        },
+        'default': {
+            en: 'Default',
+            ru: 'По умолчанию'
+        },
+        'text:': {
+            en: 'Text:',
+            ru: 'Текст:'
+        },
+        clear: {
+            en: 'Clear',
+            ru: 'Очистить'
+        },
+        text: {
+            en: 'Text',
+            ru: 'Текст'
+        },
+        html: {
+            en: 'HTML',
+            ru: 'HTML'
+        },
+        result: {
+            en: 'Result:',
+            ru: 'Результат:'
         }
     },
     _setValue: function(value) {
@@ -488,9 +584,9 @@ var App = {
         }
     },
     _updateLang: function() {
-        var el = $('.current-lang');
-        el.innerHTML = this.prefs.lang;
-        el.value = this.prefs.lang;
+        var lang = $('.current-lang');
+        lang.innerHTML = this.prefs.lang;
+        lang.value = this.prefs.lang;
     },
     _events: function() {
         addEvent(window, 'message', (function(e) {

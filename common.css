@@ -276,7 +276,7 @@ input, textarea
     padding: 1em 0;
 }
 
-.prefs__lang, .prefs__mode
+.prefs__lang, .prefs__lang-ui, .prefs__mode
 {
     border-bottom: 1px solid #e0e0e0;
     padding-top: 1em;
