@@ -9,17 +9,17 @@ if(!Function.prototype.bind) {
 
         var aArgs = Array.prototype.slice.call(arguments, 1),
             fToBind = this,
-            fNOP = function() {
+            NOP = function() {
             },
             fBound = function() {
-                return fToBind.apply(this instanceof fNOP && oThis
+                return fToBind.apply(this instanceof NOP && oThis
                         ? this
                         : oThis,
                     aArgs.concat(Array.prototype.slice.call(arguments)));
             };
 
-        fNOP.prototype = this.prototype;
-        fBound.prototype = new fNOP();
+        NOP.prototype = this.prototype;
+        fBound.prototype = new NOP();
 
         return fBound;
     };
@@ -65,7 +65,10 @@ var div = document.createElement('div'),
     };
 
 function escapeHTML(text) {
-    return text.replace(/\&/g, '&amp;').replace(/\</g, '&lt;').replace(/\>/g, '&gt;');
+    return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
 }
 
 function hide(el) {
@@ -78,14 +81,6 @@ function show(el) {
 
 function isVisible(el) {
     return !!$(el).offsetHeight;
-}
-
-function toggle(el) {
-    if(isVisible(el)) {
-        show(el);
-    } else {
-        hide(el);
-    }
 }
 
 function getGroupName(str) {
@@ -128,7 +123,7 @@ function truncateString(text, len) {
 }
 
 function addEvent(elem, type, callback) {
-    var elem = typeof elem === 'string' ? $(elem) : elem;
+    elem = typeof elem === 'string' ? $(elem) : elem;
     if(Array.isArray(type)) {
         type.forEach(function(el) {
             elem.addEventListener(el, callback, false);
@@ -139,7 +134,7 @@ function addEvent(elem, type, callback) {
 }
 
 var typograf = new Typograf(),
-    typografPrefs = new Typograf({lang: 'ru', mode: 'digit'});
+    typografPrefs = new Typograf({mode: 'digit'});
 
 typografPrefs.disable('*').enable(['common/nbsp/*', 'ru/nbsp/*']);
 
@@ -163,8 +158,6 @@ var App = {
 
         this.loadFromLocalStorage();
 
-        this._updateLang();
-        
         this.prefs.changeLangUI();
 
         this._events();
@@ -253,13 +246,11 @@ var App = {
             } catch(e) {}
         },
         byDefault: function() {
-            var els = this._getCheckboxes();
-            for(var i = 0; i < els.length; i++) {
-                var id = els[i].dataset['id'],
-                    checked;
-                Typograf.prototype._rules.some(function(rule) {
+            var els = this._getCheckboxes(),
+                setCheckbox = function(rule) {
                     if(id === rule.name) {
-                        var checked = !(rule.enabled === false);
+                        var checked = rule.enabled === false;
+                        checked = !checked;
                         els[i].checked = checked;
 
                         if(checked) {
@@ -272,7 +263,10 @@ var App = {
                     }
 
                     return false;
-                });
+                };
+            for(var i = 0; i < els.length; i++) {
+                var id = els[i].dataset['id'];
+                Typograf.prototype._rules.some(setCheckbox);
             }
 
             $('.prefs__all-rules').checked = false;
@@ -282,47 +276,80 @@ var App = {
         },
         groupTitle: {
             punctuation: {
-                title: 'Пунктуация',
+                title: {
+                    en: 'Punctuation',
+                    ru: 'Пунктуация'
+                },
                 index: 1
             },
             optalign: {
-                title: 'Висячая пунктуация',
+                title: {
+                    en: 'Hanging punctuation',
+                    ru: 'Висячая пунктуация'
+                },
                 index: 2
             },
             dash: {
-                title: 'Тире и дефис',
+                title: {
+                    en: 'Dash and hyphen',
+                    ru: 'Тире и дефис'
+                },
                 index: 3
             },
             nbsp: {
-                title: 'Неразрывный пробел',
+                title: {
+                    en: 'Non-breaking space',
+                    ru: 'Неразрывный пробел'
+                },
                 index: 4
             },
             space: {
-                title: 'Пробел',
+                title: {
+                    en: 'Space',
+                    ru: 'Пробел'
+                },
                 index: 5
             },
             html: {
-                title: 'HTML',
+                title: {
+                    en: 'HTML',
+                    ru: 'HTML'
+                },
                 index: 6
             },
             date: {
-                title: 'Дата',
+                title: {
+                    en: 'Date',
+                    ru: 'Дата'
+                },
                 index: 7
             },
             money: {
-                title: 'Деньги',
+                title: {
+                    en: 'Money',
+                    ru: 'Деньги'
+                },
                 index: 8
             },
             'number': {
-                title: 'Числа и математические выражения',
+                title: {
+                    en: 'Numbers and mathematical expressions',
+                    ru: 'Числа и математические выражения'
+                },
                 index: 9
             },
             sym: {
-                title: 'Символы',
+                title: {
+                    en: 'Symbols',
+                    ru: 'Символы'
+                },
                 index: 10
             },
             other: {
-                title: 'Прочее',
+                title: {
+                    en: 'Other',
+                    ru: 'Прочее'
+                },
                 index: 11
             }
         },
@@ -330,31 +357,31 @@ var App = {
             this.lang = $('.prefs__set-lang').value;
             this._build();
             this.saveToLocalStorage();
-
-            App._updateLang();
-            
         },
         changeLangUI: function() {
             this.langUI = $('.prefs__set-lang-ui').value;
 
             var els = document.querySelectorAll('[data-text-id]'),
-                item;
-            for(var i = 0; i < els.length; i++) {
+                item, i;
+                
+            for(i = 0; i < els.length; i++) {
                 item = els[i];
                 item.innerHTML = App.getText(item.dataset.textId, this.langUI);
             }
             
             els = document.querySelectorAll('[data-value-id]');
-            for(var i = 0; i < els.length; i++) {
+            for(i = 0; i < els.length; i++) {
                 item = els[i];
                 item.value = App.getText(item.dataset.valueId, this.langUI);
             }
 
             els = document.querySelectorAll('[data-title-id]');
-            for(var i = 0; i < els.length; i++) {
+            for(i = 0; i < els.length; i++) {
                 item = els[i];
                 item.title = App.getText(item.dataset.titleId, this.langUI);
             }
+            
+            this._build();
         },
         changeMode: function() {
             this.mode = $('.prefs__set-mode').value;
@@ -412,9 +439,13 @@ var App = {
             }, this);
 
             var html = '';
+
             groups.forEach(function(group) {
                 var groupName = getGroupName(group[0].name),
-                    groupTitle = typografPrefs.execute(this.groupTitle[groupName].title);
+                    groupTitle = typografPrefs.execute(
+                        this.groupTitle[groupName].title[this.langUI],
+                        {lang: this.langUI}
+                    );
 
                 html += '<fieldset class="prefs__fieldset"><legend class="prefs__legend">' + groupTitle + '</legend>';
 
@@ -425,7 +456,10 @@ var App = {
                         ch = typograf.enabled(name),
                         checked = ch ? ' checked="checked"' : '';
 
-                    html += '<div class="prefs__rule"><input type="checkbox"' + checked + ' id="' + id + '" data-id="' + name + '" /> <label for="' + id + '">' + title + '</label></div>';
+                    html += '<div class="prefs__rule">' + 
+                        '<input type="checkbox"' + checked + ' id="' + id + '" data-id="' + name + '" /> ' +
+                        '<label for="' + id + '">' + title + '</label>' +
+                        '</div>';
                 }, this);
 
                 html += '</fieldset>';
@@ -437,7 +471,9 @@ var App = {
             return $('.prefs__rules').querySelectorAll('input');
         },
         _clickRule: function(e) {
-            if(e.target && e.target.tagName && e.target.tagName.toLowerCase() !== 'input') {
+            if(e.target &&
+                e.target.tagName &&
+                e.target.tagName.toLowerCase() !== 'input') {
                 return;
             }
 
@@ -513,11 +549,11 @@ var App = {
             ru: 'Настройки'
         },
         'lang-rule': {
-            en: 'Language of rules:',
+            en: 'Language rules:',
             ru: 'Язык правил:'
         },
         'lang-ui': {
-            en: 'Language of UI:',
+            en: 'UI language:',
             ru: 'Язык интерфейса:'
         },
         'html-entities': {
@@ -582,11 +618,6 @@ var App = {
         } else {
             hide('.input__clear');
         }
-    },
-    _updateLang: function() {
-        var lang = $('.current-lang');
-        lang.innerHTML = this.prefs.lang;
-        lang.value = this.prefs.lang;
     },
     _events: function() {
         addEvent(window, 'message', (function(e) {

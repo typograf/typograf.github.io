@@ -1,0 +1,37 @@
+{
+  "name": "typograf",
+  "description": "Web interface for typograf",
+  "version": "1.0.0",
+  "author": {
+    "name": "Denis Seleznev",
+    "email": "hcodes@yandex.ru",
+    "url": "https://github.com/typograf/typograf.github.io/"
+  },
+  "private": true,
+  "homepage": "https://github.com/typograf/typograf.github.io/",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/typograf/typograf/blob/master/LICENSE"
+    }
+  ],  
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/typograf/typograf.github.io.git"
+  },
+  "keywords": [
+    "typo", "text", "typograf", "typographer", "typography"
+  ],
+  "engines": {
+    "node": ">= 0.10"
+  },
+  "devDependencies": {
+    "jscs": "^1.7.x",
+    "jshint": "2.x"
+  },
+  "scripts": {
+    "test": "npm run-script jshint && npm run-script jscs",
+    "jscs": "./node_modules/.bin/jscs .",
+    "jshint": "./node_modules/.bin/jshint ."
+  }
+}

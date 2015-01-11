@@ -282,14 +282,3 @@ input, textarea
     padding-top: 1em;
     padding-bottom: 1em;
 }
-
-.current-lang
-{
-    position: absolute;
-    right: 55px;
-    top: 20px;
-    width: 2em;
-    color: #fff;
-    font-size: 18px;
-    text-transform: uppercase;
-}
