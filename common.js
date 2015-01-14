@@ -450,8 +450,9 @@ var App = {
                 html += '<fieldset class="prefs__fieldset"><legend class="prefs__legend">' + groupTitle + '</legend>';
 
                 group.forEach(function(rule) {
-                    var title = typografPrefs.execute(escapeHTML(rule.title)),
-                        name = rule.name,
+                    var name = rule.name,
+                        buf = typografPrefs.titles[name],
+                        title = typografPrefs.execute(escapeHTML(buf[this.langUI] || buf.common)),
                         id = 'setting-' + name,
                         ch = typograf.enabled(name),
                         checked = ch ? ' checked="checked"' : '';
