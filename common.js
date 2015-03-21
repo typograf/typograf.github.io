@@ -147,9 +147,9 @@ var App = {
         this.isMobile = document.body.className.search('page_is-mobile') > -1;
 
         if(window.location.hash === '#!prefs') {
-            setTimeout((function() {
+            setTimeout(function() {
                 this._onprefs();
-            }).bind(this), 1);
+            }.bind(this), 1);
         }
 
         if(!this.isMobile) {
@@ -621,7 +621,7 @@ var App = {
         }
     },
     _events: function() {
-        addEvent(window, 'message', (function(e) {
+        addEvent(window, 'message', function(e) {
             var data;
             try {
                 data = JSON.parse(e.data);
@@ -639,9 +639,9 @@ var App = {
                     })
                 }), '*');
             }
-        }).bind(this));
+        }.bind(this));
 
-        this._onprefs = (function() {
+        this._onprefs = function() {
             var el = $('.set-prefs'),
                 clSelected = 'set-prefs_selected';
 
@@ -655,7 +655,7 @@ var App = {
             }
             toggleClass(el, clSelected);
             this.prefs.toggle();
-        }).bind(this);
+        }.bind(this);
         addEvent('.set-prefs', 'click', this._onprefs);
 
         if(!this.isMobile) {
@@ -670,20 +670,20 @@ var App = {
             });
         }
 
-        addEvent('.input__clear', 'click', (function() {
+        addEvent('.input__clear', 'click', function() {
             this._setValue('');
 
             $('.input__text').focus();
 
             this.execute();
-        }).bind(this));
+        }.bind(this));
 
         var oldValue = null;
 
         if(this.isMobile) {
             addEvent('.input__execute', 'click', this.execute.bind(this));
         } else {
-            addEvent('.input__text', ['keyup', 'input', 'click'], (function() {
+            addEvent('.input__text', ['keyup', 'input', 'click'], function() {
                 var val = this._getValue();
                 if(val === oldValue) {
                     return;
@@ -694,7 +694,7 @@ var App = {
                 this._updateValue(val);
 
                 this.execute();
-            }).bind(this));
+            }.bind(this));
         }
     }
 };

@@ -1,17 +1,21 @@
-﻿html, body
+﻿html,
+body
 {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    padding: 0;
-    margin: 0;
     font-family: Arial, sans-serif;
     font-size: 16px;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    margin: 0;
+    padding: 0;
 }
 
-input, textarea
+input,
+textarea
 {
     font-family: Arial, sans-serif;
     font-size: 16px;
@@ -20,36 +24,41 @@ input, textarea
 .container
 {
     position: absolute;
-    padding: 5px 0;
-    left: 0;
     top: 60px;
-    width: 100%;
     bottom: 20px;
+    left: 0;
+
     box-sizing: border-box;
+    width: 100%;
+    padding: 5px 0;
 }
 
 .header
 {
     position: fixed;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    background: #00ACC7;
-    border-bottom: 1px solid #008cb7;
-    color: white;
-    box-shadow: 0px 5px 10px rgba(0,0,0,0.15);
     z-index: 10;
+
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    color: white;
+    border-bottom: 1px solid #008cb7;
+    background: #00acc7;
+    box-shadow: 0 5px 10px rgba(0,0,0,.15);
 }
 
 .header__title
 {
-    padding: 10px 0 13px 20px;
-    margin: 0;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
     font-family: Georgia, serif;
-    font-weight: normal;
     font-size: 30px;
+    font-weight: normal;
     font-style: italic;
+
+    margin: 0;
+    padding: 10px 0 13px 20px;
+
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .6);
 }
 
 .set-prefs
@@ -57,27 +66,33 @@ input, textarea
     position: absolute;
     top: 10px;
     right: 10px;
+
     width: 36px;
     height: 36px;
-    background: rgba(255,255,255,0.3);
-    border-radius: 2px;
-    border: 1px solid transparent;
+
     cursor: pointer;
-    transition: border-color 0.4s linear, opacity 0.4s linear;
+    transition: border-color .4s linear, opacity .4s linear;
+
+    border: 1px solid transparent;
+    border-radius: 2px;
+    background: rgba(255,255,255,.3);
 }
 
 .set-prefs:before,
 .set-prefs:after
 {
-    left: 5px;
-    top: 7px;
     position: absolute;
-    border: 2px solid white;
-    border-left: none;
-    border-right: none;
+    top: 7px;
+    left: 5px;
+
     width: 26px;
     height: 5px;
-    content: "";
+
+    content: '';
+
+    border: 2px solid white;
+    border-right: none;
+    border-left: none;
 }
 
 .set-prefs:after
@@ -87,38 +102,44 @@ input, textarea
 
 .set-prefs_selected
 {
-    opacity: 0.9;
-    border: 1px solid rgba(255,255,255,0.9);
+    opacity: .9;
+    border: 1px solid rgba(255,255,255,.9);
 }
 
 .prefs
 {
+    display: none;
+
     margin: 5px 0;
     padding: 0 20px;
-    display: none;
 }
 
 .prefs__cap
 {
     clear: both;
+
     height: 1em;
 }
 
 .prefs__title
 {
-    font-size: 1.4em;
-    color: #679;
-    margin: 0 0 0.5em 0;
-    padding: 0;
     font-family: Georgia, serif;
+    font-size: 1.4em;
     font-style: italic;
+
+    margin: 0 0 .5em 0;
+    padding: 0;
+
+    color: #679;
 }
 
 .prefs__fieldset
 {
     clear: both;
+
     margin-top: 1em;
     margin-bottom: 1em;
+
     border: 1px solid #e0e0e0;
     border-radius: 5px;
 }
@@ -126,6 +147,7 @@ input, textarea
 .prefs__rule
 {
     line-height: 30px;
+
     float: left;
 }
 
@@ -137,9 +159,9 @@ input, textarea
 .page_is-desktop .input__text,
 .page_is-desktop .result__text
 {
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
-    box-sizing: border-box;
     margin: 0;
 }
 
@@ -150,41 +172,45 @@ input, textarea
 
 .input__clear
 {
-    position: absolute;
-    right: 12px;
-    top: 12px;
     font-size: 30px;
-    padding: 5px;
-    cursor: pointer;
-    color: gray;
+
+    position: absolute;
+    top: 12px;
+    right: 12px;
 
     display: none;
 
-    -moz-user-select: none;
+    padding: 5px;
+
+    cursor: pointer;
     -webkit-user-select: none;
-    user-select: none;
+       -moz-user-select: none;
+            user-select: none;
+
+    color: gray;
 }
 
 .page_is-mobile .input__label
 {
     position: absolute;
+    top: .9em;
     left: 1em;
-    top: 0.9em;
 }
 
 .page_is-mobile .input__execute
 {
     position: absolute;
-    left: 1em;
     bottom: 0;
+    left: 1em;
 }
 
 .page_is-mobile .input__text
 {
     position: absolute;
-    box-sizing: border-box;
-    left: 0;
     top: 0;
+    left: 0;
+
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
     margin: 0;
@@ -193,46 +219,51 @@ input, textarea
 
 .page_is-desktop .table
 {
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
     padding: 10px 10px;
-    box-sizing: border-box;
 }
 
 .page_is-desktop .table__left,
 .page_is-desktop .table__right
 {
     position: relative;
+
+    box-sizing: border-box;
     width: 50%;
     height: 100%;
-    box-sizing: border-box;
 }
 
 .page_is-desktop .table__left
 {
     float: left;
+
     padding-right: 10px;
 }
 
 .page_is-desktop .table__right
 {
-    padding-left: 10px;
     float: right;
+
     box-sizing: border-box;
+    padding-left: 10px;
 }
 
 .page_is-desktop .result__html
 {
-    margin-top: 0.5em;
-    background: #f0f0f0;
     display: none;
+
+    margin-top: .5em;
     padding: 1em;
+
+    background: #f0f0f0;
 }
 
 .page_is-desktop .nbsp
 {
+    opacity: .4;
     background: green;
-    opacity: 0.4;
 }
 
 .page_is-desktop .prefs__rule
@@ -244,25 +275,29 @@ input, textarea
 .page_is-mobile .prefs__rule
 {
     line-height: 30px;
+
     float: left;
+
     width: 100%;
 }
 
 .prefs__default
 {
-    float: right;
     font-size: 12px;
+
+    float: right;
 }
 
 .page_is-mobile .input__container
 {
     position: absolute;
-    box-sizing: border-box;
-    left: 1em;
     top: 2.4em;
-    height: auto;
-    bottom: 2.4em;
     right: 1em;
+    bottom: 2.4em;
+    left: 1em;
+
+    box-sizing: border-box;
+    height: auto;
 }
 
 .page_is-mobile .prefs__controls
@@ -272,15 +307,19 @@ input, textarea
 
 .prefs__top
 {
-    border-bottom: 1px solid #e0e0e0;
     padding: 1em 0;
+
+    border-bottom: 1px solid #e0e0e0;
 }
 
-.prefs__lang, .prefs__lang-ui, .prefs__mode
+.prefs__lang,
+.prefs__lang-ui,
+.prefs__mode
 {
-    border-bottom: 1px solid #e0e0e0;
     padding-top: 1em;
     padding-bottom: 1em;
+
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .page_is-desktop .result__as-text,
