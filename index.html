@@ -56,8 +56,10 @@
                     </div>
                     <div class="table__right result">
                         <span data-text-id="result">Результат:</span>
-                        <input type="radio" class="result__as-text" id="result__as-text" name="view" checked="checked" autocomplete="off" /> <label for="result__as-text" data-text-id="text">Текст</label>
-                        <input type="radio" class="result__as-html" id="result__as-html" name="view" autocomplete="off" /> <label for="result__as-html" data-text-id="html">HTML</label>
+                        <div class="result__as">
+                            <input type="radio" class="result__as-text" id="result__as-text" name="view" checked="checked" autocomplete="off" /><label for="result__as-text" data-text-id="text">Текст</label>
+                            <input type="radio" class="result__as-html" id="result__as-html" name="view" autocomplete="off" /><label for="result__as-html" data-text-id="html">HTML</label>
+                        </div>
                         <textarea class="result__text" readonly="readonly"></textarea>
                         <div class="result__html"></div>
                     </div>

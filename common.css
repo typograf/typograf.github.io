@@ -282,3 +282,14 @@ input, textarea
     padding-top: 1em;
     padding-bottom: 1em;
 }
+
+.page_is-desktop .result__as-text,
+.page_is-desktop .result__as-html
+{
+    margin-right: 5px;
+}
+
+.page_is-desktop .result__as
+{
+    float: right;
+}
