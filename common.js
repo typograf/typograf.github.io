@@ -249,7 +249,7 @@ var App = {
             var els = this._getCheckboxes(),
                 setCheckbox = function(rule) {
                     if(id === rule.name) {
-                        var checked = rule.enabled === false;
+                        var checked = rule.enabled === false || rule.disabled === true;
                         checked = !checked;
                         els[i].checked = checked;
 
