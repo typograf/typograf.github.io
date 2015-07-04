@@ -83,14 +83,6 @@ function isVisible(el) {
     return !!$(el).offsetHeight;
 }
 
-function getGroupName(str) {
-    return str.split('/')[1];
-}
-
-function getRuleLang(str) {
-    return str.split('/')[0];
-}
-
 function getHashParams(param) {
     var hash = window.location.hash.replace(/^#!/, ''),
         buf = hash.split('&'),
@@ -133,10 +125,30 @@ function addEvent(elem, type, callback) {
     }
 }
 
-var typograf = new Typograf(),
-    typografPrefs = new Typograf({mode: 'digit'});
+function getGroupName(str) {
+    return str.split('/')[1];
+}
 
-typografPrefs.disable('*').enable(['common/nbsp/*', 'ru/nbsp/*']);
+function getGroupIndexByRuleName(ruleName) {
+    var groupName = getGroupName(ruleName);
+
+    return Typograf.prototype.groupsByName[groupName].index;
+}
+
+function getGroupTitle(name, lang) {
+    return Typograf.prototype.groupsByName[name].title[lang];
+}
+
+function getRuleLang(str) {
+    return str.split('/')[0];
+}
+
+var typograf = new Typograf(),
+    typografPrefs = new Typograf({
+        mode: 'digit',
+        disable: '*',
+        enable: ['common/nbsp/*', 'ru/nbsp/*']
+    });
 
 var App = {
     getText: function(id, lang) {
@@ -157,6 +169,12 @@ var App = {
         }
 
         this.loadFromLocalStorage();
+
+        Typograf.prototype.groupsByName = {};
+        Typograf.prototype.groups.forEach(function(group, i) {
+            group.index = i;
+            Typograf.prototype.groupsByName[group.name] = group;
+        });
 
         this.prefs.changeLangUI();
 
@@ -274,85 +292,6 @@ var App = {
 
             this.saveToLocalStorage();
         },
-        groupTitle: {
-            punctuation: {
-                title: {
-                    en: 'Punctuation',
-                    ru: 'Пунктуация'
-                },
-                index: 1
-            },
-            optalign: {
-                title: {
-                    en: 'Hanging punctuation',
-                    ru: 'Висячая пунктуация'
-                },
-                index: 2
-            },
-            dash: {
-                title: {
-                    en: 'Dash and hyphen',
-                    ru: 'Тире и дефис'
-                },
-                index: 3
-            },
-            nbsp: {
-                title: {
-                    en: 'Non-breaking space',
-                    ru: 'Неразрывный пробел'
-                },
-                index: 4
-            },
-            space: {
-                title: {
-                    en: 'Space',
-                    ru: 'Пробел'
-                },
-                index: 5
-            },
-            html: {
-                title: {
-                    en: 'HTML',
-                    ru: 'HTML'
-                },
-                index: 6
-            },
-            date: {
-                title: {
-                    en: 'Date',
-                    ru: 'Дата'
-                },
-                index: 7
-            },
-            money: {
-                title: {
-                    en: 'Money',
-                    ru: 'Деньги'
-                },
-                index: 8
-            },
-            'number': {
-                title: {
-                    en: 'Numbers and mathematical expressions',
-                    ru: 'Числа и математические выражения'
-                },
-                index: 9
-            },
-            sym: {
-                title: {
-                    en: 'Symbols',
-                    ru: 'Символы'
-                },
-                index: 10
-            },
-            other: {
-                title: {
-                    en: 'Other',
-                    ru: 'Прочее'
-                },
-                index: 11
-            }
-        },
         changeLang: function() {
             this.lang = $('.prefs__set-lang').value;
             this._build();
@@ -363,12 +302,12 @@ var App = {
 
             var els = document.querySelectorAll('[data-text-id]'),
                 item, i;
-                
+
             for(i = 0; i < els.length; i++) {
                 item = els[i];
                 item.innerHTML = App.getText(item.dataset.textId, this.langUI);
             }
-            
+
             els = document.querySelectorAll('[data-value-id]');
             for(i = 0; i < els.length; i++) {
                 item = els[i];
@@ -380,7 +319,7 @@ var App = {
                 item = els[i];
                 item.title = App.getText(item.dataset.titleId, this.langUI);
             }
-            
+
             this._build();
         },
         changeMode: function() {
@@ -406,8 +345,8 @@ var App = {
                     return -1;
                 }
 
-                var indexA = that.groupTitle[getGroupName(a.name)].index,
-                    indexB = that.groupTitle[getGroupName(b.name)].index;
+                var indexA = getGroupIndexByRuleName(a.name),
+                    indexB = getGroupIndexByRuleName(b.name);
 
                 if(indexA > indexB) {
                     return 1;
@@ -443,7 +382,7 @@ var App = {
             groups.forEach(function(group) {
                 var groupName = getGroupName(group[0].name),
                     groupTitle = typografPrefs.execute(
-                        this.groupTitle[groupName].title[this.langUI],
+                        getGroupTitle(groupName, this.langUI),
                         {lang: this.langUI}
                     );
 
@@ -457,7 +396,7 @@ var App = {
                         ch = typograf.enabled(name),
                         checked = ch ? ' checked="checked"' : '';
 
-                    html += '<div class="prefs__rule">' + 
+                    html += '<div class="prefs__rule">' +
                         '<input type="checkbox"' + checked + ' id="' + id + '" data-id="' + name + '" /> ' +
                         '<label for="' + id + '">' + title + '</label>' +
                         '</div>';
