@@ -132,11 +132,11 @@ function getGroupName(str) {
 function getGroupIndexByRuleName(ruleName) {
     var groupName = getGroupName(ruleName);
 
-    return Typograf.prototype.groupsByName[groupName].index;
+    return Typograf.groupsByName[groupName].index;
 }
 
 function getGroupTitle(name, lang) {
-    return Typograf.prototype.groupsByName[name].title[lang];
+    return Typograf.groupsByName[name].title[lang];
 }
 
 function getRuleLang(str) {
@@ -170,10 +170,10 @@ var App = {
 
         this.loadFromLocalStorage();
 
-        Typograf.prototype.groupsByName = {};
-        Typograf.prototype.groups.forEach(function(group, i) {
+        Typograf.groupsByName = {};
+        Typograf.groups.forEach(function(group, i) {
             group.index = i;
-            Typograf.prototype.groupsByName[group.name] = group;
+            Typograf.groupsByName[group.name] = group;
         });
 
         this.prefs.changeLangUI();
@@ -390,7 +390,7 @@ var App = {
 
                 group.forEach(function(rule) {
                     var name = rule.name,
-                        buf = typografPrefs.titles[name],
+                        buf = Typograf.titles[name],
                         title = typografPrefs.execute(escapeHTML(buf[this.langUI] || buf.common)),
                         id = 'setting-' + name,
                         ch = typograf.enabled(name),
