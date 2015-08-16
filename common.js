@@ -118,10 +118,10 @@ function addEvent(elem, type, callback) {
     elem = typeof elem === 'string' ? $(elem) : elem;
     if(Array.isArray(type)) {
         type.forEach(function(el) {
-            elem.addEventListener(el, callback, false);
+            elem && elem.addEventListener(el, callback, false);
         });
     } else {
-        elem.addEventListener(type, callback, false);
+        elem && elem.addEventListener(type, callback, false);
     }
 }
 
@@ -152,7 +152,7 @@ var typograf = new Typograf(),
 
 var App = {
     getText: function(id, lang) {
-        return this._texts[id][lang];
+        return this._texts[id][lang ? lang : this.prefs.langUI];
     },
     isMobile: false,
     init: function() {
@@ -202,6 +202,14 @@ var App = {
         this.prefs.lang = this.prefs.lang || 'ru';
         this.prefs.langUI = this.prefs.langUI || 'ru';
         this.prefs.mode = this.prefs.mode || '';
+    },
+    copyText: function(textarea) {
+        try {
+            textarea.select();
+            document.execCommand('copy');
+        } catch(e) {
+            window.alert(this.getText('notSupportCopy'));
+        }
     },
     execute: function() {
         var res = typograf.execute(this._getValue(), {
@@ -305,19 +313,19 @@ var App = {
 
             for(i = 0; i < els.length; i++) {
                 item = els[i];
-                item.innerHTML = App.getText(item.dataset.textId, this.langUI);
+                item.innerHTML = App.getText(item.dataset.textId);
             }
 
             els = document.querySelectorAll('[data-value-id]');
             for(i = 0; i < els.length; i++) {
                 item = els[i];
-                item.value = App.getText(item.dataset.valueId, this.langUI);
+                item.value = App.getText(item.dataset.valueId);
             }
 
             els = document.querySelectorAll('[data-title-id]');
             for(i = 0; i < els.length; i++) {
                 item = els[i];
-                item.title = App.getText(item.dataset.titleId, this.langUI);
+                item.title = App.getText(item.dataset.titleId);
             }
 
             this._build();
@@ -508,6 +516,14 @@ var App = {
             en: 'digits',
             ru: 'цифры'
         },
+        copy: {
+            en: 'Copy',
+            ru: 'Копировать'
+        },
+        notSupportCopy: {
+            en: 'Your browser does not support copy text.',
+            ru: 'Ваш браузер не поддерживает копирование текста.'
+        },
         'select-all': {
             en: 'Select all',
             ru: 'Выбрать всё'
@@ -560,6 +576,8 @@ var App = {
         }
     },
     _events: function() {
+        var that = this;
+
         addEvent(window, 'message', function(e) {
             var data;
             try {
@@ -597,17 +615,22 @@ var App = {
         }.bind(this);
         addEvent('.set-prefs', 'click', this._onprefs);
 
-        if(!this.isMobile) {
-            addEvent('.result__as-text', 'click', function() {
-                show('.result__text');
-                hide('.result__html');
-            });
+        this._onastext = function() {
+            show('.result__text');
+            hide('.result__html');
+        };
+        addEvent('.result__as-text', 'click', this._onastext);
 
-            addEvent('.result__as-html', 'click', function() {
-                show('.result__html');
-                hide('.result__text');
-            });
-        }
+        addEvent('.result__as-html', 'click', function() {
+            show('.result__html');
+            hide('.result__text');
+        });
+
+        addEvent('.input__copy', 'click', function() {
+            $('.result__as-text').setAttribute('checked', 'checked');
+            that._onastext();
+            that.copyText($('.result__text'));
+        });
 
         addEvent('.input__clear', 'click', function() {
             this._setValue('');

@@ -55,7 +55,7 @@ textarea
     font-weight: normal;
     font-style: italic;
 
-    margin: 0;
+    margin: 0 0 0 36px;
     padding: 10px 0 13px 20px;
 
     text-shadow: 0 1px 1px rgba(0, 0, 0, .6);
@@ -65,7 +65,7 @@ textarea
 {
     position: absolute;
     top: 10px;
-    right: 10px;
+    left: 10px;
 
     width: 36px;
     height: 36px;
@@ -233,6 +233,7 @@ textarea
     box-sizing: border-box;
     width: 50%;
     height: 100%;
+    padding-bottom: 2em;
 }
 
 .page_is-desktop .table__left
@@ -258,6 +259,20 @@ textarea
     padding: 1em;
 
     background: #f0f0f0;
+}
+
+
+.page_is-mobile .input__paste,
+.page_is-mobile .input__copy
+{
+    display: none
+}
+
+.page_is-desktop .input__paste,
+.page_is-desktop .input__copy
+{
+    position: relative;
+    top: 5px;
 }
 
 .page_is-desktop .nbsp
@@ -331,4 +346,17 @@ textarea
 .page_is-desktop .result__as
 {
     float: right;
+}
+
+.github
+{
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    opacity: 0.5;
+}
+
+.github img
+{
+    boder: 0;
 }
