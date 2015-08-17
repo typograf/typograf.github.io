@@ -337,9 +337,8 @@ var App = {
         },
         _build: function() {
             var rules = Typograf.prototype._rules,
-                that = this;
+                buf = [];
 
-            var buf = [];
             rules.forEach(function(el) {
                 buf.push(el);
             });
@@ -662,5 +661,8 @@ var App = {
 };
 
 addEvent(window, 'load', App.init.bind(App));
+
+// Yandex.Metrika
+new Image().src = 'https://mc.yandex.ru/watch/28700106';
 
 })();

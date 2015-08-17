@@ -1,0 +1,13 @@
+{
+  "name": "typograf.github.io",
+  "version": "1.0.0",
+  "description": "Web interface for typograf",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "package.json"
+  ],
+  "dependencies": {
+    "typograf": "git://github.com/typograf/typograf.git#dev"
+  }
+}
