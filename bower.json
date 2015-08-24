@@ -8,6 +8,6 @@
     "package.json"
   ],
   "dependencies": {
-    "typograf": "git://github.com/typograf/typograf.git#dev"
+    "typograf": "git://github.com/typograf/typograf.git#v3.0.0"
   }
 }
