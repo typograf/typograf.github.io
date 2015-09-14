@@ -5,9 +5,14 @@ var gulp = require('gulp'),
     browserify = require('browserify'),
     uglify = require('gulp-uglify'),
     source = require('vinyl-source-stream'),
+    replace = require('gulp-replace'),
     destDir = './build/';
 
 var paths = {
+    html: [
+        'index.html',
+        'mobile.html'
+    ],
     jsApp: 'src/js/*.js',
     jsTypograf: [
         'node_modules/typograf/dist/typograf.js',
@@ -61,4 +66,10 @@ gulp.task('cssDesktop', function() {
         .pipe(gulp.dest(destDir));
 });
 
-gulp.task('default', ['jsApp', 'jsTypograf', 'cssMobile', 'cssDesktop']);
+gulp.task('updateVersion', function() {
+    return gulp.src(paths.html)
+        .pipe(replace(/\?v=\d+/g, '?v=' + (+new Date())))
+        .pipe(gulp.dest('./'));
+});
+
+gulp.task('default', ['updateVersion', 'jsApp', 'jsTypograf', 'cssMobile', 'cssDesktop']);

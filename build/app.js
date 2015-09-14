@@ -222,7 +222,9 @@ var App = {
                 buf = [];
 
             rules.forEach(function(el) {
-                buf.push(el);
+                if(!el.live) {
+                    buf.push(el);
+                }
             });
 
             buf.sort(function(a, b) {
