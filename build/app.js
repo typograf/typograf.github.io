@@ -93,6 +93,37 @@ var App = {
             window.alert(this.getText('notSupportCopy'));
         }
     },
+    saveText: function(textarea) {
+        if(!window.Blob) {
+            alert(this.getText(notSupportSave));
+            return;
+        }
+
+        var textToWrite = textarea.value,
+            textFileAsBlob = new Blob([textToWrite], {type:'text/plain'}),
+            fileNameToSaveAs = 'text.txt',
+            downloadLink = document.createElement('a');
+
+        downloadLink.download = fileNameToSaveAs;
+        downloadLink.innerHTML = 'Download File';
+
+        if(window.webkitURL != null) {
+            // Chrome allows the link to be clicked
+            // without actually adding it to the DOM.
+            downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+        } else {
+            // Firefox requires the link to be added to the DOM
+            // before it can be clicked.
+            downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+            downloadLink.onclick = function() {
+                document.body.removeChild(downloadLink);
+            };
+            downloadLink.style.display = 'none';
+            document.body.appendChild(downloadLink);
+        }
+
+        downloadLink.click();
+    },
     execute: function() {
         var res = typograf.execute(this._getValue(), {
             lang: this.prefs.lang,
@@ -446,6 +477,10 @@ var App = {
             that.copyText($('.result__text'));
         });
 
+        $.on('.input__save', 'click', function() {
+            that.saveText($('.result__text'));
+        });
+
         $.on('.input__clear', 'click', function() {
             this._setValue('');
 
@@ -666,9 +701,17 @@ module.exports = {
         en: 'Copy',
         ru: 'Копировать'
     },
+    save: {
+        en: 'Save',
+        ru: 'Сохранить'
+    },
     notSupportCopy: {
         en: 'Your browser does not support copy text.',
         ru: 'Ваш браузер не поддерживает копирование текста.'
+    },
+    notSupportSaveText: {
+        en: 'Your browser does not support save text to a file.',
+        ru: 'Ваш браузер не поддерживает сохранение текста в файл.'
     },
     'select-all': {
         en: 'Select all',

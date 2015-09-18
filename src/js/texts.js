@@ -35,9 +35,17 @@ module.exports = {
         en: 'Copy',
         ru: 'Копировать'
     },
+    save: {
+        en: 'Save',
+        ru: 'Сохранить'
+    },
     notSupportCopy: {
         en: 'Your browser does not support copy text.',
         ru: 'Ваш браузер не поддерживает копирование текста.'
+    },
+    notSupportSaveText: {
+        en: 'Your browser does not support save text to a file.',
+        ru: 'Ваш браузер не поддерживает сохранение текста в файл.'
     },
     'select-all': {
         en: 'Select all',
