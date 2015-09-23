@@ -1,4 +1,4 @@
-Web interface for typograf
+Интерфейс для [Типографа](https://github.com/typograf/typograf)
 =======
 
-[Desktop](https://typograf.github.io) or [mobile](https://typograf.github.io/mobile.html) version.
+[Обычная](https://typograf.github.io) и [мобильная](https://typograf.github.io/mobile.html) версия.
