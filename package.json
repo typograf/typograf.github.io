@@ -30,7 +30,7 @@
     "node": ">= 0.12"
   },
   "devDependencies": {
-    "browserify": "^11.0.1",
+    "browserify": "^11.2.0",
     "gulp": "3.9.x",
     "gulp-cleancss": "^0.2.2",
     "gulp-concat": "2.6.x",
@@ -40,7 +40,7 @@
     "jscs": "2.x",
     "jshint": "2.8.x",
     "through2": "^2.0.0",
-    "typograf": "3.x",
+    "typograf": "4.x",
     "vinyl-source-stream": "^1.1.0"
   },
   "scripts": {

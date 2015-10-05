@@ -64,6 +64,12 @@ var App = {
         this.prefs._events();
 
         this.execute();
+        
+        this.setVersion();
+    },
+    setVersion: function() {
+        var version = (Typograf.version || '4.0.0').split('.');
+        $('#version').innerHTML = version[0] + '.' + version[1];
     },
     loadFromLocalStorage: function() {
         var rules;
@@ -75,6 +81,9 @@ var App = {
         } catch(e) {}
 
         if(rules && typeof rules === 'object' && Array.isArray(rules.disabled) && Array.isArray(rules.enabled)) {
+            this.fixLegasyRules(rules.enabled);
+            this.fixLegasyRules(rules.disabled);
+
             typograf
                 .enable(rules.enabled)
                 .disable(rules.disabled);
@@ -83,6 +92,28 @@ var App = {
         this.prefs.lang = this.prefs.lang || 'ru';
         this.prefs.langUI = this.prefs.langUI || 'ru';
         this.prefs.mode = this.prefs.mode || '';
+    },
+    fixLegasyRules: function(rules) {
+        var oldRules = {
+            'common/sym/copy': 'common/symbols/copy',
+            'common/sym/cf': 'common/symbols/cf',
+            'common/sym/arrows': 'common/symbols/arrows',
+            'ru/punctuation/quot': 'ru/punctuation/quote',
+            'en/punctuation/quot': 'en/punctuation/quote',
+            'ru/optalign/quot': 'ru/optalign/quote',
+            'ru/nbsp/xxxx': 'ru/nbsp/year',
+            'common/nbsp/afterPara': 'common/nbsp/afterParagraph',
+            'ru/date/main': 'ru/date/fromISO',
+            'ru/nbsp/cc': 'ru/nbsp/centuries',
+            'common/punctuation/exclamation': 'ru/punctuation/exclamation',
+            'common/punctuation/exclamationQuestion': 'ru/punctuation/exclamationQuestion'
+        };
+        
+        Array.isArray(rules) && rules.forEach(function(rule, i) {
+            if (oldRules[rule]) {
+                rules[i] = oldRules[rule];
+            }
+        });
     },
     copyText: function(textarea) {
         try {
