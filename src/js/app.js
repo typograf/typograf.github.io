@@ -1,7 +1,8 @@
 var str = require('./string'),
     $ = require('./dom'),
     texts = require('./texts'),
-    hash = require('./hash');
+    hash = require('./hash'),
+    entityHighlight = require('./entity-highlight');
 
 require('./metrika');
 require('./function');
@@ -163,7 +164,7 @@ var App = {
         if(this.isMobile) {
             $('.input__text').value = res;
         } else {
-            $('.result__html').innerHTML = res.replace(/(\u00A0|&nbsp;|&#160;)/g, '<span class="nbsp">\u00A0</span>');
+            $('.result__html').innerHTML = entityHighlight(res);
             $('.result__text').value = res;
         }
     },

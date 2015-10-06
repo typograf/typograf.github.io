@@ -2,7 +2,8 @@
 var str = require('./string'),
     $ = require('./dom'),
     texts = require('./texts'),
-    hash = require('./hash');
+    hash = require('./hash'),
+    entityHighlight = require('./entity-highlight');
 
 require('./metrika');
 require('./function');
@@ -164,7 +165,7 @@ var App = {
         if(this.isMobile) {
             $('.input__text').value = res;
         } else {
-            $('.result__html').innerHTML = res.replace(/(\u00A0|&nbsp;|&#160;)/g, '<span class="nbsp">\u00A0</span>');
+            $('.result__html').innerHTML = entityHighlight(res);
             $('.result__text').value = res;
         }
     },
@@ -545,7 +546,7 @@ App._texts = texts;
 
 $.on(document, 'DOMContentLoaded', App.init.bind(App));
 
-},{"./dom":2,"./function":3,"./hash":4,"./metrika":5,"./string":6,"./texts":7}],2:[function(require,module,exports){
+},{"./dom":2,"./entity-highlight":3,"./function":4,"./hash":5,"./metrika":6,"./string":7,"./texts":8}],2:[function(require,module,exports){
 function $(cls) {
     return document.querySelector(cls);
 }
@@ -615,6 +616,19 @@ $.isVisible = function(el) {
 module.exports = $;
 
 },{}],3:[function(require,module,exports){
+module.exports = function(text) {
+    [
+        [/(\u00A0|&nbsp;|&#160;)/g, '\u00A0', 'NO-BREAK SPACE'],
+        [/(\u202F|&#8239;)/g, '\u202F', 'NARROW NO-BREAK SPACE'],
+        [/(\u2011|&#8209;)/g, '\u2011', 'NON-BREAKING HYPHEN']
+    ].forEach(function(el) {
+        text = text.replace(el[0], '<span class="entity-nb" title="' + el[2] + '">' + el[1] + '</span>');
+    });
+
+    return text;
+};
+
+},{}],4:[function(require,module,exports){
 // for iPad 1
 if(!Function.prototype.bind) {
     Function.prototype.bind = function(oThis) {
@@ -640,7 +654,7 @@ if(!Function.prototype.bind) {
     };
 }
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 module.exports = {
     getHashParams: function(param) {
         var hash = window.location.hash.replace(/^#!/, ''),
@@ -665,7 +679,7 @@ module.exports = {
     }
 };
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 // Yandex.Metrika
 var str = require('./string'),
     prepareParam = function(value) {
@@ -677,7 +691,7 @@ var pageUrl = prepareParam(window.location.href),
 
 new Image().src = 'https://mc.yandex.ru/watch/28700106?page-url=' + pageUrl + '&page-ref=' + pageRef;
 
-},{"./string":6}],6:[function(require,module,exports){
+},{"./string":7}],7:[function(require,module,exports){
 module.exports = {
     escapeHTML: function(text) {
         return text
@@ -694,7 +708,7 @@ module.exports = {
     }
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 module.exports = {
     typograf: {
         en: 'Typograf',
