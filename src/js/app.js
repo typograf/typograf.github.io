@@ -69,8 +69,7 @@ var App = {
         this.setVersion();
     },
     setVersion: function() {
-        var version = (Typograf.version || '4.0.0').split('.');
-        $('#version').innerHTML = version[0] + '.' + version[1];
+        $('#version').innerHTML = Typograf.version;
     },
     loadFromLocalStorage: function() {
         var rules;
