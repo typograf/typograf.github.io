@@ -12,24 +12,24 @@ module.exports = {
         ru: 'Настройки'
     },
     'lang-rule': {
-        en: 'Language rules:',
-        ru: 'Язык правил:'
+        en: 'Language rules',
+        ru: 'Язык правил'
     },
     'lang-ui': {
         en: 'UI language:',
         ru: 'Язык интерфейса:'
     },
     'html-entities': {
-        en: 'HTML entities:',
-        ru: 'HTML-сущности:'
+        en: 'HTML entities',
+        ru: 'HTML-сущности'
     },
     names: {
-        en: 'names',
-        ru: 'имена'
+        en: 'Names',
+        ru: 'Имена'
     },
     digits: {
-        en: 'digits',
-        ru: 'цифры'
+        en: 'Digits',
+        ru: 'Цифры'
     },
     copy: {
         en: 'Copy',
@@ -43,7 +43,7 @@ module.exports = {
         en: 'Your browser does not support copy text.',
         ru: 'Ваш браузер не поддерживает копирование текста.'
     },
-    notSupportSaveText: {
+    notSupportSave: {
         en: 'Your browser does not support save text to a file.',
         ru: 'Ваш браузер не поддерживает сохранение текста в файл.'
     },
@@ -74,5 +74,13 @@ module.exports = {
     result: {
         en: 'Result:',
         ru: 'Результат:'
+    },
+    ru: {
+        en: 'Russian',
+        ru: 'Русский'
+    },
+    en: {
+        en: 'English',
+        ru: 'Английский'
     }
 };
