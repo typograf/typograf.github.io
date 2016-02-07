@@ -13,7 +13,6 @@ var paths = {
         'index.html',
         'mobile.html'
     ],
-    jsApp: 'src/js/*.js',
     jsTypograf: [
         'node_modules/typograf/dist/typograf.js',
         'node_modules/typograf/dist/typograf.titles.js',
@@ -39,7 +38,7 @@ gulp.task('jsTypograf', function() {
         .pipe(gulp.dest(destDir));
 });
 
-gulp.task('jsApp', function () {
+gulp.task('jsApp', ['jsTypograf'], function() {
     return browserify('./src/js/app.js')
         .bundle()
         .pipe(source('app.js'))
