@@ -30,16 +30,16 @@
     "node": ">= 0.12"
   },
   "devDependencies": {
-    "browserify": "^11.2.0",
+    "browserify": "^13.0.0",
     "gulp": "3.9.x",
     "gulp-cleancss": "^0.2.2",
     "gulp-concat": "2.6.x",
     "gulp-less": "3.0.x",
     "gulp-replace": "^0.5.4",
-    "gulp-uglify": "^1.4.0",
+    "gulp-uglify": "^1.5.3",
     "jscs": "2.x",
-    "jshint": "2.8.x",
-    "through2": "^2.0.0",
+    "jshint": "2.9.x",
+    "through2": "^2.0.1",
     "typograf": "5.x",
     "vinyl-source-stream": "^1.1.0"
   },
