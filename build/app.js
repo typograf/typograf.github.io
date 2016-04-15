@@ -1,6 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /*!
- * jQuery JavaScript Library v2.2.2
+ * jQuery JavaScript Library v2.2.3
  * http://jquery.com/
  *
  * Includes Sizzle.js
@@ -10,7 +10,7 @@
  * Released under the MIT license
  * http://jquery.org/license
  *
- * Date: 2016-03-17T17:51Z
+ * Date: 2016-04-05T19:26Z
  */
 
 (function( global, factory ) {
@@ -66,7 +66,7 @@ var support = {};
 
 
 var
-	version = "2.2.2",
+	version = "2.2.3",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -9476,7 +9476,7 @@ jQuery.fn.load = function( url, params, callback ) {
 		// If it fails, this function gets "jqXHR", "status", "error"
 		} ).always( callback && function( jqXHR, status ) {
 			self.each( function() {
-				callback.apply( self, response || [ jqXHR.responseText, status, jqXHR ] );
+				callback.apply( this, response || [ jqXHR.responseText, status, jqXHR ] );
 			} );
 		} );
 	}
@@ -9843,9 +9843,8 @@ return jQuery;
 }));
 
 },{}],2:[function(require,module,exports){
-var $ = require('jquery');
-
-var str = require('./string'),
+var $ = require('jquery'),
+    str = require('./string'),
     texts = require('./texts'),
     hash = require('./hash'),
     saveText = require('./save-text'),
@@ -10019,9 +10018,6 @@ var App = {
         changeLangUI: function() {
             this.langUI = $('.prefs__set-lang-ui').val();
 
-            var els = document.querySelectorAll,
-                item, i;
-
             $('[data-text-id]').each(function(i, el) {
                 el.innerHTML = App.getText(el.dataset.textId);
             });
@@ -10071,8 +10067,7 @@ var App = {
                 groups = [];
 
             rules.forEach(function(rule, i) {
-                var groupName = rule._group,
-                    ruleLang = rule._lang;
+                var groupName = rule._group;
 
                 if(groupName !== currentGroupName) {
                     currentGroupName = groupName;
@@ -10083,7 +10078,7 @@ var App = {
                 currentGroup.push(rule);
             }, this);
 
-            return groups
+            return groups;
         },
         _sortGroupsByTitle: function(groups, lang) {
             var titles = Typograf.titles;
@@ -10136,7 +10131,8 @@ var App = {
                         checked = ch ? ' checked="checked"' : '';
 
                     html += '<div class="prefs__rule" title="' + name + '">' +
-                        '<input type="checkbox" class="prefs__rule-checkbox"' + checked + ' id="' + id + '" data-id="' + name + '" /> ' +
+                        '<input type="checkbox" class="prefs__rule-checkbox"' +
+                        checked + ' id="' + id + '" data-id="' + name + '" /> ' +
                         '<label for="' + id + '">' + title + '</label>' +
                         '</div>';
                 }, this);
@@ -10242,8 +10238,6 @@ var App = {
         }
     },
     _events: function() {
-        var that = this;
-
         $(window).on('message', function(e) {
             var data;
             try {
@@ -10403,13 +10397,14 @@ module.exports = {
 var $ = require('jquery');
 
 $.fn.checked = function(checked) {
-    if (typeof checked === 'undefined') {
+    if(typeof checked === 'undefined') {
         return this[0].checked;
     } else {
         this[0].checked = checked;
         return this;
     }
 };
+
 },{"jquery":1}],7:[function(require,module,exports){
 // Yandex.Metrika
 var str = require('./string'),
@@ -10425,7 +10420,7 @@ new Image().src = 'https://mc.yandex.ru/watch/28700106?page-url=' + pageUrl + '&
 },{"./string":9}],8:[function(require,module,exports){
 module.exports = function(textarea, notSupportSave) {
     if(!window.Blob) {
-        alert(notSupportSave);
+        window.alert(notSupportSave);
         return;
     }
 
@@ -10437,7 +10432,7 @@ module.exports = function(textarea, notSupportSave) {
     downloadLink.download = fileNameToSaveAs;
     downloadLink.innerHTML = 'Download File';
 
-    if(window.webkitURL != null) {
+    if(window.webkitURL !== null) {
         // Chrome allows the link to be clicked
         // without actually adding it to the DOM.
         downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
@@ -10574,6 +10569,6 @@ Typograf.getGroupTitle = function(name, lang) {
 
 Typograf.getGroupIndex = function(groupName) {
     return Typograf.groupsByName[groupName].index;
-}
+};
 
 },{}]},{},[2]);
