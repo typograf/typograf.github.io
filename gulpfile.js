@@ -1,5 +1,5 @@
 var gulp = require('gulp'),
-    less = require('gulp-less');
+    less = require('gulp-less'),
     concat = require('gulp-concat'),
     cleancss = require('gulp-cleancss'),
     browserify = require('browserify'),
@@ -32,7 +32,9 @@ gulp.task('jsTypograf', function() {
     return gulp.src(paths.jsTypograf)
         .pipe(concat('typograf.js'))
         .pipe(uglify({
+            /*jshint camelcase: false */
             output: {ascii_only: true},
+            /*jshint camelcase: true */
             preserveComments: 'some'
         }))
         .pipe(gulp.dest(destDir));

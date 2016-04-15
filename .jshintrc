@@ -1,7 +1,6 @@
 {
     "predef": [ "Typograf", "tests", "innerTests" ],
     "browser": true,
-    "jquery": true,
     "curly": true,
     "camelcase": true,
     "eqeqeq": true,

@@ -2,7 +2,10 @@
     "excludeFiles": [
         ".*",
         "node_modules",
-        "libs"
+        "libs",
+        "icons",
+        "images",
+        "build"
     ],
     "requireCurlyBraces": ["if", "else", "for", "while", "do"],
     "requireSpaceAfterKeywords": ["do", "else"],

@@ -11,4 +11,4 @@ Typograf.getGroupTitle = function(name, lang) {
 
 Typograf.getGroupIndex = function(groupName) {
     return Typograf.groupsByName[groupName].index;
-}
+};

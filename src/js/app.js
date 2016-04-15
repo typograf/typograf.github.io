@@ -1,6 +1,5 @@
-var $ = require('jquery');
-
-var str = require('./string'),
+var $ = require('jquery'),
+    str = require('./string'),
     texts = require('./texts'),
     hash = require('./hash'),
     saveText = require('./save-text'),
@@ -174,9 +173,6 @@ var App = {
         changeLangUI: function() {
             this.langUI = $('.prefs__set-lang-ui').val();
 
-            var els = document.querySelectorAll,
-                item, i;
-
             $('[data-text-id]').each(function(i, el) {
                 el.innerHTML = App.getText(el.dataset.textId);
             });
@@ -226,8 +222,7 @@ var App = {
                 groups = [];
 
             rules.forEach(function(rule, i) {
-                var groupName = rule._group,
-                    ruleLang = rule._lang;
+                var groupName = rule._group;
 
                 if(groupName !== currentGroupName) {
                     currentGroupName = groupName;
@@ -238,7 +233,7 @@ var App = {
                 currentGroup.push(rule);
             }, this);
 
-            return groups
+            return groups;
         },
         _sortGroupsByTitle: function(groups, lang) {
             var titles = Typograf.titles;
@@ -291,7 +286,8 @@ var App = {
                         checked = ch ? ' checked="checked"' : '';
 
                     html += '<div class="prefs__rule" title="' + name + '">' +
-                        '<input type="checkbox" class="prefs__rule-checkbox"' + checked + ' id="' + id + '" data-id="' + name + '" /> ' +
+                        '<input type="checkbox" class="prefs__rule-checkbox"' +
+                        checked + ' id="' + id + '" data-id="' + name + '" /> ' +
                         '<label for="' + id + '">' + title + '</label>' +
                         '</div>';
                 }, this);
@@ -397,8 +393,6 @@ var App = {
         }
     },
     _events: function() {
-        var that = this;
-
         $(window).on('message', function(e) {
             var data;
             try {
