@@ -117,9 +117,9 @@ var App = {
 
         diff.forEach(function(part){
             var val = str.escapeHTML(part.value);
-            if (part.added) {
+            if(part.added) {
                 html += '<ins class="diff">' + val + '</ins>';
-            } else if (part.removed) {
+            } else if(part.removed) {
                 html += '<del class="diff">' + val + '</del>';
             } else {
                 html += val;
@@ -387,9 +387,9 @@ var App = {
                 }
             });
             
-            if (count === els.length) {
+            if(count === els.length) {
                 checked = true;
-            } else if (!count) {
+            } else if(!count) {
                 checked = false;
             } else {
                 checked = undefined;

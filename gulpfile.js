@@ -49,6 +49,7 @@ gulp.task('jsApp', ['jsTypograf'], function() {
     return browserify('./src/js/app.js')
         .bundle()
         .pipe(source('app.js'))
+        /*jshint camelcase: false */
         .pipe(streamify(uglify({
             output: {ascii_only: true},
             preserveComments: 'some'
