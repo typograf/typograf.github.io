@@ -2,12 +2,13 @@
 {
     .container
     {
-        margin: 0;
         min-width: 640px;
+        margin: 0;
     }
 
     .input__text,
-    .result__text
+    .result__text,
+    .result__diff
     {
         box-sizing: border-box;
         width: 100%;
@@ -53,10 +54,23 @@
     {
         display: none;
 
-        margin-top: .5em;
-        padding: 1em;
+        padding: 3px;
 
-        background: #f0f0f0;
+        background: #fefefe;
+        border: 1px solid #a0a0a0;
+    }
+
+    .result__diff
+    {
+        display: none;
+
+        padding: 3px;
+
+        background: #fefefe;
+        border: 1px solid #a0a0a0;
+
+        white-space: pre-wrap;
+        overflow-y: auto;
     }
 
     .input__save,
@@ -64,6 +78,7 @@
     {
         position: relative;
         top: 5px;
+
         margin-right: 5px;
     }
 

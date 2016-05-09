@@ -35,14 +35,17 @@ textarea
 .input__clear
 {
     font-size: 30px;
+    line-height: 20px;
 
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: 27px;
+    right: 15px;
 
     display: none;
 
-    padding: 5px;
+    padding: 2px;
+
+    background-color: rgba(255, 255, 255, 0.9);
 
     cursor: pointer;
     -webkit-user-select: none;
@@ -94,8 +97,9 @@ textarea
 
 #version
 {
-    font-weight: normal;
     font-size: 13px;
+    font-weight: normal;
+
     margin-left: 4px;
 }
 
@@ -192,6 +196,7 @@ textarea
 .prefs__set-mode
 {
     float: right;
+
     margin-left: 1em;
 }
 
@@ -210,11 +215,11 @@ textarea
 {
     clear: both;
 
-    border-radius: 5px;
-
     margin-top: 1em;
     padding: 0 1em 0 1em;
+
     border: 1px solid transparent;
+    border-radius: 5px;
 }
 
 .prefs__rule
@@ -225,10 +230,15 @@ textarea
 .prefs__legend
 {
     font-weight: bold;
+
     padding: 3px 7px;
+
+    cursor: pointer;
+
     border-radius: 5px;
     background: #f0f0f0;
-    cursor: pointer;
+
+    user-select: none;
 }
 
 .prefs__fieldset .prefs__rule
@@ -243,9 +253,10 @@ textarea
 
 .prefs__fieldset_visible
 {
-    border: 1px solid #e0e0e0;
-    padding: 1em;
     margin-bottom: 1em;
+    padding: 1em;
+
+    border: 1px solid #e0e0e0;
 }
 
 .github
@@ -253,10 +264,32 @@ textarea
     position: absolute;
     top: 15px;
     right: 10px;
-    opacity: 0.5;
+
+    opacity: .5;
 
     img
     {
         border: 0;
     }
+}
+
+del.diff
+{
+    text-decoration: none;
+
+    color: #b30000;
+    background: #fadad7;
+}
+
+ins.diff
+{
+    text-decoration: none;
+
+    color: #406619;
+    background: #eaf2c2;
+}
+
+label
+{
+    user-select: none;
 }
