@@ -1,5 +1,6 @@
 var $ = require('jquery'),
     str = require('./string'),
+    JsDiff = require('diff/dist/diff.min'),
     texts = require('./texts'),
     hash = require('./hash'),
     saveText = require('./save-text'),
@@ -18,6 +19,10 @@ var typograf = new Typograf(),
     });
 
 var App = {
+    last: {
+        value: '',
+        result: ''
+    },
     getText: function(id, lang) {
         return texts[id][lang ? lang : this.prefs.langUI];
     },
@@ -78,17 +83,50 @@ var App = {
         }
     },
     execute: function() {
-        var res = typograf.execute(this._getValue(), {
-            lang: this.prefs.lang,
-            mode: this.prefs.mode
-        });
+        var value = this._getValue(),
+            result = typograf.execute(value, {
+                lang: this.prefs.lang,
+                mode: this.prefs.mode
+            });
+
+        this.last = {
+            value: value,
+            result: result
+        };
 
         if(this.isMobile) {
-            $('.input__text').val(res);
+            $('.input__text').val(result);
         } else {
-            $('.result__html').html(entityHighlight(res));
-            $('.result__text').val(res);
+            this.updateResult();
         }
+    },
+    updateResult: function() {
+        var value = this.last.value,
+            result = this.last.result,
+            resText = $('.result__text'),
+            resHTML = $('.result__html'),
+            resDiff = $('.result__diff');
+
+        resText.is(':visible') && resText.val(result);
+        resHTML.is(':visible') && resHTML.html(entityHighlight(result));
+        resDiff.is(':visible') && resDiff.html(this.diff(value, result));
+    },
+    diff: function(o, n) {
+        var diff = JsDiff.diffChars(o, n),
+            html = '';
+
+        diff.forEach(function(part){
+            var val = str.escapeHTML(part.value);
+            if (part.added) {
+                html += '<ins class="diff">' + val + '</ins>';
+            } else if (part.removed) {
+                html += '<del class="diff">' + val + '</del>';
+            } else {
+                html += val;
+            }
+        });
+
+        return html;
     },
     prefs: {
         show: function() {
@@ -160,7 +198,7 @@ var App = {
                 });
             });
 
-            $('.prefs__all-rules').checked(false);
+            $('.prefs__all-rules').checked(undefined);
 
             this.saveToLocalStorage();
         },
@@ -340,15 +378,24 @@ var App = {
         },
         _synchronizeMainCheckbox: function() {
             var count = 0,
-              els = this._getCheckboxes();
+              els = this._getCheckboxes(),
+              checked;
 
             els.each(function(i, el) {
                 if(el.checked) {
                     count++;
                 }
             });
+            
+            if (count === els.length) {
+                checked = true;
+            } else if (!count) {
+                checked = false;
+            } else {
+                checked = undefined;
+            }
 
-            $('.prefs__all-rules').checked(count === els.length);
+            $('.prefs__all-rules').checked(checked);
         },
         _events: function() {
 
@@ -431,15 +478,13 @@ var App = {
         }.bind(this);
         $('.set-prefs').on('click', this._onprefs);
 
-        this._onastext = function() {
-            $('.result__text').show();
-            $('.result__html').hide();
-        };
-        $('.result__as-text').on('click', this._onastext);
+        var that = this;
+        $('.result__as-text, .result__as-html, .result__as-diff').on('click', function() {
+            $('.result__text').hide().val('');
+            $('.result__html, .result__diff').hide().html('');
 
-        $('.result__as-html').on('click', function() {
-            $('.result__html').show();
-            $('.result__text').hide();
+            $('.result__' + this.value).show();
+            that.updateResult();
         });
 
         $('.input__copy').on('click', function() {

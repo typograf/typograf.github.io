@@ -68,8 +68,12 @@ module.exports = {
         ru: 'Текст'
     },
     html: {
-        en: 'View\u00A0in\u00A0browser',
-        ru: 'Вид\u00A0в\u00A0браузере'
+        en: 'HTML',
+        ru: 'HTML'
+    },
+    diff: {
+        en: 'Diff',
+        ru: 'Diff'
     },
     result: {
         en: 'Result:',
