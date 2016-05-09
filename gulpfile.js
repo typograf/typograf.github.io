@@ -2,6 +2,11 @@ var gulp = require('gulp'),
     less = require('gulp-less'),
     concat = require('gulp-concat'),
     cleancss = require('gulp-cleancss'),
+    autoprefixer = require('gulp-autoprefixer'),
+    apBrowsers = {
+        browsers: ['ie >= 9', 'Firefox >= 24', 'Chrome >= 26', 'iOS >= 5', 'Safari >= 6', 'Android > 2.3']
+    },
+    streamify = require('gulp-streamify'),
     browserify = require('browserify'),
     uglify = require('gulp-uglify'),
     source = require('vinyl-source-stream'),
@@ -44,10 +49,10 @@ gulp.task('jsApp', ['jsTypograf'], function() {
     return browserify('./src/js/app.js')
         .bundle()
         .pipe(source('app.js'))
-/*        .pipe(uglify({
+        .pipe(streamify(uglify({
             output: {ascii_only: true},
             preserveComments: 'some'
-        }))*/
+        })))
         .pipe(gulp.dest(destDir));
 });
 
@@ -56,6 +61,7 @@ gulp.task('cssMobile', function() {
         .pipe(concat('mobile.css'))
         .pipe(less())
         .pipe(cleancss())
+        .pipe(autoprefixer(apBrowsers))
         .pipe(gulp.dest(destDir));
 });
 
@@ -64,6 +70,7 @@ gulp.task('cssDesktop', function() {
         .pipe(concat('desktop.css'))
         .pipe(less())
         .pipe(cleancss())
+        .pipe(autoprefixer(apBrowsers))
         .pipe(gulp.dest(destDir));
 });
 
