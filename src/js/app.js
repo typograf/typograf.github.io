@@ -502,9 +502,8 @@ var App = {
         });
 
         $('.input__copy').on('click', function() {
-            $('.result__as-text').checked(true);
+            $('.result__as-text').click();
 
-            this._onastext();
             this.copyText($('.result__text'));
         }.bind(this));
 
