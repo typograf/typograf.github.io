@@ -45,14 +45,13 @@ textarea
 
     padding: 2px;
 
-    background-color: rgba(255, 255, 255, 0.9);
-
     cursor: pointer;
     -webkit-user-select: none;
        -moz-user-select: none;
             user-select: none;
 
     color: gray;
+    background-color: rgba(255, 255, 255, .9);
 }
 
 .container
@@ -90,7 +89,7 @@ textarea
     font-style: italic;
 
     margin: 0 0 0 36px;
-    padding: 10px 0 13px 20px;
+    padding: 12px 0 11px 20px;
 
     text-shadow: 0 1px 1px rgba(0, 0, 0, .6);
 }
@@ -119,32 +118,40 @@ textarea
     border-radius: 2px;
     background: rgba(255,255,255,.3);
 
-    &:before,
-    &:after
-    {
-        position: absolute;
-        top: 7px;
-        left: 5px;
-
-        width: 26px;
-        height: 5px;
-
-        content: '';
-
-        border: 2px solid white;
-        border-right: none;
-        border-left: none;
-    }
-
-    &:after
-    {
-        margin-top: 14px;
-    }
-
     &_selected
     {
         opacity: .9;
-        border: 1px solid rgba(255,255,255,.9);
+        border: 1px solid rgba(255, 255, 255, .9);
+    }
+
+    &:before
+    {
+        position: absolute;
+        top: 17px;
+        left: 4px;
+
+        width: 28px;
+        height: 0;
+
+        content: '';
+
+        border-top: 3px solid #fff;
+    }
+
+    &:after
+    {
+        position: absolute;
+        top: 8px;
+        left: 4px;
+
+        width: 28px;
+        height: 15px;
+
+        content: '';
+
+        border: 3px solid white;
+        border-right: none;
+        border-left: none;
     }
 }
 
@@ -234,11 +241,10 @@ textarea
     padding: 3px 7px;
 
     cursor: pointer;
+    user-select: none;
 
     border-radius: 5px;
     background: #f0f0f0;
-
-    user-select: none;
 }
 
 .prefs__fieldset .prefs__rule
