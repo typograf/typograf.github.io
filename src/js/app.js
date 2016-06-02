@@ -73,6 +73,8 @@ var App = {
         this.prefs.lang = this.prefs.lang || 'ru';
         this.prefs.langUI = this.prefs.langUI || 'ru';
         this.prefs.mode = this.prefs.mode || '';
+        
+        this.prefs.updateSelects();
     },
     copyText: function(textarea) {
         try {
@@ -149,11 +151,13 @@ var App = {
             $('.prefs').show();
             $('.input').hide();
 
+            this.updateSelects();
+            this._synchronizeMainCheckbox();
+        },
+        updateSelects: function() {
             $('.prefs__set-lang').val(this.lang);
             $('.prefs__set-lang-ui').val(this.langUI);
             $('.prefs__set-mode').val(this.mode);
-
-            this._synchronizeMainCheckbox();
         },
         hide: function() {
             $('.prefs').hide();
@@ -238,6 +242,7 @@ var App = {
             });
 
             this._build();
+            this.saveToLocalStorage();
         },
         changeMode: function() {
             this.mode = $('.prefs__set-mode').val();
