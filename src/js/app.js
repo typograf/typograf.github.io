@@ -1,4 +1,4 @@
-var $ = require('jquery'),
+var $ = require('../../node_modules/jquery/dist/jquery.slim'),
     str = require('./string'),
     JsDiff = require('diff/dist/diff.min'),
     texts = require('./texts'),

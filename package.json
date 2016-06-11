@@ -52,6 +52,6 @@
     "jshint": "./node_modules/.bin/jshint ."
   },
   "dependencies": {
-    "jquery": "2.x"
+    "jquery": "3.x"
   }
 }
