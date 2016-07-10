@@ -19,7 +19,7 @@
     "maxparams": 4,
     "maxdepth": 4,
     "maxlen": 120,
-
+    "esversion": 6,
     "expr": true,
     "lastsemic": true,
     "laxbreak": true,

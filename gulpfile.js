@@ -1,19 +1,19 @@
-var gulp = require('gulp'),
-    less = require('gulp-less'),
-    concat = require('gulp-concat'),
-    cleancss = require('gulp-cleancss'),
-    autoprefixer = require('gulp-autoprefixer'),
-    apBrowsers = {
-        browsers: ['ie >= 9', 'Firefox >= 24', 'Chrome >= 26', 'iOS >= 5', 'Safari >= 6', 'Android > 2.3']
-    },
-    streamify = require('gulp-streamify'),
-    browserify = require('browserify'),
-    uglify = require('gulp-uglify'),
-    source = require('vinyl-source-stream'),
-    replace = require('gulp-replace'),
-    destDir = './build/';
+const gulp = require('gulp');
+const less = require('gulp-less');
+const concat = require('gulp-concat');
+const cleancss = require('gulp-cleancss');
+const autoprefixer = require('gulp-autoprefixer');
+const streamify = require('gulp-streamify');
+const browserify = require('browserify');
+const uglify = require('gulp-uglify');
+const source = require('vinyl-source-stream');
+const replace = require('gulp-replace');
 
-var paths = {
+const destDir = './build/';
+const apBrowsers = {
+    browsers: ['ie >= 9', 'Firefox >= 24', 'Chrome >= 26', 'iOS >= 5', 'Safari >= 6', 'Android > 2.3']
+};
+const paths = {
     html: [
         'index.html',
         'mobile.html'
