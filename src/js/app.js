@@ -115,11 +115,11 @@ var App = {
     },
     getDiffTitle: function(sym) {
         var title = '';
-        if (sym === '\u00A0') {
+        if(sym === '\u00A0') {
             title = 'NO-BREAK SPACE';
-        } else if (sym === '\u202F') {
+        } else if(sym === '\u202F') {
             title = 'NARROW NO-BREAK SPACE';
-        } else if (sym === '\u2011') {
+        } else if(sym === '\u2011') {
             title = 'NON-BREAKING HYPHEN';
         }
 
