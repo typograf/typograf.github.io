@@ -19,9 +19,7 @@ const paths = {
         'mobile.html'
     ],
     jsTypograf: [
-        'node_modules/typograf/dist/typograf.js',
-        'node_modules/typograf/dist/typograf.titles.js',
-        'node_modules/typograf/dist/typograf.groups.js'
+        'node_modules/typograf/dist/typograf.all.js'
     ],
     cssDesktop: [
         'src/css/common.less',

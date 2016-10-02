@@ -27,7 +27,7 @@
     "typography"
   ],
   "engines": {
-    "node": ">= 0.12"
+    "node": ">= 4.0"
   },
   "devDependencies": {
     "browserify": "^13.1.0",
