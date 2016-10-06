@@ -22,12 +22,12 @@ const paths = {
         'node_modules/typograf/dist/typograf.all.js'
     ],
     cssDesktop: [
-        'src/css/common.less',
-        'src/css/desktop.less'
+        'src/less/common.less',
+        'src/less/desktop.less'
     ],
     cssMobile: [
-        'src/css/common.less',
-        'src/css/mobile.less'
+        'src/less/common.less',
+        'src/less/mobile.less'
     ]
 };
 
@@ -77,6 +77,11 @@ gulp.task('updateVersion', function() {
     return gulp.src(paths.html)
         .pipe(replace(/\?v=\d+/g, '?v=' + (+new Date())))
         .pipe(gulp.dest('./'));
+});
+
+gulp.task('watch', function() {
+    gulp.watch('src/js/**/*', ['default']);
+    gulp.watch('src/less/**/*', ['default']);
 });
 
 gulp.task('default', ['updateVersion', 'jsApp', 'jsTypograf', 'cssMobile', 'cssDesktop']);
