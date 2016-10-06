@@ -73,7 +73,7 @@ var App = {
         this.prefs.lang = this.prefs.lang || 'ru';
         this.prefs.langUI = this.prefs.langUI || 'ru';
         this.prefs.mode = this.prefs.mode || '';
-        
+
         this.prefs.updateSelects();
     },
     copyText: function(textarea) {
@@ -148,8 +148,8 @@ var App = {
         show: function() {
             this._build();
 
-            $('.prefs').show();
-            $('.input').hide();
+            $('.prefs').addClass('prefs_opened');
+            $('.paranja').addClass('paranja_opened');
 
             this.updateSelects();
             this._synchronizeMainCheckbox();
@@ -160,11 +160,12 @@ var App = {
             $('.prefs__set-mode').val(this.mode);
         },
         hide: function() {
-            $('.prefs').hide();
-            $('.input').show();
+            $('.prefs').removeClass('prefs_opened');
+            $('.paranja').removeClass('paranja_opened');
         },
         toggle: function() {
-            if($('.prefs').is(':visible')) {
+            console.log(111);
+            if($('.prefs').is('.prefs_opened')) {
                 this.hide();
             } else {
                 this.show();
@@ -405,7 +406,7 @@ var App = {
                     count++;
                 }
             });
-            
+
             if(count === els.length) {
                 checked = true;
             } else if(!count) {
@@ -480,8 +481,8 @@ var App = {
         }.bind(this));
 
         this._onprefs = function() {
-            var el = $('.set-prefs'),
-                clSelected = 'set-prefs_selected';
+            var el = $('.hamburger'),
+                clSelected = 'hamburger_selected';
 
             if(el.hasClass(clSelected)) {
                 window.location.hash = '#';
@@ -495,7 +496,8 @@ var App = {
             el.toggleClass(clSelected);
             this.prefs.toggle();
         }.bind(this);
-        $('.set-prefs').on('click', this._onprefs);
+
+        $('.hamburger, .paranja').on('click', this._onprefs);
 
         var that = this;
         $('.result__as-text, .result__as-html, .result__as-diff').on('click', function() {
