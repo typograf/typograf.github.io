@@ -1,5 +1,5 @@
 {
-  "name": "typograf",
+  "name": "typograf.github.io",
   "description": "Web interface for typograf",
   "version": "1.0.0",
   "author": {
@@ -32,15 +32,16 @@
   "devDependencies": {
     "browserify": "^13.1.0",
     "diff": "^3.0.0",
-    "jquery": "3.x",
     "gulp": "3.9.x",
     "gulp-autoprefixer": "^3.1.1",
     "gulp-cleancss": "^0.2.2",
     "gulp-concat": "2.6.x",
     "gulp-less": "3.1.x",
+    "gulp-md5-assets": "^0.2.0",
     "gulp-replace": "^0.5.4",
     "gulp-streamify": "^1.0.2",
     "gulp-uglify": "^2.0.0",
+    "jquery": "3.x",
     "jscs": "3.x",
     "jshint": "2.9.x",
     "through2": "^2.0.1",
