@@ -1,26 +1,19 @@
-const gulp = require('gulp');
-const less = require('gulp-less');
+const autoprefixer = require('gulp-autoprefixer');
+const browserify = require('browserify');
 const concat = require('gulp-concat');
 const cleancss = require('gulp-cleancss');
-const autoprefixer = require('gulp-autoprefixer');
-const streamify = require('gulp-streamify');
-const browserify = require('browserify');
-const uglify = require('gulp-uglify');
+const gulp = require('gulp');
+const less = require('gulp-less');
+const md5 = require('gulp-md5-assets');
 const source = require('vinyl-source-stream');
-const replace = require('gulp-replace');
+const streamify = require('gulp-streamify');
+const uglify = require('gulp-uglify');
 
 const destDir = './build/';
 const apBrowsers = {
     browsers: ['ie >= 9', 'Firefox >= 24', 'Chrome >= 26', 'iOS >= 5', 'Safari >= 6', 'Android > 2.3']
 };
 const paths = {
-    html: [
-        'index.html',
-        'mobile.html'
-    ],
-    jsTypograf: [
-        'node_modules/typograf/dist/typograf.all.js'
-    ],
     cssDesktop: [
         'src/less/common.less',
         'src/less/desktop.less'
@@ -31,8 +24,10 @@ const paths = {
     ]
 };
 
+const tasks = ['jsApp', 'jsTypograf', 'cssMobile', 'cssDesktop'];
+
 gulp.task('jsTypograf', function() {
-    return gulp.src(paths.jsTypograf)
+    return gulp.src('node_modules/typograf/dist/typograf.all.js')
         .pipe(concat('typograf.js'))
         .pipe(uglify({
             /*jshint camelcase: false */
@@ -73,10 +68,8 @@ gulp.task('cssDesktop', function() {
         .pipe(gulp.dest(destDir));
 });
 
-gulp.task('updateVersion', function() {
-    return gulp.src(paths.html)
-        .pipe(replace(/\?v=\d+/g, '?v=' + (+new Date())))
-        .pipe(gulp.dest('./'));
+gulp.task('updateVersion', tasks, function() {
+    return gulp.src('./build/*.*').pipe(md5(10, './*.html'));
 });
 
 gulp.task('watch', function() {
@@ -84,4 +77,4 @@ gulp.task('watch', function() {
     gulp.watch('src/less/**/*', ['default']);
 });
 
-gulp.task('default', ['updateVersion', 'jsApp', 'jsTypograf', 'cssMobile', 'cssDesktop']);
+gulp.task('default', [...tasks, 'updateVersion']);
