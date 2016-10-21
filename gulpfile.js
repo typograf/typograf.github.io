@@ -24,8 +24,6 @@ const paths = {
     ]
 };
 
-const tasks = ['jsApp', 'jsTypograf', 'cssMobile', 'cssDesktop'];
-
 gulp.task('jsTypograf', function() {
     return gulp.src('node_modules/typograf/dist/typograf.all.js')
         .pipe(concat('typograf.js'))
@@ -68,7 +66,11 @@ gulp.task('cssDesktop', function() {
         .pipe(gulp.dest(destDir));
 });
 
-gulp.task('updateVersion', tasks, function() {
+gulp.task('copyTemplates', function() {
+    return gulp.src('./src/html/*.html').pipe(gulp.dest('./'));
+});
+
+gulp.task('updateVersion', ['jsApp', 'jsTypograf', 'cssMobile', 'cssDesktop', 'copyTemplates'], function() {
     return gulp.src('./build/*.*').pipe(md5(10, './*.html'));
 });
 
@@ -77,4 +79,4 @@ gulp.task('watch', function() {
     gulp.watch('src/less/**/*', ['default']);
 });
 
-gulp.task('default', [...tasks, 'updateVersion']);
+gulp.task('default', ['updateVersion']);
