@@ -28,7 +28,10 @@ var App = {
     },
     isMobile: false,
     init: function() {
-        this.isMobile = $(document.body).hasClass('page_is-mobile');
+        var body = $(document.body);
+        body.removeClass('transition_no');
+
+        this.isMobile = body.hasClass('page_is-mobile');
 
         if(window.location.hash === '#!prefs') {
             setTimeout(function() {
