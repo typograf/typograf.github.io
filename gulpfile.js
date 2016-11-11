@@ -13,16 +13,11 @@ const destDir = './build/';
 const apBrowsers = {
     browsers: ['ie >= 9', 'Firefox >= 24', 'Chrome >= 26', 'iOS >= 5', 'Safari >= 6', 'Android > 2.3']
 };
-const paths = {
-    cssDesktop: [
-        'src/less/common.less',
-        'src/less/desktop.less'
-    ],
-    cssMobile: [
-        'src/less/common.less',
-        'src/less/mobile.less'
-    ]
-};
+
+const cssCommon = [
+    'node_modules/typograf/dist/typograf.css',
+    'src/less/common.less'
+];
 
 gulp.task('jsTypograf', function() {
     return gulp.src('node_modules/typograf/dist/typograf.all.js')
@@ -49,7 +44,7 @@ gulp.task('jsApp', ['jsTypograf'], function() {
 });
 
 gulp.task('cssMobile', function() {
-    return gulp.src(paths.cssMobile)
+    return gulp.src(['src/less/mobile.less'].concat(cssCommon))
         .pipe(concat('mobile.css'))
         .pipe(less())
         .pipe(cleancss())
@@ -58,7 +53,7 @@ gulp.task('cssMobile', function() {
 });
 
 gulp.task('cssDesktop', function() {
-    return gulp.src(paths.cssDesktop)
+    return gulp.src(['src/less/desktop.less'].concat(cssCommon))
         .pipe(concat('desktop.css'))
         .pipe(less())
         .pipe(cleancss())
