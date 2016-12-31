@@ -167,7 +167,6 @@ var App = {
             $('.paranja').removeClass('paranja_opened');
         },
         toggle: function() {
-            console.log(111);
             if($('.prefs').is('.prefs_opened')) {
                 this.hide();
             } else {
