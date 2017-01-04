@@ -462,7 +462,7 @@ var App = {
         }
     },
     _events: function() {
-        $(window).on('message', function(e) {
+        window.addEventListener('message', function(e) {
             var data;
             try {
                 data = JSON.parse(e.data);
@@ -480,7 +480,7 @@ var App = {
                     })
                 }), '*');
             }
-        }.bind(this));
+        }.bind(this), false);
 
         this._onprefs = function() {
             var el = $('.hamburger'),
