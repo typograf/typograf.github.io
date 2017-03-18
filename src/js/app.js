@@ -1,50 +1,26 @@
 var $ = require('../../node_modules/jquery/dist/jquery.slim'),
-    str = require('./string'),
-    JsDiff = require('diff/dist/diff.min'),
-    texts = require('./texts'),
+    diff = require('./diff'),
+    entityHighlight = require('./entity-highlight'),
     hash = require('./hash'),
+    getText = require('./get-text').getText,
+    prepareLocale = require('./prepare-locale'),
+    Prefs = require('./prefs'),
     saveText = require('./save-text'),
-    entityHighlight = require('./entity-highlight');
+    str = require('./string'),
+    Typograf = window.Typograf,
+    typograf = new Typograf();
 
 require('./jquery.checked');
 require('./metrika');
 require('./function');
 require('./typograf-groups');
 
-window.$ = $;
-
-var typograf = new Typograf(),
-    typografPrefs = new Typograf({
-        disableRule: '*',
-        enableRule: ['common/nbsp/*', 'ru/nbsp/*']
-    });
-
 var App = {
-    last: {
-        value: '',
-        result: ''
-    },
-    getText: function(id, lang) {
-        var key = texts[id];
-        if(!key) {
-            console.warn('Not found key "' + id + '" in getText().');
-            return '';
-        }
-
-        var l = lang ? lang : this.prefs.langUI;
-        var value = key[l];
-        if(typeof value === 'undefined') {
-            console.warn('Not found key "' + id + '", lang "' + l + '" in getText().');
-            return '';
-        }
-
-        return value;
-    },
-    prepareLocale: function(locale) {
-        return locale === 'en' || locale === 'en-US' ? ['en-US'] : [locale, 'en-US'];
-    },
+    last: {value: '', result: ''},
     isMobile: false,
     init: function() {
+        this.setVersion();
+
         var body = $(document.body);
         body.removeClass('transition_no');
 
@@ -60,71 +36,35 @@ var App = {
             this._setValue(hash.getHashParam('text') || '');
         }
 
-        this.loadFromLocalStorage();
+        Prefs.init(typograf);
+        Prefs.onChange = this.execute.bind(this);
 
-        this.prefs.changeLangUI();
-
-        this.prefs.updateSelects();
+        if(Prefs.rules) {
+            typograf
+                .enableRule(Prefs.rules.enabled)
+                .disableRule(Prefs.rules.disabled);
+        }
 
         this._events();
 
-        this.prefs._events();
-
         this.execute();
-
-        this.setVersion();
-    },
-    updateLocaleOptions: function() {
-        var html = Typograf.getLocales()
-            .sort(function(a, b) {
-                return this.getText('locale-' + a) > this.getText('locale-' + b);
-            }.bind(this))
-            .map(function(l) {
-                return '<option value="' + l + '" data-text-id="locale-' + l + '"></option>\n';
-            }).join('');
-
-        $('.prefs__set-locale').html(html);
     },
     setVersion: function() {
-        $('#version').html(Typograf.version);
-    },
-    loadFromLocalStorage: function() {
-        var rules;
-        try {
-            rules = JSON.parse(localStorage.getItem('settings.rules'));
-            this.prefs.locale = localStorage.getItem('settings.locale');
-            this.prefs.langUI = localStorage.getItem('settings.langUI');
-            this.prefs.mode = localStorage.getItem('settings.mode');
-        } catch(e) {}
-
-        if(rules && typeof rules === 'object' && Array.isArray(rules.disabled) && Array.isArray(rules.enabled)) {
-            typograf
-                .enableRule(rules.enabled)
-                .disableRule(rules.disabled);
-        }
-
-        this.prefs.locale = this.prefs.locale || 'ru';
-
-        this.prefs.langUI = this.prefs.langUI || 'ru';
-        if(this.prefs.langUI === 'en') {
-            this.prefs.langUI = 'en-US';
-        }
-
-        this.prefs.mode = this.prefs.mode || '';
+        $('#version').text(Typograf.version);
     },
     copyText: function(textarea) {
         try {
             textarea[0].select();
             document.execCommand('copy');
         } catch(e) {
-            window.alert(this.getText('notSupportCopy'));
+            window.alert(getText('notSupportCopy'));
         }
     },
     execute: function() {
         var value = this._getValue(),
             result = typograf.execute(value, {
-                locale: this.prepareLocale(this.prefs.locale),
-                htmlEntity: {type: this.prefs.mode}
+                locale: prepareLocale(Prefs.locale),
+                htmlEntity: {type: Prefs.mode}
             });
 
         this.last = {
@@ -147,339 +87,7 @@ var App = {
 
         resText.is(':visible') && resText.val(result);
         resHTML.is(':visible') && resHTML.html(entityHighlight(result));
-        resDiff.is(':visible') && resDiff.html(this.diff(value, result));
-    },
-    getDiffTitle: function(sym) {
-        var title = '';
-        if(sym === '\u00A0') {
-            title = 'NO-BREAK SPACE';
-        } else if(sym === '\u202F') {
-            title = 'NARROW NO-BREAK SPACE';
-        } else if(sym === '\u2011') {
-            title = 'NON-BREAKING HYPHEN';
-        }
-
-        return title;
-    },
-    diff: function(o, n) {
-        var diff = JsDiff.diffChars(o, n),
-            html = '';
-
-        diff.forEach(function(part){
-            var val = str.escapeHTML(part.value),
-                title = this.getDiffTitle(part.value);
-
-            if(part.added) {
-                html += '<ins class="diff" title="' + title + '">' + val + '</ins>';
-            } else if(part.removed) {
-                html += '<del class="diff" title="' + title + '">' + val + '</del>';
-            } else {
-                html += val;
-            }
-        }, this);
-
-        return html;
-    },
-    prefs: {
-        show: function() {
-            this._build();
-
-            $('.prefs').addClass('prefs_opened');
-            $('.paranja').addClass('paranja_opened');
-
-            this.updateSelects();
-            this._synchronizeMainCheckbox();
-        },
-        updateSelects: function() {
-            $('.prefs__set-locale').val(this.locale);
-            $('.prefs__set-lang-ui').val(this.langUI);
-            $('.prefs__set-mode').val(this.mode);
-        },
-        hide: function() {
-            $('.prefs').removeClass('prefs_opened');
-            $('.paranja').removeClass('paranja_opened');
-        },
-        toggle: function() {
-            if($('.prefs').is('.prefs_opened')) {
-                this.hide();
-            } else {
-                this.show();
-            }
-        },
-        saveToLocalStorage: function() {
-            var enabled = [],
-                disabled = [];
-
-            Object.keys(typograf._enabledRules).forEach(function(name) {
-                if(typograf._enabledRules[name]) {
-                    enabled.push(name);
-                } else {
-                    disabled.push(name);
-                }
-            });
-
-            try {
-                localStorage.setItem('settings.rules', JSON.stringify({
-                    enabled: enabled,
-                    disabled: disabled
-                }));
-
-                localStorage.setItem('settings.locale', this.locale);
-                localStorage.setItem('settings.langUI', this.langUI);
-                localStorage.setItem('settings.mode', this.mode);
-            } catch(e) {}
-        },
-        byDefault: function() {
-            this._getCheckboxes().each(function(i, el) {
-                el = $(el);
-                var id = el.data('id');
-
-                Typograf.prototype._rules.some(function(rule) {
-                    if(id === rule.name) {
-                        var checked = rule.disabled !== true;
-                        el.checked(checked);
-
-                        if(checked) {
-                            typograf.enableRule(id);
-                        } else {
-                            typograf.disableRule(id);
-                        }
-
-                        return true;
-                    }
-
-                    return false;
-                });
-            });
-
-            $('.prefs__all-rules').checked(undefined);
-
-            this.saveToLocalStorage();
-        },
-        changeLocale: function() {
-            this.locale = $('.prefs__set-locale').val();
-            this.saveToLocalStorage();
-
-            App.execute();
-        },
-        changeLangUI: function() {
-            this.langUI = $('.prefs__set-lang-ui').val();
-
-            App.updateLocaleOptions();
-
-            $('[data-text-id]').each(function(i, el) {
-                el.innerHTML = App.getText(el.dataset.textId);
-            });
-
-            $('[data-value-id]').each(function(i, el) {
-                el.value = App.getText(el.dataset.valueId);
-            });
-
-            $('[data-title-id]').each(function(i, el) {
-                el.title = App.getText(el.dataset.titleId);
-            });
-
-            this._build();
-            this.saveToLocalStorage();
-        },
-        changeMode: function() {
-            this.mode = $('.prefs__set-mode').val();
-            this.saveToLocalStorage();
-
-            App.execute();
-        },
-        _build: function() {
-            var groups = this._getSortedGroups(Typograf.prototype._rules, this.langUI);
-
-            $('.prefs__rules').html(this._buildHTML(groups));
-        },
-        _sortByGroupIndex: function(rules) {
-            rules.sort(function(a, b) {
-                if(!a.name || !b.name) {
-                    return -1;
-                }
-
-                var indexA = Typograf.getGroupIndex(a._group),
-                    indexB = Typograf.getGroupIndex(b._group);
-
-                if(indexA > indexB) {
-                    return 1;
-                } else if(indexA === indexB) {
-                    return 0;
-                } else {
-                    return -1;
-                }
-            });
-        },
-        _splitGroups: function(rules) {
-            var currentGroupName,
-                currentGroup,
-                groups = [];
-
-            rules.forEach(function(rule, i) {
-                var groupName = rule._group;
-
-                if(groupName !== currentGroupName) {
-                    currentGroupName = groupName;
-                    currentGroup = [];
-                    groups.push(currentGroup);
-                }
-
-                currentGroup.push(rule);
-            }, this);
-
-            return groups;
-        },
-        _sortGroupsByTitle: function(groups, lang) {
-            var titles = Typograf.titles;
-
-            groups.forEach(function(group) {
-                group.sort(function(a, b) {
-                    var titleA = titles[a.name],
-                      titleB = titles[b.name];
-
-                    return (titleA[lang] || titleA.common) > (titleB[lang] || titleB.common) ? 1 : -1;
-                });
-            });
-        },
-        _getSortedGroups: function(rules, lang) {
-            var filteredRules = [];
-
-            // Правила для live-режима не показываем в настройках
-            rules.forEach(function(el) {
-                if(!el.live) {
-                    filteredRules.push(el);
-                }
-            });
-
-            this._sortByGroupIndex(filteredRules);
-
-            var groups = this._splitGroups(filteredRules);
-
-            this._sortGroupsByTitle(groups, lang);
-
-            return groups;
-        },
-        _buildHTML: function(groups) {
-            var html = '';
-
-            groups.forEach(function(group) {
-                var groupName = group[0]._group,
-                    groupTitle = typografPrefs.execute(
-                        Typograf.getGroupTitle(groupName, this.langUI),
-                        {locale: App.prepareLocale(this.langUI)}
-                    );
-
-                html += '<fieldset class="prefs__fieldset"><legend class="prefs__legend">' + groupTitle + '</legend>';
-
-                group.forEach(function(rule) {
-                    var name = rule.name,
-                        buf = Typograf.titles[name];
-
-                    if(!buf || !(buf[this.langUI] || buf.common)) {
-                        console.warn('Not found title for name "' + name + '".');
-                    }
-
-                    var title = typografPrefs.execute(
-                            str.escapeHTML(buf[this.langUI] || buf.common),
-                            {locale: App.prepareLocale(this.langUI)}
-                        ),
-                        id = 'setting-' + name,
-                        ch = typograf.isEnabledRule(name),
-                        checked = ch ? ' checked="checked"' : '';
-
-                    html += '<div class="prefs__rule" title="' + name + '">' +
-                        '<input type="checkbox" class="prefs__rule-checkbox"' +
-                        checked + ' id="' + id + '" data-id="' + name + '" /> ' +
-                        '<label for="' + id + '">' + title + '</label>' +
-                        '</div>';
-                }, this);
-
-                html += '</fieldset>';
-            }, this);
-
-            return html;
-        },
-        _getCheckboxes: function() {
-            return $('.prefs__rule-checkbox');
-        },
-        _clickRule: function(e) {
-            this._getCheckboxes().each(function(i, el) {
-                el = $(el);
-                var id = el.data('id');
-
-                if(el.checked()) {
-                    typograf.enableRule(id);
-                } else {
-                    typograf.disableRule(id);
-                }
-            });
-
-            this._synchronizeMainCheckbox();
-            this.saveToLocalStorage();
-        },
-        _clickLegend: function(e) {
-            $(this)
-                .closest('.prefs__fieldset')
-                .toggleClass('prefs__fieldset_visible');
-        },
-        _selectAll: function() {
-            var checked = $('.prefs__all-rules').checked(),
-                els = this._getCheckboxes();
-
-            $.each(els, function(i, el) {
-                el = $(el);
-                var id = el.data('id');
-
-                el.checked(checked);
-                if(checked) {
-                    typograf.enableRule(id);
-                } else {
-                    typograf.disableRule(id);
-                }
-            });
-
-            this.saveToLocalStorage();
-        },
-        _synchronizeMainCheckbox: function() {
-            var count = 0,
-              els = this._getCheckboxes(),
-              checked;
-
-            els.each(function(i, el) {
-                if(el.checked) {
-                    count++;
-                }
-            });
-
-            if(count === els.length) {
-                checked = true;
-            } else if(!count) {
-                checked = false;
-            } else {
-                checked = undefined;
-            }
-
-            $('.prefs__all-rules').checked(checked);
-        },
-        _events: function() {
-
-            $('.prefs__set-lang-ui').on('change', this.changeLangUI.bind(this));
-
-            $('.prefs__set-locale').on('change', this.changeLocale.bind(this));
-
-            $('.prefs__set-mode').on('change', this.changeMode.bind(this));
-
-            $('.prefs__all-rules').on('click', this._selectAll.bind(this));
-
-            $('.prefs__default').on('click', this.byDefault.bind(this));
-
-            var rules = $('.prefs__rules');
-
-            rules.on('click', '.prefs__legend', this._clickLegend);
-
-            rules.on('click', '.prefs__rule-checkbox', this._clickRule.bind(this));
-        }
+        resDiff.is(':visible') && resDiff.html(diff.make(value, result));
     },
     _setValue: function(value) {
         $('.input__text').val(value);
@@ -518,8 +126,8 @@ var App = {
                     service: 'typograf',
                     command: 'return',
                     text: typograf.execute(data.text, {
-                        locale: this.prepareLocale(this.prefs.locale),
-                        htmlEntity: {type: this.prefs.mode}
+                        locale: prepareLocale(Prefs.locale),
+                        htmlEntity: {type: Prefs.mode}
                     })
                 }), '*');
             }
@@ -532,14 +140,14 @@ var App = {
             if(el.hasClass(clSelected)) {
                 window.location.hash = '#';
                 setTimeout(function() {
-                    App.execute();
-                }, 0);
+                    this.execute();
+                }.bind(this), 0);
             } else {
                 window.location.hash = '#!prefs';
             }
 
             el.toggleClass(clSelected);
-            this.prefs.toggle();
+            Prefs.toggle();
         }.bind(this);
 
         $('.hamburger, .paranja').on('click', this._onprefs);
@@ -560,7 +168,7 @@ var App = {
         }.bind(this));
 
         $('.input__save').on('click', function() {
-            saveText($('.result__text')[0], this.getText('notSupportSave'));
+            saveText($('.result__text')[0], getText('notSupportSave'));
         }.bind(this));
 
         $('.input__clear').on('click', function() {

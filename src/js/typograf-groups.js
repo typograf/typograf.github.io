@@ -1,3 +1,5 @@
+var Typograf = window.Typograf;
+
 Typograf.groupsByName = {};
 
 Typograf.groups.forEach(function(group, i) {

@@ -1,5 +1,4 @@
 {
-    "predef": [ "Typograf", "tests", "innerTests" ],
     "browser": true,
     "curly": true,
     "camelcase": true,
