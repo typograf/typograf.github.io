@@ -6,7 +6,7 @@
         <meta charset="utf-8" />
         <link rel="icon" href="./icons/favicon.png" />
         <link rel="apple-touch-icon" href="./icons/touchicon.png" />
-        <link rel="stylesheet" href="./build/mobile.css?3e93cce83e" />
+        <link rel="stylesheet" href="./build/mobile.css?16c93bc76f" />
     </head>
     <body class="page_is-mobile transition_no">
         <header class="header">
@@ -17,23 +17,20 @@
             <div class="prefs">
                 <div class="prefs__title" data-text-id="prefs">Настройки</div>
                 <div class="prefs__items">
-                    <div class="prefs__lang-ui">
-                        <span data-text-id="lang-ui">Язык интерфейса:</span> <select class="prefs__set-lang-ui">
-                            <option value="ru">RU</option>
-                            <option value="en">EN</option>
-                        </select>
-                    </div>
-                    <div class="prefs__lang">
-                        <span data-text-id="lang-rule">Язык правил:</span> <select class="prefs__set-lang">
-                            <option value="ru">RU</option>
-                            <option value="en">EN</option>
-                        </select>
+                    <div class="prefs__locale">
+                        <span data-text-id="locale">Локаль:</span> <select class="prefs__set-locale"></select>
                     </div>
                     <div class="prefs__mode">
                         <span data-text-id="html-entities">HTML-сущности:</span> <select class="prefs__set-mode">
                             <option value="">UTF-8</option>
                             <option value="name" data-text-id="names">имена</option>
                             <option value="digit" data-text-id="digits">цифры</option>
+                        </select>
+                    </div>
+                    <div class="prefs__lang-ui">
+                        <span data-text-id="lang-ui">Язык интерфейса:</span> <select class="prefs__set-lang-ui">
+                            <option value="ru" data-text-id="ru">ru</option>
+                            <option value="en-US" data-text-id="en-US">en</option>
                         </select>
                     </div>
                     <div class="prefs__top">
@@ -55,7 +52,7 @@
                 <input type="button" class="input__execute" data-value-id="to-typograf" value="Типографировать" />
             </div>
         </div>
-        <script src="./build/typograf.js?56f4a5dcc9"></script>
-        <script src="./build/app.js?f69eaae6a2"></script>
+        <script src="./build/typograf.js?518b5246cd"></script>
+        <script src="./build/app.js?eaa3432eb1"></script>
     </body>
 </html>

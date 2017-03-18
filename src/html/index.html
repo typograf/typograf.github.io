@@ -20,10 +20,17 @@
             <div class="prefs">
                 <div class="prefs__title" data-text-id="prefs">Настройки</div>
                 <div class="prefs__items">
+                    <div class="prefs__mode">
+                        <span data-text-id="html-entities">HTML-сущности:</span> <select class="prefs__set-mode" data-title-id="html-entities">
+                            <option value="">UTF-8</option>
+                            <option value="name" data-text-id="names">Имена</option>
+                            <option value="digit" data-text-id="digits">Цифры</option>
+                        </select>
+                    </div>
                     <div class="prefs__lang-ui">
                         <span data-text-id="lang-ui">Язык интерфейса:</span> <select class="prefs__set-lang-ui">
-                            <option value="ru" data-text-id="ru">Русский</option>
-                            <option value="en" data-text-id="en">Английский</option>
+                            <option value="ru" data-text-id="ru"></option>
+                            <option value="en-US" data-text-id="en-US"></option>
                         </select>
                     </div>
                     <div class="prefs__top">
@@ -41,17 +48,7 @@
                         <div class="input__clear" data-title-id="clear" title="Очистить">&times;</div>
                         <div class="input__head">
                             <span data-text-id="text:">Текст:</span>
-
-                            <select class="prefs__set-mode" data-title-id="html-entities">
-                                <option value="">UTF-8</option>
-                                <option value="name" data-text-id="names">Имена</option>
-                                <option value="digit" data-text-id="digits">Цифры</option>
-                            </select>
-
-                            <select class="prefs__set-lang" data-title-id="lang-rule">
-                                <option value="ru" data-text-id="ru">Русский</option>
-                                <option value="en" data-text-id="en">Английский</option>
-                            </select>
+                             <span class="prefs__locale"><span data-text-id="locale">Локаль:</span> <select class="prefs__set-locale" data-title-id="locale"></select></span>
                         </div>
                         <textarea class="input__text" autofocus="autofocus"></textarea>
                     </div>

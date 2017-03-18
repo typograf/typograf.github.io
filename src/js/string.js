@@ -1,6 +1,6 @@
 module.exports = {
     escapeHTML: function(text) {
-        return text
+        return (text || '')
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;');

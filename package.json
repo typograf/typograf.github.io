@@ -1,6 +1,6 @@
 {
   "name": "typograf.github.io",
-  "description": "Web interface for typograf",
+  "description": "Web interface for Typograf",
   "version": "1.0.0",
   "author": {
     "name": "Denis Seleznev",
@@ -30,22 +30,22 @@
     "node": ">= 4.0"
   },
   "devDependencies": {
-    "browserify": "^13.1.1",
+    "browserify": "^14.1.0",
     "diff": "^3.0.0",
-    "gulp": "3.9.x",
+    "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.1",
     "gulp-cleancss": "^0.2.2",
-    "gulp-concat": "2.6.x",
-    "gulp-less": "3.3.x",
+    "gulp-concat": "^2.6.0",
+    "gulp-less": "^3.3.0",
     "gulp-md5-assets": "^0.2.0",
     "gulp-replace": "^0.5.4",
     "gulp-streamify": "^1.0.2",
-    "gulp-uglify": "^2.0.0",
-    "jquery": "3.x",
-    "jscs": "3.x",
-    "jshint": "2.9.x",
+    "gulp-uglify": "^2.1.0",
+    "jquery": "^3.2.0",
+    "jscs": "^3.0.0",
+    "jshint": "^2.9.0",
     "through2": "^2.0.1",
-    "typograf": "5.x",
+    "typograf": "^6.0.0",
     "vinyl-source-stream": "^1.1.0"
   },
   "scripts": {

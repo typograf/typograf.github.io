@@ -11,11 +11,12 @@ require('./metrika');
 require('./function');
 require('./typograf-groups');
 
+window.$ = $;
+
 var typograf = new Typograf(),
     typografPrefs = new Typograf({
-        mode: 'digit',
-        disable: '*',
-        enable: ['common/nbsp/*', 'ru/nbsp/*']
+        disableRule: '*',
+        enableRule: ['common/nbsp/*', 'ru/nbsp/*']
     });
 
 var App = {
@@ -24,7 +25,23 @@ var App = {
         result: ''
     },
     getText: function(id, lang) {
-        return texts[id][lang ? lang : this.prefs.langUI];
+        var key = texts[id];
+        if(!key) {
+            console.warn('Not found key "' + id + '" in getText().');
+            return '';
+        }
+
+        var l = lang ? lang : this.prefs.langUI;
+        var value = key[l];
+        if(typeof value === 'undefined') {
+            console.warn('Not found key "' + id + '", lang "' + l + '" in getText().');
+            return '';
+        }
+
+        return value;
+    },
+    prepareLocale: function(locale) {
+        return locale === 'en' || locale === 'en-US' ? ['en-US'] : [locale, 'en-US'];
     },
     isMobile: false,
     init: function() {
@@ -47,6 +64,8 @@ var App = {
 
         this.prefs.changeLangUI();
 
+        this.prefs.updateSelects();
+
         this._events();
 
         this.prefs._events();
@@ -55,6 +74,17 @@ var App = {
 
         this.setVersion();
     },
+    updateLocaleOptions: function() {
+        var html = Typograf.getLocales()
+            .sort(function(a, b) {
+                return this.getText('locale-' + a) > this.getText('locale-' + b);
+            }.bind(this))
+            .map(function(l) {
+                return '<option value="' + l + '" data-text-id="locale-' + l + '"></option>\n';
+            }).join('');
+
+        $('.prefs__set-locale').html(html);
+    },
     setVersion: function() {
         $('#version').html(Typograf.version);
     },
@@ -62,22 +92,25 @@ var App = {
         var rules;
         try {
             rules = JSON.parse(localStorage.getItem('settings.rules'));
-            this.prefs.lang = localStorage.getItem('settings.lang');
+            this.prefs.locale = localStorage.getItem('settings.locale');
             this.prefs.langUI = localStorage.getItem('settings.langUI');
             this.prefs.mode = localStorage.getItem('settings.mode');
         } catch(e) {}
 
         if(rules && typeof rules === 'object' && Array.isArray(rules.disabled) && Array.isArray(rules.enabled)) {
             typograf
-                .enable(rules.enabled)
-                .disable(rules.disabled);
+                .enableRule(rules.enabled)
+                .disableRule(rules.disabled);
         }
 
-        this.prefs.lang = this.prefs.lang || 'ru';
-        this.prefs.langUI = this.prefs.langUI || 'ru';
-        this.prefs.mode = this.prefs.mode || '';
+        this.prefs.locale = this.prefs.locale || 'ru';
 
-        this.prefs.updateSelects();
+        this.prefs.langUI = this.prefs.langUI || 'ru';
+        if(this.prefs.langUI === 'en') {
+            this.prefs.langUI = 'en-US';
+        }
+
+        this.prefs.mode = this.prefs.mode || '';
     },
     copyText: function(textarea) {
         try {
@@ -90,8 +123,8 @@ var App = {
     execute: function() {
         var value = this._getValue(),
             result = typograf.execute(value, {
-                lang: this.prefs.lang,
-                mode: this.prefs.mode
+                locale: this.prepareLocale(this.prefs.locale),
+                htmlEntity: {type: this.prefs.mode}
             });
 
         this.last = {
@@ -158,7 +191,7 @@ var App = {
             this._synchronizeMainCheckbox();
         },
         updateSelects: function() {
-            $('.prefs__set-lang').val(this.lang);
+            $('.prefs__set-locale').val(this.locale);
             $('.prefs__set-lang-ui').val(this.langUI);
             $('.prefs__set-mode').val(this.mode);
         },
@@ -191,7 +224,7 @@ var App = {
                     disabled: disabled
                 }));
 
-                localStorage.setItem('settings.lang', this.lang);
+                localStorage.setItem('settings.locale', this.locale);
                 localStorage.setItem('settings.langUI', this.langUI);
                 localStorage.setItem('settings.mode', this.mode);
             } catch(e) {}
@@ -207,9 +240,9 @@ var App = {
                         el.checked(checked);
 
                         if(checked) {
-                            typograf.enable(id);
+                            typograf.enableRule(id);
                         } else {
-                            typograf.disable(id);
+                            typograf.disableRule(id);
                         }
 
                         return true;
@@ -223,14 +256,16 @@ var App = {
 
             this.saveToLocalStorage();
         },
-        changeLang: function() {
-            this.lang = $('.prefs__set-lang').val();
+        changeLocale: function() {
+            this.locale = $('.prefs__set-locale').val();
             this.saveToLocalStorage();
 
             App.execute();
         },
         changeLangUI: function() {
             this.langUI = $('.prefs__set-lang-ui').val();
+
+            App.updateLocaleOptions();
 
             $('[data-text-id]').each(function(i, el) {
                 el.innerHTML = App.getText(el.dataset.textId);
@@ -332,17 +367,25 @@ var App = {
                 var groupName = group[0]._group,
                     groupTitle = typografPrefs.execute(
                         Typograf.getGroupTitle(groupName, this.langUI),
-                        {lang: this.langUI}
+                        {locale: App.prepareLocale(this.langUI)}
                     );
 
                 html += '<fieldset class="prefs__fieldset"><legend class="prefs__legend">' + groupTitle + '</legend>';
 
                 group.forEach(function(rule) {
                     var name = rule.name,
-                        buf = Typograf.titles[name],
-                        title = typografPrefs.execute(str.escapeHTML(buf[this.langUI] || buf.common)),
+                        buf = Typograf.titles[name];
+
+                    if(!buf || !(buf[this.langUI] || buf.common)) {
+                        console.warn('Not found title for name "' + name + '".');
+                    }
+
+                    var title = typografPrefs.execute(
+                            str.escapeHTML(buf[this.langUI] || buf.common),
+                            {locale: App.prepareLocale(this.langUI)}
+                        ),
                         id = 'setting-' + name,
-                        ch = typograf.enabled(name),
+                        ch = typograf.isEnabledRule(name),
                         checked = ch ? ' checked="checked"' : '';
 
                     html += '<div class="prefs__rule" title="' + name + '">' +
@@ -366,9 +409,9 @@ var App = {
                 var id = el.data('id');
 
                 if(el.checked()) {
-                    typograf.enable(id);
+                    typograf.enableRule(id);
                 } else {
-                    typograf.disable(id);
+                    typograf.disableRule(id);
                 }
             });
 
@@ -390,9 +433,9 @@ var App = {
 
                 el.checked(checked);
                 if(checked) {
-                    typograf.enable(id);
+                    typograf.enableRule(id);
                 } else {
-                    typograf.disable(id);
+                    typograf.disableRule(id);
                 }
             });
 
@@ -423,7 +466,7 @@ var App = {
 
             $('.prefs__set-lang-ui').on('change', this.changeLangUI.bind(this));
 
-            $('.prefs__set-lang').on('change', this.changeLang.bind(this));
+            $('.prefs__set-locale').on('change', this.changeLocale.bind(this));
 
             $('.prefs__set-mode').on('change', this.changeMode.bind(this));
 
@@ -475,8 +518,8 @@ var App = {
                     service: 'typograf',
                     command: 'return',
                     text: typograf.execute(data.text, {
-                        lang: this.prefs.lang,
-                        mode: this.prefs.mode
+                        locale: this.prepareLocale(this.prefs.locale),
+                        htmlEntity: {type: this.prefs.mode}
                     })
                 }), '*');
             }
