@@ -45,7 +45,7 @@
     "jscs": "^3.0.0",
     "jshint": "^2.9.0",
     "through2": "^2.0.1",
-    "typograf": "^6.0.0",
+    "typograf": "^6.0.1",
     "vinyl-source-stream": "^1.1.0"
   },
   "scripts": {
