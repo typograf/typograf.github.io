@@ -5,8 +5,9 @@ var $ = require('../../node_modules/jquery/dist/jquery.slim'),
     getText = require('./get-text').getText,
     prepareLocale = require('./prepare-locale'),
     Prefs = require('./prefs'),
-    saveText = require('./save-text'),
+    saveFile = require('./save-file'),
     str = require('./string'),
+    debounce = require('throttle-debounce/debounce'),
     Typograf = window.Typograf,
     typograf = new Typograf();
 
@@ -44,6 +45,8 @@ var App = {
                 .enableRule(Prefs.rules.enabled)
                 .disableRule(Prefs.rules.disabled);
         }
+
+        this.updateResult = debounce(250, this.updateResult);
 
         this._events();
 
@@ -168,7 +171,7 @@ var App = {
         }.bind(this));
 
         $('.input__save').on('click', function() {
-            saveText($('.result__text')[0], getText('notSupportSave'));
+            saveFile.save($('.result__text')[0], getText('notSupportSave'));
         }.bind(this));
 
         $('.input__clear').on('click', function() {

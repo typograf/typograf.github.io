@@ -16,8 +16,8 @@ module.exports = {
         ru: 'Язык правил'
     },
     'lang-ui': {
-        'en-US': 'UI language:',
-        ru: 'Язык интерфейса:'
+        'en-US': 'UI language',
+        ru: 'Язык интерфейса'
     },
     'html-entities': {
         'en-US': 'HTML entities',
@@ -75,13 +75,17 @@ module.exports = {
         'en-US': 'Diff',
         ru: 'Diff'
     },
+    'input-text': {
+        'en-US': 'Input text',
+        ru: 'Введите текст'
+    },
     result: {
-        'en-US': 'Result:',
-        ru: 'Результат:'
+        'en-US': 'Result',
+        ru: 'Результат'
     },
     locale: {
-        'en-US': 'Locale:',
-        ru: 'Локаль:'
+        'en-US': 'Locale',
+        ru: 'Локаль'
     },
     'ru': {
         'en-US': 'Russian',
@@ -92,120 +96,120 @@ module.exports = {
         ru: 'Английский'
     },
     'locale-be': {
-        'en-US': 'Belarusian, be',
-        ru: 'Белорусская, be'
+        'en-US': 'Belarusian',
+        ru: 'Белорусская'
     },
     'locale-bg': {
-        'en-US': 'Bulgarian, bg',
-        ru: 'Болгарская, bg'
+        'en-US': 'Bulgarian',
+        ru: 'Болгарская'
     },
     'locale-ca': {
-        'en-US': 'Catalan, ca',
-        ru: 'Каталанская, ca'
+        'en-US': 'Catalan',
+        ru: 'Каталанская'
     },
     'locale-cs': {
-        'en-US': 'Czech, cs',
-        ru: 'Чешская, cs'
+        'en-US': 'Czech',
+        ru: 'Чешская'
     },
     'locale-da': {
-        'en-US': 'Danish, da',
-        ru: 'Датская, da'
+        'en-US': 'Danish',
+        ru: 'Датская'
     },
     'locale-de': {
         'en-US': 'German',
-        ru: 'Немецкая, de'
+        ru: 'Немецкая'
     },
     'locale-el': {
-        'en-US': 'Greek, el',
-        ru: 'Греческая, el'
+        'en-US': 'Greek',
+        ru: 'Греческая'
     },
     'locale-en-GB': {
-        'en-US': 'English, en-GB',
-        ru: 'Английская, en-GB'
+        'en-US': 'English UK',
+        ru: 'Английская'
     },
     'locale-en-US': {
-        'en-US': 'English, en-US',
-        ru: 'Английская, en-US'
+        'en-US': 'English US',
+        ru: 'Американская'
     },
     'locale-eo': {
-        'en-US': 'Esperanto, eo',
-        ru: 'Эсперанто, eo'
+        'en-US': 'Esperanto',
+        ru: 'Эсперанто'
     },
     'locale-es': {
-        'en-US': 'Spanish, es',
-        ru: 'Испанская, es'
+        'en-US': 'Spanish',
+        ru: 'Испанская'
     },
     'locale-et': {
-        'en-US': 'Estonian, et',
-        ru: 'Эстонская, et'
+        'en-US': 'Estonian',
+        ru: 'Эстонская'
     },
 
     'locale-fi': {
-        'en-US': 'Finnish, fi',
-        ru: 'Финская, fi'
+        'en-US': 'Finnish',
+        ru: 'Финская'
     },
     'locale-fr': {
-        'en-US': 'French, fr',
-        ru: 'Французская, fr'
+        'en-US': 'French',
+        ru: 'Французская'
     },
     'locale-ga': {
-        'en-US': 'Irish, ga',
-        ru: 'Ирландская, ga'
+        'en-US': 'Irish',
+        ru: 'Ирландская'
     },
     'locale-hu': {
-        'en-US': 'Hungarian, hu',
-        ru: 'Венгерская, hu'
+        'en-US': 'Hungarian',
+        ru: 'Венгерская'
     },
     'locale-it': {
-        'en-US': 'Italian, it',
-        ru: 'Итальянская, it'
+        'en-US': 'Italian',
+        ru: 'Итальянская'
     },
     'locale-lv': {
-        'en-US': 'Latvian, lv',
-        ru: 'Латвийская, lv'
+        'en-US': 'Latvian',
+        ru: 'Латвийская'
     },
     'locale-nl': {
-        'en-US': 'Dutch, nl',
-        ru: 'Голландская, nl'
+        'en-US': 'Dutch',
+        ru: 'Голландская'
     },
     'locale-no': {
-        'en-US': 'Norwegian, no',
-        ru: 'Норвежская, no'
+        'en-US': 'Norwegian',
+        ru: 'Норвежская'
     },
     'locale-pl': {
-        'en-US': 'Polish, pl',
-        ru: 'Польская, pl'
+        'en-US': 'Polish',
+        ru: 'Польская'
     },
     'locale-ro': {
-        'en-US': 'Romanian, ro',
-        ru: 'Румынская, ro'
+        'en-US': 'Romanian',
+        ru: 'Румынская'
     },
     'locale-ru': {
-        'en-US': 'Russian, ru',
-        ru: 'Русская, ru'
+        'en-US': 'Russian',
+        ru: 'Русская'
     },
     'locale-sk': {
-        'en-US': 'Slovak, sk',
-        ru: 'Словацкая, sk'
+        'en-US': 'Slovak',
+        ru: 'Словацкая'
     },
     'locale-sl': {
-        'en-US': 'Slovenian, sl',
-        ru: 'Словенская, sl'
+        'en-US': 'Slovenian',
+        ru: 'Словенская'
     },
     'locale-sr': {
-        'en-US': 'Serbian, sr',
-        ru: 'Сербская, sr'
+        'en-US': 'Serbian',
+        ru: 'Сербская'
     },
     'locale-sv': {
-        'en-US': 'Swedish, sv',
-        ru: 'Шведская, sv'
+        'en-US': 'Swedish',
+        ru: 'Шведская'
     },
     'locale-tr': {
-        'en-US': 'Turkish, tr',
-        ru: 'Турецкая, tr'
+        'en-US': 'Turkish',
+        ru: 'Турецкая'
     },
     'locale-uk': {
-        'en-US': 'Ukrainian, uk',
-        ru: 'Украинская, uk'
+        'en-US': 'Ukrainian',
+        ru: 'Украинская'
     }
 };

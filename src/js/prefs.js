@@ -122,6 +122,7 @@ module.exports = {
     },
     changeLangUI: function() {
         this.langUI = $('.prefs__set-lang-ui').val();
+        GetText.setLang(this.langUI);
 
         this._updateLocaleOptions();
 
@@ -135,6 +136,10 @@ module.exports = {
 
         $('[data-title-id]').each(function(i, el) {
             el.title = getText(el.dataset.titleId);
+        });
+
+        $('[data-placeholder-id]').each(function(i, el) {
+            el.placeholder = getText(el.dataset.placeholderId);
         });
 
         this._build();
