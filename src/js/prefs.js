@@ -23,7 +23,7 @@ module.exports = {
         this.langUI = localStorage.getItem('settings.langUI');
         this.mode = localStorage.getItem('settings.mode');
 
-        if(typeof rules === 'object' && Array.isArray(rules.disabled) && Array.isArray(rules.enabled)) {
+        if(rules && Array.isArray(rules.disabled) && Array.isArray(rules.enabled)) {
             this.rules = rules;
         }
 
