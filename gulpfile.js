@@ -15,6 +15,7 @@ const apBrowsers = {
 };
 
 const cssCommon = [
+    'node_modules/show-js-error/dist/show-js-error.css',
     'node_modules/typograf/dist/typograf.css',
     'src/less/common.less'
 ];

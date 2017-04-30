@@ -9,7 +9,16 @@ var $ = require('../../node_modules/jquery/dist/jquery.slim'),
     str = require('./string'),
     debounce = require('throttle-debounce/debounce'),
     Typograf = window.Typograf,
-    typograf = new Typograf();
+    typograf = new Typograf(),
+    showJSError = require('show-js-error/dist/show-js-error.custom');
+
+showJSError.init({
+    title: 'JavaScript error',
+    userAgent: navigator.userAgent,
+    sendText: 'Send 🐛',
+    templateDetailedMessage: '```{message}```',
+    sendUrl: 'https://github.com/typograf/typograf.github.io/issues/new?title={title}&body={body}'
+});
 
 require('./jquery.checked');
 require('./metrika');
