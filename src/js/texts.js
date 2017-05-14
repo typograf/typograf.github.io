@@ -4,8 +4,8 @@ module.exports = {
         ru: 'Типограф'
     },
     'to-typograf': {
-        'en-US': 'Execute',
-        ru: 'Типографировать'
+        'en-US': 'Make beautiful',
+        ru: 'Сделать красиво'
     },
     prefs: {
         'en-US': 'Settings',
