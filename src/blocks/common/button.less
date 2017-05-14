@@ -4,7 +4,7 @@
 
     cursor: pointer;
     user-select: none;
-    transition: border-color .3s ease;
+    transition: border-color .3s ease, transform .05s ease, color .1s ease;
 
     border: 1px solid #e0e0e0;
     border-radius: 5px;
@@ -13,5 +13,11 @@
     &:hover
     {
         border: 1px solid #d0d0d0;
+    }
+
+    &:active
+    {
+        transform: translate(1px, 1px);
+        color: #333;
     }
 }

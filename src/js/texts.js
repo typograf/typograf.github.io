@@ -75,9 +75,13 @@ module.exports = {
         'en-US': 'HTML',
         ru: 'HTML'
     },
-    diff: {
-        'en-US': 'Differences',
-        ru: 'Изменения'
+    'diff-1': {
+        'en-US': 'Diffe',
+        ru: 'Измен'
+    },
+    'diff-2': {
+        'en-US': 'rences',
+        ru: 'ения'
     },
     'input-text': {
         'en-US': 'Input text',

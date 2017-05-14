@@ -1,27 +1,37 @@
-﻿.result__html
+﻿.result
 {
-    display: none;
+    &__html
+    {
+        display: none;
 
-    padding: 3px;
+        border: 1px solid #a0a0a0;
+        background: #fefefe;
+    }
 
-    border: 1px solid #a0a0a0;
-    background: #fefefe;
-}
+    &__diff
+    {
+        display: none;
+        overflow-y: auto;
 
-.result__diff
-{
-    display: none;
-    overflow-y: auto;
+        white-space: pre-wrap;
 
-    padding: 3px;
+        border: 1px solid #a0a0a0;
+        background: #fefefe;
+    }
 
-    white-space: pre-wrap;
+    &__as
+    {
+        float: right;
+    }
 
-    border: 1px solid #a0a0a0;
-    background: #fefefe;
-}
-
-.result__as
-{
-    float: right;
+    &__text,
+    &__html,
+    &__diff
+    {
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 8px;
+    }
 }
