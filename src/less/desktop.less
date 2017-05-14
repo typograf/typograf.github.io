@@ -1,125 +1,27 @@
-﻿.page_is-desktop
+﻿@import './common.less';
+
+.entity-nb
 {
-    .container
-    {
-        min-width: 640px;
-        margin: 0;
-    }
-
-    .prefs__locale
-    {
-        float: right;
-
-        margin-left: 1em;
-    }
-
-
-    .input__text,
-    .result__text,
-    .result__diff
-    {
-        box-sizing: border-box;
-        width: 100%;
-        height: 100%;
-        margin: 0;
-    }
-
-    .input__text,
-    .result__text
-    {
-        margin-top: 2px;
-        padding: 8px;
-    }
-
-    .input__clear:hover
-    {
-        color: red;
-    }
-
-    .table
-    {
-        box-sizing: border-box;
-        width: 100%;
-        height: 100%;
-        padding: 10px 10px;
-    }
-
-    .table__left,
-    .table__right
-    {
-        position: relative;
-
-        box-sizing: border-box;
-        width: 50%;
-        height: 100%;
-        padding-bottom: 2em;
-    }
-
-    .table__left
-    {
-        float: left;
-
-        padding-right: 10px;
-    }
-
-    .table__right
-    {
-        float: right;
-
-        box-sizing: border-box;
-        padding-left: 10px;
-    }
-
-    .result__html
-    {
-        display: none;
-
-        padding: 3px;
-
-        border: 1px solid #a0a0a0;
-        background: #fefefe;
-    }
-
-    .result__diff
-    {
-        display: none;
-        overflow-y: auto;
-
-        padding: 3px;
-
-        white-space: pre-wrap;
-
-        border: 1px solid #a0a0a0;
-        background: #fefefe;
-    }
-
-    .input__save,
-    .input__copy
-    {
-        position: relative;
-        top: 5px;
-
-        margin-right: 5px;
-    }
-
-    .entity-nb
-    {
-        opacity: .4;
-        background: green;
-    }
-
-    .prefs
-    {
-        width: 96%;
-    }
-
-    .prefs__rule
-    {
-        padding-right: 1em;
-    }
-
-    .result__as
-    {
-        float: right;
-    }
+    opacity: .4;
+    background: green;
 }
+
+.container
+{
+    position: absolute;
+    top: 55px;
+    bottom: 60px;
+    left: 0;
+    min-width: 640px;
+    margin: 0;
+
+    box-sizing: border-box;
+    width: 100%;
+    padding: 5px 0;
+}
+
+@import '../blocks/desktop/extensions.less';
+@import '../blocks/desktop/input.less';
+@import '../blocks/desktop/result.less';
+@import '../blocks/desktop/prefs.less';
+@import '../blocks/desktop/table.less';

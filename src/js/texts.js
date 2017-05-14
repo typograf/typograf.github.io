@@ -7,6 +7,10 @@ module.exports = {
         'en-US': 'Make beautiful',
         ru: 'Сделать красиво'
     },
+    extensions: {
+        'en-US': 'Extensions for browsers: ',
+        ru: 'Дополнения для браузеров: '
+    },
     prefs: {
         'en-US': 'Settings',
         ru: 'Настройки'
@@ -86,6 +90,22 @@ module.exports = {
     locale: {
         'en-US': 'Locale',
         ru: 'Локаль'
+    },
+    'full-version': {
+        'en-US': 'Full version',
+        ru: 'Полная версия'
+    },
+    'mobile-version': {
+        'en-US': 'Mobile version',
+        ru: 'Мобильная версия'
+    },
+    'report-error': {
+        'en-US': 'Report a error',
+        ru: 'Сообщить об ошибке'
+    },
+    'powered-by': {
+        'en-US': 'Powered by',
+        ru: 'На основе'
     },
     'ru': {
         'en-US': 'Russian',

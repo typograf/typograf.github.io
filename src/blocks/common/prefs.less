@@ -1,0 +1,125 @@
+﻿.prefs
+{
+    position: absolute;
+    z-index: 10;
+    top: -1px;
+
+    visibility: hidden;
+    overflow: hidden;
+
+    box-sizing: border-box;
+    height: 100%;
+    padding: 30px 20px 20px 20px;
+
+    transition: transform .3s 0s, visibility .3s .3s;
+    transform: translateX(-100%);
+
+    background: white;
+
+    &_opened
+    {
+        visibility: visible;
+        overflow: visible;
+
+        height: auto;
+
+        transition-delay: 0s, 0s;
+        transform: translateX(0);
+    }
+
+    &__cap
+    {
+        clear: both;
+
+        height: 1em;
+    }
+
+    &__title
+    {
+        font-family: Georgia, serif;
+        font-size: 1.4em;
+        font-style: italic;
+
+        margin: 0 0 .5em 0;
+        padding: 0;
+
+        color: #679;
+
+        float: left;
+    }
+
+    &__default
+    {
+        font-size: 12px;
+
+        float: right;
+
+        margin-top: 3px;
+    }
+
+    &__items {
+        clear: both;
+    }
+
+    &__all-rules
+    {
+        margin-left: 5px;
+    }
+
+    &__top
+    {
+        padding: 1em 0 1em 1em;
+    }
+
+    &__lang-ui,
+    &__mode
+    {
+        padding-top: 1em;
+        padding-bottom: 1em;
+
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    &__fieldset
+    {
+        clear: both;
+
+        margin-top: 1em;
+        padding: 0 1em 0 1em;
+
+        border: 1px solid transparent;
+        border-radius: 5px;
+    }
+
+    &__rule
+    {
+        line-height: 30px;
+    }
+
+    &__legend
+    {
+        font-weight: bold;
+    }
+
+    &__fieldset .prefs__rule
+    {
+        display: none;
+    }
+
+    &__fieldset_visible &__rule
+    {
+        display: block;
+    }
+
+    &__fieldset_visible
+    {
+        margin-bottom: 1em;
+        padding: 1em;
+
+        border: 1px solid #e0e0e0;
+    }
+}
+
+body.transition_no .prefs {
+    transition: none;
+}

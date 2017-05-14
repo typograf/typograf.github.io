@@ -1,0 +1,22 @@
+﻿.extensions
+{
+    color: #222;
+
+    &_firefox::before,
+    &_chrome::before
+    {
+        margin-right: 3px;
+        font-weight: bold;
+        content: '•';
+    }
+
+    &_firefox::before
+    {
+        color: orange;
+    }
+
+    &_chrome::before
+    {
+        color: green;
+    }
+}

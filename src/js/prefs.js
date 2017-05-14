@@ -236,7 +236,7 @@ module.exports = {
                     {locale: prepareLocale(this.langUI)}
                 );
 
-            html += '<fieldset class="prefs__fieldset"><legend class="prefs__legend">' + groupTitle + '</legend>';
+            html += '<fieldset class="prefs__fieldset"><legend class="prefs__legend button">' + groupTitle + '</legend>';
 
             group.forEach(function(rule) {
                 var name = rule.name,

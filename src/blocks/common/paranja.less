@@ -1,0 +1,24 @@
+﻿.paranja
+{
+    position: fixed;
+    z-index: 5;
+    top: 0;
+    left: 0;
+
+    visibility: hidden;
+
+    width: 100%;
+    height: 100%;
+
+    transition: opacity .3s;
+
+    opacity: 0;
+    background: #000;
+    
+    &_opened
+    {
+        visibility: visible;
+
+        opacity: .5;
+    }
+}

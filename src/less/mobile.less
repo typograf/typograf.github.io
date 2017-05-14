@@ -1,65 +1,16 @@
-﻿.page_is-mobile
+﻿@import './common.less';
+
+.container
 {
-    .prefs__locale
-    {
-        padding-top: 1em;
-        padding-bottom: 1em;
+    position: absolute;
+    top: 40px;
+    bottom: 60px;
+    left: 0;
 
-        border-bottom: 1px solid #e0e0e0;
-    }
-
-    .input__label
-    {
-        position: absolute;
-        top: .9em;
-        left: 1em;
-    }
-
-    .input__execute
-    {
-        position: absolute;
-        bottom: 0;
-        left: 1em;
-    }
-
-    .input__text
-    {
-        position: absolute;
-        top: 0;
-        left: 0;
-
-        box-sizing: border-box;
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 5px;
-    }
-
-    .input__paste,
-    .input__copy
-    {
-        display: none;
-    }
-
-    .input__container
-    {
-        position: absolute;
-        top: 2.4em;
-        right: 1em;
-        bottom: 2.4em;
-        left: 1em;
-
-        box-sizing: border-box;
-        height: auto;
-    }
-
-    .prefs
-    {
-        width: 100%;
-    }
-
-    .prefs__controls
-    {
-        text-align: center;
-    }
+    box-sizing: border-box;
+    width: 100%;
+    padding: 5px 0;
 }
+
+@import '../blocks/mobile/input.less';
+@import '../blocks/mobile/prefs.less';

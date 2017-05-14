@@ -1,0 +1,42 @@
+﻿.footer
+{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid #e0e0e0;
+    padding: 8px 10px;
+    box-sizing: border-box;
+    font-size: 13px;
+
+    &__left
+    {
+        float: left;
+
+        .footer__item
+        {
+            float: left;
+            margin-right: 20px;
+        }
+    }
+
+    &__right
+    {
+        float: right;
+
+        .footer__item
+        {
+            float: right;
+            margin-left: 20px;
+        }
+    }
+}
+
+#version
+{
+    display: inline-block;
+    position: relative;
+    top: -5px;
+    font-size: 10px;
+    margin-left: 3px;
+    min-width: 2em;
+}
