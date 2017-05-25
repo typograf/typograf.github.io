@@ -14,14 +14,8 @@ const apBrowsers = {
     browsers: ['ie >= 9', 'Firefox >= 24', 'Chrome >= 26', 'iOS >= 5', 'Safari >= 6', 'Android > 2.3']
 };
 
-const cssCommon = [
-    'node_modules/show-js-error/dist/show-js-error.css',
-    'node_modules/typograf/dist/typograf.css',
-    'src/less/common.less'
-];
-
 gulp.task('jsTypograf', function() {
-    return gulp.src('node_modules/typograf/dist/typograf.all.js')
+    return gulp.src('./node_modules/typograf/dist/typograf.all.js')
         .pipe(concat('typograf.js'))
         .pipe(uglify({
             /*jshint camelcase: false */
@@ -46,7 +40,7 @@ gulp.task('jsApp', ['jsTypograf'], function() {
 });
 
 gulp.task('cssMobile', function() {
-    return gulp.src(['src/less/mobile.less'].concat(cssCommon))
+    return gulp.src('./src/less/mobile.less')
         .pipe(concat('mobile.css'))
         .pipe(less())
         .pipe(cleancss())
@@ -55,7 +49,7 @@ gulp.task('cssMobile', function() {
 });
 
 gulp.task('cssDesktop', function() {
-    return gulp.src(['src/less/desktop.less'].concat(cssCommon))
+    return gulp.src('./src/less/desktop.less')
         .pipe(concat('desktop.css'))
         .pipe(less())
         .pipe(cleancss())

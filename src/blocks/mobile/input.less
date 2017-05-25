@@ -1,5 +1,9 @@
 ﻿.input
 {
+	box-sizing: border-box;
+	margin: 0 10px;
+	position: relative;
+	
     &__label
     {
         position: absolute;
@@ -10,8 +14,11 @@
     &__execute
     {
         position: absolute;
-        bottom: 0;
-        left: 10px;
+        bottom: -3px;
+        left: 0;
+		width: 100%;
+		box-sizing: border-box;
+		padding: 5px;
     }
 
     &__text
@@ -37,9 +44,9 @@
     {
         position: absolute;
         top: 33px;
-        right: 10px;
-        bottom: 36px;
-        left: 10px;
+        right: 0;
+        bottom: 40px;
+        left: 0;
 
         box-sizing: border-box;
         height: auto;
