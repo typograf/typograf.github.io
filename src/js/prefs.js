@@ -1,4 +1,4 @@
-var $ = require('../../node_modules/jquery/dist/jquery.slim'),
+var $ = require('../../node_modules/jquery/dist/jquery'),
     localStorage = require('./local-storage'),
     GetText = require('./get-text'),
     getText = GetText.getText,
@@ -111,8 +111,12 @@ module.exports = {
         });
 
         $('.prefs__all-rules').checked(undefined);
+		
+		$('.prefs__set-mode').val('');
+		this.changeMode();
 
         this.save();
+		this.onChange();
     },
     changeLocale: function() {
         this.locale = $('.prefs__set-locale').val();
@@ -236,7 +240,7 @@ module.exports = {
                     {locale: prepareLocale(this.langUI)}
                 );
 
-            html += '<fieldset class="prefs__fieldset"><legend class="prefs__legend button">' + groupTitle + '</legend>';
+            html += '<fieldset class="prefs__fieldset"><legend class="prefs__legend button">' + groupTitle + '</legend><div class="prefs__group-rules">';
 
             group.forEach(function(rule) {
                 var name = rule.name,
@@ -261,7 +265,7 @@ module.exports = {
                     '</div>';
             }, this);
 
-            html += '</fieldset>';
+            html += '</div></fieldset>';
         }, this);
 
         return html;
@@ -289,7 +293,9 @@ module.exports = {
     _clickLegend: function(e) {
         $(this)
             .closest('.prefs__fieldset')
-            .toggleClass('prefs__fieldset_visible');
+			.toggleClass('prefs__fieldset_visible')
+			.find('.prefs__group-rules')
+			.slideToggle('fast');
     },
     _selectAll: function() {
         var that = this,

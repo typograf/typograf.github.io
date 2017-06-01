@@ -1,4 +1,4 @@
-var $ = require('../../node_modules/jquery/dist/jquery.slim');
+var $ = require('../../node_modules/jquery/dist/jquery');
 
 $.fn.checked = function(checked) {
     var el = this[0];

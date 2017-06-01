@@ -1,4 +1,4 @@
-var $ = require('../../node_modules/jquery/dist/jquery.slim'),
+var $ = require('../../node_modules/jquery/dist/jquery'),
     diff = require('./diff'),
     entityHighlight = require('./entity-highlight'),
     hash = require('./hash'),
