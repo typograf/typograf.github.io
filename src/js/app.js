@@ -149,7 +149,8 @@ var App = {
                 clSelected = 'hamburger_selected';
 
             if(el.hasClass(clSelected)) {
-                window.history.back();
+                window.location.hash = '';
+
                 setTimeout(function() {
                     this.execute();
                 }.bind(this), 0);
