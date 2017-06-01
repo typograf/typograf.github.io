@@ -1,5 +1,4 @@
-var JsDiff = require('diff/dist/diff.min'),
-    str = require('./string');
+var str = require('./string');
 
 module.exports = {
     getDiffTitle: function(sym) {

@@ -16,7 +16,7 @@ const apBrowsers = {
 
 gulp.task('jsTypograf', function() {
     return gulp.src('./node_modules/typograf/dist/typograf.all.js')
-        .pipe(concat('typograf.js'))
+        .pipe(concat('typograf.min.js'))
         .pipe(uglify({
             /*jshint camelcase: false */
             output: {ascii_only: true},
@@ -26,10 +26,20 @@ gulp.task('jsTypograf', function() {
         .pipe(gulp.dest(destDir));
 });
 
-gulp.task('jsApp', ['jsTypograf'], function() {
+gulp.task('jsJquery', function() {
+    return gulp.src('./node_modules/jquery/dist/jquery.min.js')
+        .pipe(gulp.dest(destDir));
+});
+
+gulp.task('jsDiff', function() {
+    return gulp.src('./node_modules/diff/dist/diff.min.js')
+        .pipe(gulp.dest(destDir));
+});
+
+gulp.task('jsApp', function() {
     return browserify('./src/js/app.js')
         .bundle()
-        .pipe(source('app.js'))
+        .pipe(source('app.min.js'))
         .pipe(streamify(uglify({
             /*jshint camelcase: false */
             output: {ascii_only: true},
@@ -61,7 +71,7 @@ gulp.task('copyTemplates', function() {
     return gulp.src('./src/html/*.html').pipe(gulp.dest('./'));
 });
 
-gulp.task('updateVersion', ['jsApp', 'jsTypograf', 'cssMobile', 'cssDesktop', 'copyTemplates'], function() {
+gulp.task('updateVersion', ['jsApp', 'jsTypograf', 'jsJquery', 'jsDiff', 'cssMobile', 'cssDesktop', 'copyTemplates'], function() {
     return gulp.src('./build/*.*').pipe(md5(10, './*.html'));
 });
 

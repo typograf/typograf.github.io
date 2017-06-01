@@ -1,5 +1,4 @@
-var $ = require('../../node_modules/jquery/dist/jquery'),
-    localStorage = require('./local-storage'),
+var localStorage = require('./local-storage'),
     GetText = require('./get-text'),
     getText = GetText.getText,
     prepareLocale = require('./prepare-locale'),
