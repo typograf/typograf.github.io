@@ -5,7 +5,7 @@
         <meta charset="utf-8" />
         <link rel="icon" href="./icons/favicon.png" />
         <link rel="apple-touch-icon" href="./icons/touchicon.png" />
-        <link rel="stylesheet" href="./build/desktop.css?0990a04134" />
+        <link rel="stylesheet" href="./build/desktop.css?1576e27b47" />
     </head>
     <body class="page_is-desktop transition_no">
         <script>
@@ -28,27 +28,31 @@
         </header>
         <div class="container">
             <div class="prefs">
-                <div class="prefs__title" data-text-id="prefs">Настройки</div>
-                <div class="prefs__default button" data-text-id="default" >По умолчанию</div>
-
                 <div class="prefs__items">
-                    <div class="prefs__mode">
+					<div class="prefs__item prefs__item_first">
+						<div class="prefs__title" data-text-id="prefs">Настройки</div>
+						<div class="prefs__default button" data-text-id="default" >По умолчанию</div>
+					</div>
+
+                    <div class="prefs__mode prefs__item">
                         <span data-text-id="html-entities">HTML-сущности</span>: <select class="prefs__set-mode" data-title-id="html-entities">
                             <option value="">UTF-8</option>
                             <option value="name" data-text-id="names">Имена</option>
                             <option value="digit" data-text-id="digits">Цифры</option>
                         </select>
                     </div>
-                    <div class="prefs__lang-ui">
+                    <div class="prefs__lang-ui prefs__item">
                         <span data-text-id="lang-ui">Язык интерфейса</span>: <select class="prefs__set-lang-ui">
                             <option value="ru" data-text-id="ru"></option>
                             <option value="en-US" data-text-id="en-US"></option>
                         </select>
                     </div>
-                    <div class="prefs__top">
-                        <input type="checkbox" class="prefs__all-rules" id="prefs__all-rules" autocomplete="off" /> <label for="prefs__all-rules" data-text-id="select-all">Выбрать все</label>
-                    </div>
-                    <div class="prefs__rules"></div>
+					<div class="prefs__item prefs__item_last">
+						<div class="prefs__top">
+							<input type="checkbox" class="prefs__all-rules" id="prefs__all-rules" autocomplete="off" /> <label for="prefs__all-rules" data-text-id="select-all">Выбрать все</label>
+						</div>
+						<div class="prefs__rules"></div>
+					</div>
                 </div>
                 <div class="prefs__cap"></div>
             </div>
@@ -103,6 +107,6 @@
         </footer>
 
         <script src="./build/typograf.js?010a30fc13"></script>
-        <script src="./build/app.js?880d9a5d1f"></script>
+        <script src="./build/app.js?9388033270"></script>
     </body>
 </html>
