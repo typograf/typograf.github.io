@@ -45,6 +45,8 @@ var App = {
             this._setValue(hash.getHashParam('text') || '');
         }
 
+        $('.extension_' + (typeof InstallTrigger !== 'undefined' ? 'firefox' : 'chrome')).show();
+
         Prefs.init(typograf);
         Prefs.onChange = this.execute.bind(this);
 

@@ -7,9 +7,9 @@ module.exports = {
         'en-US': 'Make beautiful',
         ru: 'Сделать красиво'
     },
-    extensions: {
-        'en-US': 'Extensions for browsers: ',
-        ru: 'Дополнения для браузеров: '
+    extension: {
+        'en-US': 'Extension for',
+        ru: 'Дополнение для'
     },
     prefs: {
         'en-US': 'Settings',
