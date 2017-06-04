@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <link rel="icon" href="./icons/favicon.png" />
   <link rel="apple-touch-icon" href="./icons/touchicon.png" />
-  <link rel="stylesheet" href="./build/mobile.css?a1372b7b45" />
+  <link rel="stylesheet" href="./build/mobile.css?8cd993c081" />
 </head>
 <body class="page_is-mobile transition_no">
   <header class="header">
@@ -26,24 +26,15 @@
         </div>
 
         <div class="prefs__mode prefs__item">
-          <table class="prefs__html-entities">
-            <tr>
-              <td>
-                <span data-text-id="html-entities">HTML-сущности</span>:&nbsp;
-              </td>
-              <td>
-                <select class="prefs__set-mode" data-title-id="html-entities">
-                  <option value="">UTF-8</option>
-                  <option value="name" data-text-id="names">Имена</option>
-                  <option value="digit" data-text-id="digits">Цифры</option>
-                </select>&nbsp;&mdash;&nbsp;<span class="prefs__html-entities-example"></span>
-              </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td class="prefs__invisible-symbols"><input type="checkbox" class="prefs__only-invisible" id="invisible-symbols" /> <label for="invisible-symbols" data-text-id="invisible-symbols">Для невидимых символов</label></td>
-            </tr>
-          </table>
+          <div class="prefs__html-entities">
+            <span data-text-id="html-entities">HTML-сущности</span>:<br/>
+            <select class="prefs__set-mode" data-title-id="html-entities">
+              <option value="">UTF-8</option>
+              <option value="name" data-text-id="names">Имена</option>
+              <option value="digit" data-text-id="digits">Цифры</option>
+            </select><input type="checkbox" class="prefs__only-invisible" id="invisible-symbols" /> <label for="invisible-symbols" data-text-id="invisible-symbols">Для невидимых символов</label><br/>
+            <div class="prefs__html-entities-example-container"><span data-text-id="example"></span>: <span class="prefs__html-entities-example"></span></div>
+          </div>
         </div>
 
         <div class="prefs__lang-ui prefs__item">
@@ -88,6 +79,6 @@
 
   <script src="./build/typograf.min.js?010a30fc13"></script>
   <script src="./build/jquery.min.js?c9f5aeeca3"></script>
-  <script src="./build/app.min.js?c30a5294b1"></script>
+  <script src="./build/app.min.js?5a36f42c13"></script>
 </body>
 </html>

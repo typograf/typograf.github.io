@@ -27,6 +27,10 @@ module.exports = {
         'en-US': 'HTML entities',
         ru: 'HTML-сущности'
     },
+    'example': {
+      'en-US': 'Example',
+      ru: 'Пример'
+    },
     'html-entities-example': {
         'en-US': '"A Z"',
         ru: '"А Я"'

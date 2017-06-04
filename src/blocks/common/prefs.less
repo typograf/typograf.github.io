@@ -145,20 +145,24 @@
 
     &__html-entities
     {
-        margin: 0;
-        border-spacing: 0;
-        border-collapse: separate;
+        white-space: nowrap;
+        line-height: 1.7;
 
-        td
+        .prefs__only-invisible
         {
-            padding: 0;
-            white-space: nowrap;
+            margin-left: .8em;
         }
 
-        .prefs__invisible-symbols,
-        .prefs__html-entity-example
+        .prefs__invisible-symbols
         {
             padding-top: .3em;
+        }
+
+        .prefs__html-entities-example-container
+        {
+            padding-top: .3em;
+            color: #999;
+            font-size: 13px;
         }
     }
 }
