@@ -21,7 +21,6 @@ showJSError.init({
 
 require('./jquery.checked');
 require('./metrika');
-require('./mobile-redirect');
 require('./function');
 require('./typograf-groups');
 
