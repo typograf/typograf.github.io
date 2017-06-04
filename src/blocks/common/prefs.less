@@ -16,6 +16,11 @@
 
     background: white;
 
+    &__hidden
+    {
+        visibility: hidden;
+    }
+
     &_opened
     {
         visibility: visible;
@@ -102,7 +107,7 @@
 
         border: 1px solid transparent;
         border-radius: 5px;
-		
+
 		transition: .3s border-color ease;
     }
 
@@ -110,7 +115,7 @@
     {
 		margin-left: 10px;
         line-height: 30px;
-		
+
 		&:first-child
 		{
 			padding-top: 1em;
@@ -136,6 +141,25 @@
     &__fieldset_visible
     {
         border: 1px solid #e0e0e0;
+    }
+
+    &__html-entities
+    {
+        margin: 0;
+        border-spacing: 0;
+        border-collapse: separate;
+
+        td
+        {
+            padding: 0;
+            white-space: nowrap;
+        }
+
+        .prefs__invisible-symbols,
+        .prefs__html-entity-example
+        {
+            padding-top: .3em;
+        }
     }
 }
 

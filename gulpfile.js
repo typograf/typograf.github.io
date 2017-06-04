@@ -71,13 +71,24 @@ gulp.task('copyTemplates', function() {
     return gulp.src('./src/html/*.html').pipe(gulp.dest('./'));
 });
 
-gulp.task('updateVersion', ['jsApp', 'jsTypograf', 'jsJquery', 'jsDiff', 'cssMobile', 'cssDesktop', 'copyTemplates'], function() {
-    return gulp.src('./build/*.*').pipe(md5(10, './*.html'));
-});
+gulp.task(
+    'updateVersion',
+    [
+        'jsApp',
+        'jsTypograf',
+        'jsJquery',
+        'jsDiff',
+        'cssMobile',
+        'cssDesktop',
+        'copyTemplates'
+    ],
+    function() {
+        return gulp.src('./build/*.*').pipe(md5(10, './*.html'));
+    }
+);
 
 gulp.task('watch', function() {
-    gulp.watch('src/js/**/*', ['default']);
-    gulp.watch('src/less/**/*', ['default']);
+    gulp.watch('src/**/*', ['default']);
 });
 
 gulp.task('default', ['updateVersion']);

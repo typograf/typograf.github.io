@@ -1,80 +1,93 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title data-text-id="typograf">Типограф</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-        <meta charset="utf-8" />
-        <link rel="icon" href="./icons/favicon.png" />
-        <link rel="apple-touch-icon" href="./icons/touchicon.png" />
-        <link rel="stylesheet" href="./build/mobile.css?b47ac88f42" />
-    </head>
-    <body class="page_is-mobile transition_no">
-        <header class="header">
-            <h1 class="header__title" data-text-id="typograf">Типограф</h1>
-            <div title="Настройки" class="hamburger"><div class="hamburger__i"></div></div>
-        </header>
-        <div class="container">
-            <div class="prefs">
-                <div class="prefs__items">
-					<div class="prefs__item prefs__item_first">
-						<div class="prefs__title" data-text-id="prefs">Настройки</div>
-						<div class="prefs__default button" data-text-id="default" >По умолчанию</div>
-					</div>
-
-                    <div class="prefs__locale prefs__item">
-                        <span data-text-id="locale">Локаль</span>: <select class="prefs__set-locale"></select>
-                    </div>
-
-                    <div class="prefs__mode prefs__item">
-                        <span data-text-id="html-entities">HTML-сущности</span>: <select class="prefs__set-mode">
-                            <option value="">UTF-8</option>
-                            <option value="name" data-text-id="names">имена</option>
-                            <option value="digit" data-text-id="digits">цифры</option>
-                        </select>
-                    </div>
-
-                    <div class="prefs__lang-ui prefs__item">
-                        <span data-text-id="lang-ui">Язык интерфейса</span>: <select class="prefs__set-lang-ui">
-                            <option value="ru" data-text-id="ru">ru</option>
-                            <option value="en-US" data-text-id="en-US">en</option>
-                        </select>
-                    </div>
-
-					<div class="prefs__item prefs__item_last">
-						<div class="prefs__top">
-							<input type="checkbox" class="prefs__all-rules" id="prefs__all-rules" autocomplete="off" /> <label for="prefs__all-rules" data-text-id="select-all">Выбрать все</label>
-						</div>
-						<div class="prefs__rules"></div>
-					</div>
-                </div>
-				
-                <div class="prefs__cap"></div>
-            </div>
-            <div class="paranja"></div>
-            <div class="input">
-                <div class="input__container">
-                    <textarea class="input__text" autofocus="autofocus" data-placeholder-id="input-text"></textarea>
-                    <div class="input__clear" data-title-id="clear" title="Очистить">&times;</div>
-                </div>
-                <input type="button" class="input__execute" data-value-id="to-typograf" value="Сделать красиво" />
-            </div>
+<head>
+  <title data-text-id="typograf">Типограф</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta charset="utf-8" />
+  <link rel="icon" href="./icons/favicon.png" />
+  <link rel="apple-touch-icon" href="./icons/touchicon.png" />
+  <link rel="stylesheet" href="./build/mobile.css?a1372b7b45" />
+</head>
+<body class="page_is-mobile transition_no">
+  <header class="header">
+    <h1 class="header__title" data-text-id="typograf">Типограф</h1>
+    <div title="Настройки" class="hamburger"><div class="hamburger__i"></div></div>
+  </header>
+  <div class="container">
+    <div class="prefs">
+      <div class="prefs__items">
+        <div class="prefs__item prefs__item_first">
+          <div class="prefs__title" data-text-id="prefs">Настройки</div>
+          <div class="prefs__default button" data-text-id="default" >По умолчанию</div>
         </div>
 
-        <footer class="footer">
-            <div class="footer__left">
-                <div class="footer__item">
-                    <a href="./index.html?full=1" data-text-id="full-version">Полная версия</a>
-                </div>
-			</div>
-            <div class="footer__right">
-                <div class="footer__item">
-                    <span data-text-id="powered-by">На основе</span> <a href="https://github.com/typograf/typograf/releases/" target="_blank">Typograf<span id="version"></span></a>
-                </div>
-            </div>
-        </footer>
+        <div class="prefs__locale prefs__item">
+          <span data-text-id="locale">Локаль</span>: <select class="prefs__set-locale"></select>
+        </div>
 
-        <script src="./build/typograf.min.js?010a30fc13"></script>
-        <script src="./build/jquery.min.js?c9f5aeeca3"></script>
-        <script src="./build/app.min.js?82171440ea"></script>
-    </body>
+        <div class="prefs__mode prefs__item">
+          <table class="prefs__html-entities">
+            <tr>
+              <td>
+                <span data-text-id="html-entities">HTML-сущности</span>:&nbsp;
+              </td>
+              <td>
+                <select class="prefs__set-mode" data-title-id="html-entities">
+                  <option value="">UTF-8</option>
+                  <option value="name" data-text-id="names">Имена</option>
+                  <option value="digit" data-text-id="digits">Цифры</option>
+                </select>&nbsp;&mdash;&nbsp;<span class="prefs__html-entities-example"></span>
+              </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="prefs__invisible-symbols"><input type="checkbox" class="prefs__only-invisible" id="invisible-symbols" /> <label for="invisible-symbols" data-text-id="invisible-symbols">Для невидимых символов</label></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="prefs__lang-ui prefs__item">
+          <span data-text-id="lang-ui">Язык интерфейса</span>: <select class="prefs__set-lang-ui">
+            <option value="ru" data-text-id="ru">ru</option>
+            <option value="en-US" data-text-id="en-US">en</option>
+          </select>
+        </div>
+
+        <div class="prefs__item prefs__item_last">
+          <div class="prefs__top">
+            <input type="checkbox" class="prefs__all-rules" id="prefs__all-rules" autocomplete="off" /> <label for="prefs__all-rules" data-text-id="select-all">Выбрать все</label>
+          </div>
+          <div class="prefs__rules"></div>
+        </div>
+      </div>
+
+      <div class="prefs__cap"></div>
+    </div>
+    <div class="paranja"></div>
+    <div class="input">
+      <div class="input__container">
+        <textarea class="input__text" autofocus="autofocus" data-placeholder-id="input-text"></textarea>
+        <div class="input__clear" data-title-id="clear" title="Очистить">&times;</div>
+      </div>
+      <input type="button" class="input__execute" data-value-id="to-typograf" value="Сделать красиво" />
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer__left">
+      <div class="footer__item">
+        <a href="./index.html?full=1" data-text-id="full-version">Полная версия</a>
+      </div>
+    </div>
+    <div class="footer__right">
+      <div class="footer__item">
+        <span data-text-id="powered-by">На основе</span> <a href="https://github.com/typograf/typograf/releases/" target="_blank">Typograf<span id="version"></span></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./build/typograf.min.js?010a30fc13"></script>
+  <script src="./build/jquery.min.js?c9f5aeeca3"></script>
+  <script src="./build/app.min.js?652910e1b9"></script>
+</body>
 </html>

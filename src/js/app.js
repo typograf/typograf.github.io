@@ -21,6 +21,7 @@ showJSError.init({
 
 require('./jquery.checked');
 require('./metrika');
+require('./mobile-redirect');
 require('./function');
 require('./typograf-groups');
 
@@ -35,13 +36,13 @@ var App = {
 
         this.isMobile = body.hasClass('page_is-mobile');
 
-        if(window.location.hash === '#!prefs') {
+        if (window.location.hash === '#!prefs') {
             setTimeout(function() {
                 this._onprefs();
             }.bind(this), 1);
         }
 
-        if(!this.isMobile) {
+        if (!this.isMobile) {
             this._setValue(hash.getHashParam('text') || '');
         }
 
@@ -50,7 +51,7 @@ var App = {
         Prefs.init(typograf);
         Prefs.onChange = this.execute.bind(this);
 
-        if(Prefs.rules) {
+        if (Prefs.rules) {
             typograf
                 .enableRule(Prefs.rules.enabled)
                 .disableRule(Prefs.rules.disabled);
@@ -85,7 +86,7 @@ var App = {
             result: result
         };
 
-        if(this.isMobile) {
+        if (this.isMobile) {
             $('.input__text').val(result);
         } else {
             this.updateResult();
@@ -111,7 +112,7 @@ var App = {
         return $('.input__text').val();
     },
     _updateValue: function(value) {
-        if(!this.isMobile && window.location.hash !== '#!prefs') {
+        if (!this.isMobile && window.location.hash !== '#!prefs') {
             window.location.hash = '#!text=' + window.encodeURIComponent(str.truncate(value, 512));
         }
 
@@ -119,7 +120,7 @@ var App = {
     },
     _updateClearText: function(value) {
         var clear = $('.input__clear');
-        if(value.length > 0) {
+        if (value.length > 0) {
             clear.show();
         } else {
             clear.hide();
@@ -134,7 +135,7 @@ var App = {
                 return;
             }
 
-            if(data && data.service === 'typograf' && data.command === 'execute') {
+            if (data && data.service === 'typograf' && data.command === 'execute') {
                 e.source.postMessage(JSON.stringify({
                     service: 'typograf',
                     command: 'return',
@@ -150,7 +151,7 @@ var App = {
             var el = $('.hamburger'),
                 clSelected = 'hamburger_selected';
 
-            if(el.hasClass(clSelected)) {
+            if (el.hasClass(clSelected)) {
                 window.location.hash = '';
 
                 setTimeout(function() {
@@ -195,12 +196,12 @@ var App = {
 
         var oldValue = null;
 
-        if(this.isMobile) {
+        if (this.isMobile) {
             $('.input__execute').on('click', this.execute.bind(this));
         } else {
             $('.input__text').on('keyup input click', function() {
                 var val = this._getValue();
-                if(val === oldValue) {
+                if (val === oldValue) {
                     return;
                 }
 

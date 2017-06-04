@@ -1,5 +1,6 @@
 {
     "browser": true,
+    "jquery": true,
     "curly": true,
     "camelcase": true,
     "eqeqeq": true,
@@ -23,6 +24,10 @@
     "lastsemic": true,
     "laxbreak": true,
     "sub": true,
+
+    "globals": {
+        "JsDiff": true
+    },
 
     "nomen": false,
     "onevar": false

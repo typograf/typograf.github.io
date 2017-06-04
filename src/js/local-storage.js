@@ -2,7 +2,7 @@ module.exports = {
     getItem: function(key) {
         var result;
 
-        if(window.localStorage) {
+        if (window.localStorage) {
             try {
                 result = localStorage.getItem(key);
             } catch(e) {}
@@ -11,7 +11,7 @@ module.exports = {
         return result;
     },
     setItem: function(key, value) {
-        if(window.localStorage) {
+        if (window.localStorage) {
             try {
                 localStorage.setItem(key, value);
             } catch(e) {}

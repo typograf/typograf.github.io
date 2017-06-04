@@ -27,6 +27,14 @@ module.exports = {
         'en-US': 'HTML entities',
         ru: 'HTML-сущности'
     },
+    'html-entities-example': {
+        'en-US': '"A Z"',
+        ru: '"А Я"'
+    },
+    'invisible-symbols': {
+        'en-US': 'for invisible symbols',
+        ru: 'для невидимых символов'
+    },
     names: {
         'en-US': 'Names',
         ru: 'Имена'

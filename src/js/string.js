@@ -12,7 +12,7 @@ module.exports = {
         return (text || '').replace(/<\/?[^>]+(>|$)/g, '');
     },
     truncate: function(text, len) {
-        if(text) {
+        if (text) {
             return text.length > len ? text.substr(0, len) : text;
         }
 

@@ -4,7 +4,7 @@ var texts = require('./texts'),
 module.exports = {
     getText: function(id, lang) {
         var key = texts[id];
-        if(!key) {
+        if (!key) {
             console.warn('Not found key "' + id + '" in getText().');
             return '';
         }
@@ -12,7 +12,7 @@ module.exports = {
         var l = lang || baseLang,
             value = key[l];
 
-        if(typeof value === 'undefined') {
+        if (typeof value === 'undefined') {
             console.warn('Not found key "' + id + '", lang "' + l + '" in getText().');
             return '';
         }

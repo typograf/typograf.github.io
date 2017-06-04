@@ -8,7 +8,7 @@ module.exports = {
         return (str.truncate(file, 32) || 'text') + '.' + ext;
     },
     save: function(textarea, notSupportSave) {
-        if(!window.Blob) {
+        if (!window.Blob) {
             window.alert(notSupportSave);
             return;
         }
@@ -20,7 +20,7 @@ module.exports = {
         downloadLink.download = this.getFilename(textToWrite);
         downloadLink.innerHTML = 'Download File';
 
-        if(window.webkitURL) {
+        if (window.webkitURL) {
             // Chrome allows the link to be clicked
             // without actually adding it to the DOM.
             downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
