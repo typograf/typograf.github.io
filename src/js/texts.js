@@ -247,5 +247,9 @@ module.exports = {
     'locale-uk': {
         'en-US': 'Ukrainian',
         ru: 'Украинская'
+    },
+    rules: {
+        'en-US': 'Rules',
+        ru: 'Правила'
     }
 };
