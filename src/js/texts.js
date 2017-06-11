@@ -251,5 +251,9 @@ module.exports = {
     rules: {
         'en-US': 'Rules',
         ru: 'Правила'
-    }
+    },
+	yabro: {
+        'en-US': 'Yandex.Browser',
+        ru: 'Яндекс.Браузера'
+	}
 };

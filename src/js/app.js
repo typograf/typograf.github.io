@@ -45,8 +45,6 @@ var App = {
             this._setValue(hash.getHashParam('text') || '');
         }
 
-        $('.extension_' + (typeof InstallTrigger !== 'undefined' ? 'firefox' : 'chrome')).show();
-
         Prefs.init(typograf);
         Prefs.onChange = this.execute.bind(this);
 
@@ -58,10 +56,29 @@ var App = {
 
         this.updateResult = debounce(250, this.updateResult);
 
+        this.setLinkToAddition();
         this._events();
 
         this.execute();
     },
+    setLinkToAddition: function() {
+        var browser = 'chrome';
+
+        if (navigator.userAgent.search('YaBrowser') > -1) {
+            browser = 'yabro';
+        }
+
+        if (typeof InstallTrigger !== 'undefined') {
+            browser = 'firefox';
+        }
+
+        if (navigator.userAgent.search(' OPR\/') > -1) {
+            browser = 'opera';
+        }
+
+        $('.extension_' + browser).show();
+    },
+
     setVersion: function() {
         $('#version').text(Typograf.version);
     },
