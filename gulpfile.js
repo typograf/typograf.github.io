@@ -51,7 +51,7 @@ gulp.task('jsApp', function() {
 
 gulp.task('cssMobile', function() {
     return gulp.src('./src/less/mobile.less')
-        .pipe(concat('mobile.css'))
+        .pipe(concat('mobile.min.css'))
         .pipe(less())
         .pipe(cleancss())
         .pipe(autoprefixer(apBrowsers))
@@ -60,7 +60,7 @@ gulp.task('cssMobile', function() {
 
 gulp.task('cssDesktop', function() {
     return gulp.src('./src/less/desktop.less')
-        .pipe(concat('desktop.css'))
+        .pipe(concat('desktop.min.css'))
         .pipe(less())
         .pipe(cleancss())
         .pipe(autoprefixer(apBrowsers))
