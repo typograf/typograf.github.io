@@ -17,7 +17,7 @@
     <meta charset="utf-8" />
     <link rel="icon" href="./icons/favicon.png" />
     <link rel="apple-touch-icon" href="./icons/touchicon.png" />
-    <link rel="stylesheet" href="./build/desktop.min.css?563ec2ecda" />
+    <link rel="stylesheet" href="./build/desktop.min.css?20bb4a01f9" />
 </head>
 <body class="page_is-desktop transition_no">
     <header class="header">
@@ -72,17 +72,17 @@
                 </div>
                 <div class="table__right result">
                     <div class="input__head">
-                        <div class="result__as">
+						<span class="input__copy" title="" data-title-id="copy"></span>
+						<span class="input__save" title="" data-title-id="save"></span>
+                        <span class="result__as">
                             <input type="radio" class="result__as-text" id="result__as-text" name="view" checked="checked" autocomplete="off" value="text" /><label for="result__as-text" data-text-id="text">Текст</label>
                             <input type="radio" class="result__as-html" id="result__as-html" name="view" autocomplete="off" value="html" /><label for="result__as-html" style="color: #cf5b25; font-size: 0.9em;">&lt;HTML&gt;</label>
                             <input type="radio" class="result__as-diff" id="result__as-diff" name="view" autocomplete="off" value="diff" /><label for="result__as-diff"><span style="border-bottom: 1px solid rgba(255, 0, 0, .5);" data-text-id="diff-1">Измен</span><span style="border-bottom: 1px solid rgba(0, 255, 0, .5);" data-text-id="diff-2">ения</span></label>
-                        </div>
+                        </span>
                     </div>
                     <textarea class="result__text" data-placeholder-id="result"></textarea>
                     <div class="result__html"></div>
                     <div class="result__diff"></div>
-                    <input class="input__copy" type="button" data-value-id="copy" value="Копировать" />
-                    <input class="input__save" type="button" data-value-id="save" value="Сохранить" />
                 </div>
             </div>
         </div>

@@ -21,7 +21,8 @@
 
     &__as
     {
-        float: right;
+		position: relative;
+		top: -5px;
     }
 
     &__text,
@@ -32,18 +33,18 @@
         width: 100%;
         height: 100%;
         margin: 0;
-        padding: 8px;
+        padding: 45px 8px 8px 8px;
     }
 	
 	&__html
 	{
 		overflow-y: auto;
-	}
-	
-	&__html p
-	{
-		margin: 0 0 1em 0;
-		padding: 0;
+
+		& p
+		{
+			margin: 0 0 1em 0;
+			padding: 0;
+		}
 	}
 
 }
