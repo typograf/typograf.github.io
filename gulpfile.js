@@ -14,15 +14,17 @@ const apBrowsers = {
     browsers: ['ie >= 9', 'Firefox >= 24', 'Chrome >= 26', 'iOS >= 5', 'Safari >= 6', 'Android > 2.3']
 };
 
+const uglifyOptions = {
+	output: {
+		/*jshint camelcase: false */
+		ascii_only: true,
+		/*jshint camelcase: true */
+		comments: 'some'
+	}
+};
+
 gulp.task('jsTypograf', function() {
-    return gulp.src('./node_modules/typograf/dist/typograf.all.js')
-        .pipe(concat('typograf.min.js'))
-        .pipe(uglify({
-            /*jshint camelcase: false */
-            output: {ascii_only: true},
-            /*jshint camelcase: true */
-            preserveComments: 'some'
-        }))
+    return gulp.src('./node_modules/typograf/dist/typograf.all.min.js')
         .pipe(gulp.dest(destDir));
 });
 
@@ -40,12 +42,7 @@ gulp.task('jsApp', function() {
     return browserify('./src/js/app.js')
         .bundle()
         .pipe(source('app.min.js'))
-        .pipe(streamify(uglify({
-            /*jshint camelcase: false */
-            output: {ascii_only: true},
-            /*jshint camelcase: true */
-            preserveComments: 'some'
-        })))
+        .pipe(streamify(uglify(uglifyOptions)))
         .pipe(gulp.dest(destDir));
 });
 
