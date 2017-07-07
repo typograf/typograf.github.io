@@ -164,8 +164,8 @@ var App = {
         }.bind(this), false);
 
         this._onprefs = function() {
-            var el = $('.hamburger'),
-                clSelected = 'hamburger_selected';
+            var el = $('.header'),
+                clSelected = '.header_selected';
 
             if (el.hasClass(clSelected)) {
                 window.location.hash = '';
@@ -181,7 +181,7 @@ var App = {
             Prefs.toggle();
         }.bind(this);
 
-        $('.hamburger, .paranja').on('click', this._onprefs);
+        $('.header, .paranja').on('click', this._onprefs);
 
         var that = this;
         $('.result__as-text, .result__as-html, .result__as-diff').on('click', function() {

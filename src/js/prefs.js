@@ -17,6 +17,7 @@ var localStorage = require('./local-storage'),
 module.exports = {
     init: function(typograf) {
         this._typograf = typograf;
+        this._wasRebuilt = false;
 
         var rules;
         try {
@@ -51,7 +52,10 @@ module.exports = {
         this._updateSelects();
     },
     show: function() {
-        this._build();
+        if (!this._wasRebuilt) {
+            this.rebuild();
+            this._wasRebuilt = true;
+        }
 
         $('.prefs').addClass('prefs_opened');
         $('.paranja').addClass('paranja_opened');
@@ -155,7 +159,7 @@ module.exports = {
             el.placeholder = getText(el.dataset.placeholderId);
         });
 
-        this._build();
+        this.rebuild();
         this.save();
 
         this.onChange();
@@ -182,7 +186,7 @@ module.exports = {
         $('.prefs__html-entities-example').html(html);
     },
     onChange: function() {},
-    _build: function() {
+    rebuild: function() {
         var groups = this._getSortedGroups(Typograf.prototype._rules, this.langUI);
 
         $('.prefs__rules').html(this._buildHTML(groups));
@@ -270,8 +274,10 @@ module.exports = {
 
             group.forEach(function(rule) {
                 var name = rule.name,
+                    ruleLang = name.split('\/')[0],
+                    langPrefix = ruleLang === 'common' ? '' : '<span class="prefs__rule-lang">' + ruleLang + '</span>',
                     buf = Typograf.titles[name];
-
+                    
                 if (!buf || !(buf[this.langUI] || buf.common)) {
                     console.warn('Not found title for name "' + name + '".');
                 }
@@ -287,7 +293,7 @@ module.exports = {
                 html += '<div class="prefs__rule" title="' + name + '">' +
                     '<input type="checkbox" class="prefs__rule-checkbox"' +
                     checked + ' id="' + id + '" data-id="' + name + '" /> ' +
-                    '<label for="' + id + '">' + title + '</label>' +
+                    '<label for="' + id + '">' + title + langPrefix + '</label>' +
                     '</div>';
             }, this);
 
@@ -391,6 +397,8 @@ module.exports = {
         $('.prefs__all-rules').on('click', this._selectAll.bind(this));
 
         $('.prefs__default').on('click', this.byDefault.bind(this));
+        
+        $('.prefs__close').on('click', this.hide.bind(this));
 
         var rules = $('.prefs__rules');
 
