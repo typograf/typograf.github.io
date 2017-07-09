@@ -1,7 +1,9 @@
 ﻿.button
 {
-    padding: 3px 7px;
+    display: inline-block;
 
+    padding: 3px 7px;
+    
     cursor: pointer;
     user-select: none;
     transition: border-color .3s ease, transform .05s ease, color .1s ease;
@@ -9,7 +11,9 @@
     border: 1px solid #e0e0e0;
     border-radius: 5px;
     background: #f0f0f0;
-
+    
+    color: #222;
+    
     &:hover
     {
         border: 1px solid #d0d0d0;
@@ -19,5 +23,23 @@
     {
         transform: translate(1px, 1px);
         color: #333;
+    }
+
+    &_active
+    {
+        background: #00acc7;
+        color: #fff;
+
+        &:hover
+        {
+            border-color: #00acc7;
+            color: #f5f5f5;
+        }
+        
+        &:active
+        {
+            transform: translate(1px, 1px);
+            color: #f0f0f0;
+        }
     }
 }

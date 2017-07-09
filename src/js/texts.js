@@ -7,6 +7,10 @@ module.exports = {
         'en-US': 'Make beautiful',
         ru: 'Сделать красиво'
     },
+    'close': {
+        'en-US': 'Close',
+        ru: 'Закрыть'
+    },
     extension: {
         'en-US': 'Extension for',
         ru: 'Дополнение для'

@@ -25,11 +25,9 @@
     </header>
     <div class="container">
         <div class="prefs">
-            <div class="prefs__close"></div>
             <div class="prefs__items">
                 <div class="prefs__item prefs__item_first">
                     <div class="prefs__title" data-text-id="prefs">Настройки</div>
-                    <div class="prefs__default button" data-text-id="default" >По умолчанию</div>
                 </div>
                 <div class="prefs__mode prefs__item">
                     <div class="prefs__html-entities">
@@ -54,6 +52,10 @@
                         <input type="checkbox" class="prefs__all-rules" id="prefs__all-rules" autocomplete="off" /> <label for="prefs__all-rules" data-text-id="select-all">Выбрать все</label>
                     </div>
                     <div class="prefs__rules"></div>
+                </div>
+                <div class="prefs__actions">
+                    <span class="prefs__default button button" data-text-id="default">По умолчанию</span>
+                    <span class="prefs__close button button_active" data-text-id="close">Закрыть</span>
                 </div>
             </div>
             <div class="prefs__cap"></div>
