@@ -321,6 +321,8 @@ module.exports = {
 
         this._synchronizeMainCheckbox();
         this.save();
+
+        this.onChange();
     },
     _clickLegend: function(e) {
         $(this)
@@ -347,6 +349,8 @@ module.exports = {
         });
 
         this.save();
+
+        this.onChange();
     },
     _synchronizeMainCheckbox: function() {
         var count = 0,
