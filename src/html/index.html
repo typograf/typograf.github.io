@@ -2,6 +2,10 @@
 <html>
 <head>
     <title data-text-id="typograf">Типограф</title>
+    <meta charset="utf-8" />
+    <link rel="icon" href="./icons/favicon.png" />
+    <link rel="apple-touch-icon" href="./icons/touchicon.png" />
+    <link rel="stylesheet" href="./build/desktop.min.css" />
     <script>
     (function(ua, url) {
         if (window.location.href.search(/[\?&]full=1/) > -1) {
@@ -14,10 +18,6 @@
         ) { window.location = url; }
     })(navigator.userAgent || navigator.vendor || window.opera, './mobile.html');
     </script>
-    <meta charset="utf-8" />
-    <link rel="icon" href="./icons/favicon.png" />
-    <link rel="apple-touch-icon" href="./icons/touchicon.png" />
-    <link rel="stylesheet" href="./build/desktop.min.css" />
 </head>
 <body class="page_is-desktop transition_no">
     <header class="header">
@@ -39,12 +39,6 @@
                         </select><input type="checkbox" class="prefs__only-invisible" id="invisible-symbols" /> <label for="invisible-symbols" data-text-id="invisible-symbols">Для невидимых символов</label><br/>
                         <div class="prefs__html-entities-example-container"><span data-text-id="example"></span>: <span class="prefs__html-entities-example"></span></div>
                     </div>
-                </div>
-                <div class="prefs__lang-ui prefs__item">
-                    <span data-text-id="lang-ui">Язык интерфейса</span>: <select class="prefs__set-lang-ui">
-                        <option value="ru" data-text-id="ru"></option>
-                        <option value="en-US" data-text-id="en-US"></option>
-                    </select>
                 </div>
                 <div class="prefs__item prefs__item_last">
                     <div class="prefs__rules-title" data-text-id="rules">Правила</div>
@@ -110,6 +104,9 @@
         <div class="footer__right">
             <div class="footer__item">
                 <span data-text-id="powered-by">На основе</span> <a href="https://github.com/typograf/typograf/releases/" target="_blank">Typograf<span id="version"></span></a>
+            </div>
+            <div class="footer__item">
+                <span class="lang-ui"></span>
             </div>
         </div>
     </footer>

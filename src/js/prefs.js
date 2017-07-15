@@ -1,6 +1,5 @@
 var localStorage = require('./local-storage'),
-    GetText = require('./get-text'),
-    getText = GetText.getText,
+    getText = require('./get-text').getText,
     prepareLocale = require('./prepare-locale'),
     str = require('./string'),
     Typograf = window.Typograf,
@@ -12,7 +11,8 @@ var localStorage = require('./local-storage'),
         disableRule: '*',
         enableRule: ['common/nbsp/*', 'common/punctuation/quote'],
         locale: ['ru', 'en-US']
-    });
+    }),
+    langUI = require('./lang-ui');
 
 module.exports = {
     init: function(typograf) {
@@ -25,7 +25,6 @@ module.exports = {
         } catch(e) {}
 
         this.locale = localStorage.getItem('settings.locale');
-        this.langUI = localStorage.getItem('settings.langUI');
         this.mode = localStorage.getItem('settings.mode');
         this.onlyInvisible = localStorage.getItem('settings.onlyInvisible');
 
@@ -35,20 +34,18 @@ module.exports = {
 
         this.locale = this.locale || 'ru';
 
-        this.langUI = this.langUI || 'ru';
-        if (this.langUI === 'en') {
-            this.langUI = 'en-US';
-        }
+        langUI.init({
+            elem: $('.lang-ui'),
+            onChange: this.changeLangUI.bind(this)
+        });
+        
 
         this.mode = this.mode || '';
         this.onlyInvisible = this.onlyInvisible || false;
 
-        GetText.setLang(this.langUI);
-
         this._events();
 
         this.changeLangUI();
-
         this._updateSelects();
     },
     show: function() {
@@ -92,7 +89,6 @@ module.exports = {
                 disabled: disabled
             }))
             .setItem('settings.locale', this.locale)
-            .setItem('settings.langUI', this.langUI)
             .setItem('settings.mode', this.mode)
             .setItem('settings.onlyInvisible', this.onlyInvisible);
     },
@@ -137,10 +133,7 @@ module.exports = {
 
         this.onChange();
     },
-    changeLangUI: function() {
-        this.langUI = $('.prefs__set-lang-ui').val();
-        GetText.setLang(this.langUI);
-
+    changeLangUI: function(e, value) {
         this._updateLocaleOptions();
 
         $('[data-text-id]').each(function(i, el) {
@@ -187,7 +180,7 @@ module.exports = {
     },
     onChange: function() {},
     rebuild: function() {
-        var groups = this._getSortedGroups(Typograf.prototype._rules, this.langUI);
+        var groups = this._getSortedGroups(Typograf.prototype._rules, langUI.val());
 
         $('.prefs__rules').html(this._buildHTML(groups));
     },
@@ -264,8 +257,8 @@ module.exports = {
         groups.forEach(function(group) {
             var groupName = group[0]._group,
                 groupTitle = typografPrefs.execute(
-                    Typograf.getGroupTitle(groupName, this.langUI),
-                    {locale: prepareLocale(this.langUI)}
+                    Typograf.getGroupTitle(groupName, langUI.val()),
+                    {locale: prepareLocale(langUI.val())}
                 );
 
             html += '<fieldset class="prefs__fieldset"><legend class="prefs__legend button">' +
@@ -277,14 +270,14 @@ module.exports = {
                     ruleLang = name.split('\/')[0],
                     langPrefix = ruleLang === 'common' ? '' : '<span class="prefs__rule-lang">' + ruleLang + '</span>',
                     buf = Typograf.titles[name];
-                    
-                if (!buf || !(buf[this.langUI] || buf.common)) {
+
+                if (!buf || !(buf[langUI.val()] || buf.common)) {
                     console.warn('Not found title for name "' + name + '".');
                 }
 
                 var title = typografPrefs.execute(
-                        str.escapeHTML(buf[this.langUI] || buf.common),
-                        {locale: prepareLocale(this.langUI)}
+                        str.escapeHTML(buf[langUI.val()] || buf.common),
+                        {locale: prepareLocale(langUI.val())}
                     ),
                     id = 'setting-' + name,
                     ch = this._typograf.isEnabledRule(name),
@@ -375,7 +368,6 @@ module.exports = {
     },
     _updateSelects: function() {
         $('.prefs__set-locale').val(this.locale);
-        $('.prefs__set-lang-ui').val(this.langUI);
         $('.prefs__set-mode').val(this.mode);
         $('.prefs__only-invisible').val(this.onlyInvisible);
         this.updateInvisibleSymbols();
@@ -389,11 +381,11 @@ module.exports = {
                 return '<option value="' + l + '" data-text-id="locale-' + l + '"></option>\n';
             }).join('');
 
-        $('.prefs__set-locale').html(html);
+        $('.prefs__set-locale')
+            .html(html)
+            .val(this.locale);
     },
     _events: function() {
-        $('.prefs__set-lang-ui').on('change', this.changeLangUI.bind(this));
-
         $('.prefs__set-locale').on('change', this.changeLocale.bind(this));
 
         $('.prefs__set-mode, .prefs__only-invisible').on('change', this.changeMode.bind(this));
@@ -401,7 +393,7 @@ module.exports = {
         $('.prefs__all-rules').on('click', this._selectAll.bind(this));
 
         $('.prefs__default').on('click', this.byDefault.bind(this));
-        
+
         $('.prefs__close').on('click', this.hide.bind(this));
 
         var rules = $('.prefs__rules');
