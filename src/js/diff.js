@@ -1,4 +1,4 @@
-var str = require('./string');
+var str = require('./lib/string');
 
 module.exports = {
     getDiffTitle: function(sym) {

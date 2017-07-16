@@ -1,11 +1,16 @@
-var GetText = require('./get-text');
-
-module.exports = {
+var i18n = require('./i18n');
+var localStorage = require('./lib/local-storage');
+var Block = {
+    defaultLang: 'ru',
+    langs: [
+        { value: 'ru', text: 'Rus' },
+        { value: 'en-US', text: 'Eng' }
+    ],
     init: function(data) {
-        this._elem = data.elem;
-        this._elem.click(this._onClick.bind(this));
-
-        this._onChange = data.onChange;
+        this._elem = $('.lang-ui').click(function(e) {
+            this._next();
+            this.onChange(e, this.val());
+        }.bind(this));
 
         this._langsByValue = {};
         this.langs.forEach(function(item, i) {
@@ -13,7 +18,7 @@ module.exports = {
             item.index = i;
         }, this);
 
-        this.val(localStorage.getItem('settings.langUI') || 'ru');
+        this.val(localStorage.getItem('settings.langUI') || this.defaultLang);
     },
     val: function(value) {
         if (typeof value !== 'undefined') {
@@ -23,7 +28,7 @@ module.exports = {
 
             if (this._langsByValue[value]) {
                 this._val = value;
-                GetText.setLang(value);
+                i18n.lang = value;
                 localStorage.setItem('settings.langUI', value);
 
                 this._update(value);
@@ -33,10 +38,6 @@ module.exports = {
         }
 
         return this._val;
-    },
-    _onClick: function(e) {
-        this._next();
-        this._onChange(e, this.val());
     },
     _update: function() {
         this._elem.text(this._langsByValue[this.val()].text);
@@ -48,9 +49,9 @@ module.exports = {
         }
 
         this.val(this.langs[index].value);
-    },
-    langs: [
-        { value: 'ru', text: 'Rus' },
-        { value: 'en-US', text: 'Eng' }
-    ]
+    }
 };
+
+Block.init();
+
+module.exports = Block;

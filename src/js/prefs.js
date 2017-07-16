@@ -1,18 +1,18 @@
-var localStorage = require('./local-storage'),
-    getText = require('./get-text').getText,
-    prepareLocale = require('./prepare-locale'),
-    str = require('./string'),
-    Typograf = window.Typograf,
-    typografPrefs = new Typograf({
-        disableRule: '*',
-        enableRule: ['common/nbsp/*', 'ru/nbsp/*']
-    }),
-    typografEntities = new Typograf({
-        disableRule: '*',
-        enableRule: ['common/nbsp/*', 'common/punctuation/quote'],
-        locale: ['ru', 'en-US']
-    }),
-    langUI = require('./lang-ui');
+var str = require('./lib/string');
+var localStorage = require('./lib/local-storage');
+
+var i18n = require('./i18n');
+var prepareLocale = require('./prepare-locale');
+var Typograf = window.Typograf;
+var typografPrefs = new Typograf({
+    disableRule: '*',
+    enableRule: ['common/nbsp/*', 'ru/nbsp/*']
+});
+var typografEntities = new Typograf({
+    disableRule: '*',
+    enableRule: ['common/nbsp/*', 'common/punctuation/quote'],
+    locale: ['ru', 'en-US']
+});
 
 module.exports = {
     init: function(typograf) {
@@ -33,12 +33,6 @@ module.exports = {
         }
 
         this.locale = this.locale || 'ru';
-
-        langUI.init({
-            elem: $('.lang-ui'),
-            onChange: this.changeLangUI.bind(this)
-        });
-        
 
         this.mode = this.mode || '';
         this.onlyInvisible = this.onlyInvisible || false;
@@ -137,19 +131,19 @@ module.exports = {
         this._updateLocaleOptions();
 
         $('[data-text-id]').each(function(i, el) {
-            el.innerHTML = getText(el.dataset.textId);
+            el.innerHTML = i18n(el.dataset.textId);
         });
 
         $('[data-value-id]').each(function(i, el) {
-            el.value = getText(el.dataset.valueId);
+            el.value = i18n(el.dataset.valueId);
         });
 
         $('[data-title-id]').each(function(i, el) {
-            el.title = getText(el.dataset.titleId);
+            el.title = i18n(el.dataset.titleId);
         });
 
         $('[data-placeholder-id]').each(function(i, el) {
-            el.placeholder = getText(el.dataset.placeholderId);
+            el.placeholder = i18n(el.dataset.placeholderId);
         });
 
         this.rebuild();
@@ -165,7 +159,7 @@ module.exports = {
         this.onChange();
     },
     updateInvisibleSymbols: function() {
-        var html = typografEntities.execute(getText('html-entities-example'), {
+        var html = typografEntities.execute(i18n('html-entities-example'), {
             htmlEntity: {
                 type: this.mode,
                 onlyInvisible: this.onlyInvisible
@@ -180,7 +174,7 @@ module.exports = {
     },
     onChange: function() {},
     rebuild: function() {
-        var groups = this._getSortedGroups(Typograf.prototype._rules, langUI.val());
+        var groups = this._getSortedGroups(Typograf.prototype._rules, i18n.lang);
 
         $('.prefs__rules').html(this._buildHTML(groups));
     },
@@ -252,13 +246,14 @@ module.exports = {
         return groups;
     },
     _buildHTML: function(groups) {
-        var html = '';
+        var html = '',
+            langUI = i18n.lang;
 
         groups.forEach(function(group) {
             var groupName = group[0]._group,
                 groupTitle = typografPrefs.execute(
-                    Typograf.getGroupTitle(groupName, langUI.val()),
-                    {locale: prepareLocale(langUI.val())}
+                    Typograf.getGroupTitle(groupName, langUI),
+                    {locale: prepareLocale(langUI)}
                 );
 
             html += '<fieldset class="prefs__fieldset"><legend class="prefs__legend button">' +
@@ -271,13 +266,13 @@ module.exports = {
                     langPrefix = ruleLang === 'common' ? '' : '<span class="prefs__rule-lang">' + ruleLang + '</span>',
                     buf = Typograf.titles[name];
 
-                if (!buf || !(buf[langUI.val()] || buf.common)) {
+                if (!buf || !(buf[langUI] || buf.common)) {
                     console.warn('Not found title for name "' + name + '".');
                 }
 
                 var title = typografPrefs.execute(
-                        str.escapeHTML(buf[langUI.val()] || buf.common),
-                        {locale: prepareLocale(langUI.val())}
+                        str.escapeHTML(buf[langUI] || buf.common),
+                        {locale: prepareLocale(langUI)}
                     ),
                     id = 'setting-' + name,
                     ch = this._typograf.isEnabledRule(name),
@@ -375,7 +370,7 @@ module.exports = {
     _updateLocaleOptions: function() {
         var html = Typograf.getLocales()
             .sort(function(a, b) {
-                return getText('locale-' + a) > getText('locale-' + b);
+                return i18n('locale-' + a) > i18n('locale-' + b);
             })
             .map(function(l) {
                 return '<option value="' + l + '" data-text-id="locale-' + l + '"></option>\n';

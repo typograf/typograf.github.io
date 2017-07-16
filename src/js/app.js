@@ -1,35 +1,30 @@
-var diff = require('./diff'),
-    entityHighlight = require('./entity-highlight'),
-    hash = require('./hash'),
-    getText = require('./get-text').getText,
-    prepareLocale = require('./prepare-locale'),
-    Prefs = require('./prefs'),
-    saveFile = require('./save-file'),
-    str = require('./string'),
-    debounce = require('throttle-debounce/debounce'),
-    Typograf = window.Typograf,
-    typograf = new Typograf(),
-    showJSError = require('show-js-error/dist/show-js-error.custom');
+require('./show-js-error');
 
-showJSError.init({
-    title: 'JavaScript error',
-    userAgent: navigator.userAgent,
-    sendText: 'Send 🐛',
-    templateDetailedMessage: '```{message}```',
-    sendUrl: 'https://github.com/typograf/typograf.github.io/issues/new?title={title}&body={body}'
-});
+require('./lib/jquery.checked');
+require('./lib/metrika')(28700106);
+require('./lib/function');
 
-require('./jquery.checked');
-require('./metrika');
-require('./function');
 require('./typograf-groups');
+require('./extension');
+require('./version');
+
+var hash = require('./lib/hash');
+var str = require('./lib/string');
+
+var i18n = require('./i18n');
+var langUI = require('./lang-ui');
+var diff = require('./diff');
+var entityHighlight = require('./entity-highlight');
+var prepareLocale = require('./prepare-locale');
+var Prefs = require('./prefs');
+var saveFile = require('./save-file');
+var debounce = require('throttle-debounce/debounce');
+var typograf = new window.Typograf();
 
 var App = {
     last: {value: '', result: ''},
     isMobile: false,
     init: function() {
-        this.setVersion();
-
         var body = $(document.body);
         body.removeClass('transition_no');
 
@@ -47,6 +42,7 @@ var App = {
 
         Prefs.init(typograf);
         Prefs.onChange = this.execute.bind(this);
+        langUI.onChange = Prefs.changeLangUI.bind(Prefs);
 
         if (Prefs.rules) {
             typograf
@@ -56,38 +52,16 @@ var App = {
 
         this.updateResult = debounce(250, this.updateResult);
 
-        this.setLinkToAddition();
         this._events();
 
         this.execute();
-    },
-    setLinkToAddition: function() {
-        var browser = 'chrome';
-
-        if (navigator.userAgent.search('YaBrowser') > -1) {
-            browser = 'yabro';
-        }
-
-        if (typeof InstallTrigger !== 'undefined') {
-            browser = 'firefox';
-        }
-
-        if (navigator.userAgent.search(' OPR\/') > -1) {
-            browser = 'opera';
-        }
-
-        $('.extension_' + browser).show();
-    },
-
-    setVersion: function() {
-        $('#version').text(Typograf.version);
     },
     copyText: function(textarea) {
         try {
             textarea[0].select();
             document.execCommand('copy');
         } catch(e) {
-            window.alert(getText('notSupportCopy'));
+            window.alert(i18n('notSupportCopy'));
         }
     },
     execute: function() {
@@ -199,7 +173,7 @@ var App = {
         }.bind(this));
 
         $('.input__save').on('click', function() {
-            saveFile.save($('.result__text')[0], getText('notSupportSave'));
+            saveFile.save($('.result__text')[0], i18n('notSupportSave'));
         }.bind(this));
 
         $('.input__clear').on('click', function() {
