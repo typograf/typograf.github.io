@@ -30,7 +30,7 @@
     "node": ">= 4.0"
   },
   "devDependencies": {
-    "browserify": "^14.1.0",
+    "browserify": "^14.5.0",
     "diff": "^3.4.0",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^4.0.0",
@@ -47,7 +47,7 @@
     "show-js-error": "^1.10.0",
     "throttle-debounce": "^1.0.1",
     "through2": "^2.0.1",
-    "typograf": "^6.5.1",
+    "typograf": "^6.6.0",
     "vinyl-source-stream": "^1.1.0"
   },
   "scripts": {
