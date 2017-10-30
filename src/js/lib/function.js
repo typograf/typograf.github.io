@@ -11,9 +11,9 @@ if (!Function.prototype.bind) {
             },
             fBound = function() {
                 return fToBind.apply(this instanceof NOP && oThis
-                        ? this
-                        : oThis,
-                    aArgs.concat(Array.prototype.slice.call(arguments)));
+                    ? this
+                    : oThis,
+                aArgs.concat(Array.prototype.slice.call(arguments)));
             };
 
         NOP.prototype = this.prototype;

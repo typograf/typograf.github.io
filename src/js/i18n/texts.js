@@ -32,8 +32,8 @@ module.exports = {
         ru: 'HTML-сущности'
     },
     'example': {
-      'en-US': 'Example',
-      ru: 'Пример'
+        'en-US': 'Example',
+        ru: 'Пример'
     },
     'html-entities-example': {
         'en-US': '"A Z"',
@@ -256,8 +256,8 @@ module.exports = {
         'en-US': 'Rules',
         ru: 'Правила'
     },
-	yabro: {
+    yabro: {
         'en-US': 'Yandex.Browser',
         ru: 'Яндекс.Браузера'
-	}
+    }
 };

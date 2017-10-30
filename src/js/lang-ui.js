@@ -6,7 +6,7 @@ var Block = {
         { value: 'ru', text: 'Rus' },
         { value: 'en-US', text: 'Eng' }
     ],
-    init: function(data) {
+    init: function() {
         this._elem = $('.lang-ui').click(function(e) {
             this._next();
             this.onChange(e, this.val());

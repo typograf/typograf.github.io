@@ -1,5 +1,5 @@
 module.exports = {
-    getHashParams: function(param) {
+    getHashParams: function() {
         var hash = window.location.hash.replace(/^#!/, ''),
             buf = hash.split('&'),
             params = {};
@@ -9,7 +9,7 @@ module.exports = {
             if (el.length > 1 && el[1] !== undefined) {
                 try {
                     params[el[0]] = window.decodeURIComponent(el[1]);
-                } catch(e) {
+                } catch (e) {
                     params[el[0]] = el[1];
                 }
             }

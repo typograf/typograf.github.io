@@ -1,8 +1,10 @@
-const autoprefixer = require('gulp-autoprefixer');
+'use strict';
+
 const browserify = require('browserify');
+const gulp = require('gulp');
+const autoprefixer = require('gulp-autoprefixer');
 const concat = require('gulp-concat');
 const cleancss = require('gulp-cleancss');
-const gulp = require('gulp');
 const less = require('gulp-less');
 const md5 = require('gulp-md5-assets');
 const source = require('vinyl-source-stream');
@@ -15,12 +17,10 @@ const apBrowsers = {
 };
 
 const uglifyOptions = {
-	output: {
-		/*jshint camelcase: false */
-		ascii_only: true,
-		/*jshint camelcase: true */
-		comments: 'some'
-	}
+    output: {
+        ascii_only: true,
+        comments: 'some'
+    }
 };
 
 gulp.task('jsTypograf', function() {
@@ -81,7 +81,7 @@ gulp.task(
         'jsDiff',
         'cssMobile',
         'cssDesktop',
-		'copySvg',
+        'copySvg',
         'copyTemplates'
     ],
     function() {
@@ -90,7 +90,7 @@ gulp.task(
 );
 
 gulp.task('watch', function() {
-    gulp.watch('src/**/*', ['default']);
+    gulp.watch('src/**/*', [ 'default' ]);
 });
 
-gulp.task('default', ['updateVersion']);
+gulp.task('default', [ 'updateVersion' ]);

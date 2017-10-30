@@ -60,7 +60,7 @@ var App = {
         try {
             textarea[0].select();
             document.execCommand('copy');
-        } catch(e) {
+        } catch (e) {
             window.alert(i18n('notSupportCopy'));
         }
     },
@@ -121,7 +121,7 @@ var App = {
             var data;
             try {
                 data = JSON.parse(e.data);
-            } catch(e) {
+            } catch (e) {
                 return;
             }
 

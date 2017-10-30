@@ -14,7 +14,7 @@ module.exports = {
         return title;
     },
     make: function(before, after) {
-        var diff = JsDiff.diffChars(before, after),
+        var diff = window.JsDiff.diffChars(before, after),
             html = '';
 
         diff.forEach(function(part){

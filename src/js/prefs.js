@@ -22,7 +22,9 @@ module.exports = {
         var rules;
         try {
             rules = JSON.parse(localStorage.getItem('settings.rules'));
-        } catch(e) {}
+        } catch (e) {
+            console.log(e);
+        }
 
         this.locale = localStorage.getItem('settings.locale');
         this.mode = localStorage.getItem('settings.mode');
@@ -127,7 +129,7 @@ module.exports = {
 
         this.onChange();
     },
-    changeLangUI: function(e, value) {
+    changeLangUI: function() {
         this._updateLocaleOptions();
 
         $('[data-text-id]').each(function(i, el) {
@@ -201,7 +203,7 @@ module.exports = {
             currentGroup,
             groups = [];
 
-        rules.forEach(function(rule, i) {
+        rules.forEach(function(rule) {
             var groupName = rule._group;
 
             if (groupName !== currentGroupName) {
@@ -221,7 +223,7 @@ module.exports = {
         groups.forEach(function(group) {
             group.sort(function(a, b) {
                 var titleA = titles[a.name],
-                  titleB = titles[b.name];
+                    titleB = titles[b.name];
 
                 return (titleA[lang] || titleA.common) > (titleB[lang] || titleB.common) ? 1 : -1;
             });
@@ -262,7 +264,7 @@ module.exports = {
 
             group.forEach(function(rule) {
                 var name = rule.name,
-                    ruleLang = name.split('\/')[0],
+                    ruleLang = name.split('/')[0],
                     langPrefix = ruleLang === 'common' ? '' : '<span class="prefs__rule-lang">' + ruleLang + '</span>',
                     buf = Typograf.titles[name];
 
@@ -293,7 +295,7 @@ module.exports = {
     _getCheckboxes: function() {
         return $('.prefs__rule-checkbox');
     },
-    _clickRule: function(e) {
+    _clickRule: function() {
         var that = this;
 
         this._getCheckboxes().each(function(i, el) {
@@ -312,7 +314,7 @@ module.exports = {
 
         this.onChange();
     },
-    _clickLegend: function(e) {
+    _clickLegend: function() {
         $(this)
             .closest('.prefs__fieldset')
             .toggleClass('prefs__fieldset_visible')
@@ -342,8 +344,8 @@ module.exports = {
     },
     _synchronizeMainCheckbox: function() {
         var count = 0,
-          els = this._getCheckboxes(),
-          checked;
+            els = this._getCheckboxes(),
+            checked;
 
         els.each(function(i, el) {
             if (el.checked) {

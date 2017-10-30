@@ -8,7 +8,7 @@ if (typeof InstallTrigger !== 'undefined') {
     browser = 'firefox';
 }
 
-if (navigator.userAgent.search(' OPR\/') > -1) {
+if (navigator.userAgent.search(' OPR/') > -1) {
     browser = 'opera';
 }
 

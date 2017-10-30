@@ -27,11 +27,12 @@
     "typography"
   ],
   "engines": {
-    "node": ">= 4.0"
+    "node": ">= 8.0"
   },
   "devDependencies": {
     "browserify": "^14.5.0",
     "diff": "^3.4.0",
+    "eslint": "^4.10.0",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^4.0.0",
     "gulp-cleancss": "^0.2.2",
@@ -42,8 +43,6 @@
     "gulp-streamify": "^1.0.2",
     "gulp-uglify": "^3.0.0",
     "jquery": "^3.2.0",
-    "jscs": "^3.0.0",
-    "jshint": "^2.9.5",
     "show-js-error": "^1.10.0",
     "throttle-debounce": "^1.0.1",
     "through2": "^2.0.1",
@@ -51,8 +50,8 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "scripts": {
-    "test": "npm run-script jshint && npm run-script jscs",
-    "jscs": "./node_modules/.bin/jscs .",
-    "jshint": "./node_modules/.bin/jshint ."
+    "test": "npm run-script eslint",
+    "eslint": "eslint .",
+    "dist": "gulp"
   }
 }

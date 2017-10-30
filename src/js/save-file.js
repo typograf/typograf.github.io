@@ -14,7 +14,7 @@ module.exports = {
         }
 
         var textToWrite = textarea.value,
-            textFileAsBlob = new Blob([textToWrite], {type:'text/plain'}),
+            textFileAsBlob = new Blob([ textToWrite ], {type: 'text/plain'}),
             downloadLink = document.createElement('a');
 
         downloadLink.download = this.getFilename(textToWrite);
