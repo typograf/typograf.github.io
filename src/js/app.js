@@ -1,12 +1,4 @@
-import './show-js-error';
-
-import Metrika from './lib/metrika';
-Metrika(28700106);
-
-import './lib/jquery.checked';
-import './typograf-groups';
-import './extension';
-import './version';
+import './start';
 
 import hash from './lib/hash';
 import str from './lib/string';
@@ -21,8 +13,7 @@ import prepareLocale from './prepare-locale';
 import saveFile from './save-file';
 import debounce from 'throttle-debounce/debounce';
 
-import PrefsClass from './prefs';
-let Prefs;
+import Prefs from './prefs';
 
 const typograf = new window.Typograf();
 
@@ -45,14 +36,15 @@ class App {
             this._setValue(hash.getHashParam('text') || '');
         }
 
-        Prefs = new PrefsClass(typograf);
-        Prefs.onChange = this.execute.bind(this);
-        langUI.onChange = Prefs.changeLangUI.bind(Prefs);
+        this._prefs = new Prefs(typograf);
+        this._prefs.onChange = this.execute.bind(this);
 
-        if (Prefs.rules) {
+        langUI.onChange = this._prefs.changeLangUI.bind(this._prefs);
+
+        if (this._prefs.rules) {
             typograf
-                .enableRule(Prefs.rules.enabled)
-                .disableRule(Prefs.rules.disabled);
+                .enableRule(this._prefs.rules.enabled)
+                .disableRule(this._prefs.rules.disabled);
         }
 
         this.updateResult = debounce(250, this.updateResult);
@@ -75,8 +67,8 @@ class App {
         const
             value = this._getValue(),
             result = typograf.execute(value, {
-                locale: prepareLocale(Prefs.locale),
-                htmlEntity: {type: Prefs.mode}
+                locale: prepareLocale(this._prefs.locale),
+                htmlEntity: {type: this._prefs.mode}
             });
 
         this.last = { value, result };
@@ -142,8 +134,8 @@ class App {
                     service: 'typograf',
                     command: 'return',
                     text: typograf.execute(data.text, {
-                        locale: prepareLocale(Prefs.locale),
-                        htmlEntity: {type: Prefs.mode}
+                        locale: prepareLocale(this._prefs.locale),
+                        htmlEntity: {type: this._prefs.mode}
                     })
                 }), '*');
             }
@@ -165,7 +157,7 @@ class App {
             }
 
             el.toggleClass(clSelected);
-            Prefs.toggle();
+            this._prefs.toggle();
         };
 
         $('.header, .paranja').on('click', this._onprefs);
