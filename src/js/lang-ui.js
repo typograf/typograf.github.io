@@ -1,16 +1,18 @@
-var i18n = require('./i18n');
-var localStorage = require('./lib/local-storage');
-var Block = {
-    defaultLang: 'ru',
-    langs: [
-        { value: 'ru', text: 'Rus' },
-        { value: 'en-US', text: 'Eng' }
-    ],
-    init: function() {
-        this._elem = $('.lang-ui').click(function(e) {
+import i18n from './i18n';
+import localStorage from './lib/local-storage';
+
+class LangUI {
+    constructor() {
+        this.defaultLang = 'ru';
+        this.langs = [
+            { value: 'ru', text: 'Rus' },
+            { value: 'en-US', text: 'Eng' }
+        ];
+
+        this._elem = $('.lang-ui').click(e => {
             this._next();
             this.onChange(e, this.val());
-        }.bind(this));
+        });
 
         this._langsByValue = {};
         this.langs.forEach(function(item, i) {
@@ -19,8 +21,9 @@ var Block = {
         }, this);
 
         this.val(localStorage.getItem('settings.langUI') || this.defaultLang);
-    },
-    val: function(value) {
+    }
+
+    val(value) {
         if (typeof value !== 'undefined') {
             if (value === 'en') {
                 value = 'en-US';
@@ -38,20 +41,20 @@ var Block = {
         }
 
         return this._val;
-    },
-    _update: function() {
+    }
+
+    _update() {
         this._elem.text(this._langsByValue[this.val()].text);
-    },
-    _next: function() {
-        var index = this._langsByValue[this.val()].index + 1;
+    }
+
+    _next() {
+        let index = this._langsByValue[this.val()].index + 1;
         if (index >= this.langs.length) {
             index = 0;
         }
 
         this.val(this.langs[index].value);
     }
-};
+}
 
-Block.init();
-
-module.exports = Block;
+export default new LangUI();

@@ -1,19 +1,21 @@
-var str = require('./lib/string');
+import str from './lib/string';
 
-module.exports = {
-    getFilename: function(text) {
-        var ext = str.isHTML(text) ? 'html' : 'txt';
-        var file = str.stripTags(text).replace(/\s+/g, ' ').trim();
+export default {
+    getFilename(text) {
+        const
+            ext = str.isHTML(text) ? 'html' : 'txt',
+            file = str.stripTags(text).replace(/\s+/g, ' ').trim();
 
         return (str.truncate(file, 32) || 'text') + '.' + ext;
     },
-    save: function(textarea, notSupportSave) {
+    save(textarea, notSupportSave) {
         if (!window.Blob) {
             window.alert(notSupportSave);
             return;
         }
 
-        var textToWrite = textarea.value,
+        const
+            textToWrite = textarea.value,
             textFileAsBlob = new Blob([ textToWrite ], {type: 'text/plain'}),
             downloadLink = document.createElement('a');
 

@@ -1,8 +1,8 @@
-var str = require('./lib/string');
+import str from './lib/string';
 
-module.exports = {
-    getDiffTitle: function(sym) {
-        var title = '';
+export default {
+    getDiffTitle(sym) {
+        let title = '';
         if (sym === '\u00A0') {
             title = 'NO-BREAK SPACE';
         } else if (sym === '\u202F') {
@@ -13,23 +13,23 @@ module.exports = {
 
         return title;
     },
-    make: function(before, after) {
-        var diff = window.JsDiff.diffChars(before, after),
-            html = '';
-
-        diff.forEach(function(part){
-            var val = str.escapeHTML(part.value),
+    make(before, after) {
+        return window.JsDiff.diffChars(before, after).map(function(part){
+            const
+                val = str.escapeHTML(part.value),
                 title = this.getDiffTitle(part.value);
 
-            if (part.added) {
-                html += '<ins class="diff" title="' + title + '">' + val + '</ins>';
-            } else if (part.removed) {
-                html += '<del class="diff" title="' + title + '">' + val + '</del>';
-            } else {
-                html += val;
-            }
-        }, this);
+            let html;
 
-        return html;
+            if (part.added) {
+                html = `<ins class="diff" title="${title}">${val}</ins>`;
+            } else if (part.removed) {
+                html = `<del class="diff" title="${title}">${val}</del>`;
+            } else {
+                html = val;
+            }
+
+            return html;
+        }, this).join('');
     }
 };

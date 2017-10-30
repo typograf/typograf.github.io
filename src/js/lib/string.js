@@ -1,17 +1,17 @@
-module.exports = {
-    escapeHTML: function(text) {
+export default {
+    escapeHTML(text) {
         return (text || '')
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;');
     },
-    isHTML: function(text) {
+    isHTML(text) {
         return (text || '').search(/(<\/?[a-z]|<!|&[lg]t;)/i) !== -1;
     },
-    stripTags: function(text) {
+    stripTags(text) {
         return (text || '').replace(/<\/?[^>]+(>|$)/g, '');
     },
-    truncate: function(text, len) {
+    truncate(text, len) {
         if (text) {
             return text.length > len ? text.substr(0, len) : text;
         }

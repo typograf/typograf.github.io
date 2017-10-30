@@ -1,4 +1,4 @@
-var browser = 'chrome';
+let browser = 'chrome';
 
 if (navigator.userAgent.search('YaBrowser') > -1) {
     browser = 'yabro';

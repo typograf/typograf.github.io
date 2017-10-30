@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     typograf: {
         'en-US': 'Typograf',
         ru: 'Типограф'
