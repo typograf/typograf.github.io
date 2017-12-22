@@ -67,10 +67,6 @@ gulp.task('copyTemplates', function() {
     return gulp.src('./src/html/*.html').pipe(gulp.dest('./'));
 });
 
-gulp.task('copySvg', function() {
-    return gulp.src('./src/svg/*.svg').pipe(gulp.dest(destDir + '/svg'));
-});
-
 gulp.task(
     'updateVersion',
     [
@@ -80,7 +76,6 @@ gulp.task(
         'jsDiff',
         'cssMobile',
         'cssDesktop',
-        'copySvg',
         'copyTemplates'
     ],
     function() {
