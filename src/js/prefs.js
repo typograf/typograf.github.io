@@ -1,4 +1,4 @@
-import i18n from './i18n';
+import i18n from './i18n/index';
 import str from './lib/string';
 import localStorage from './lib/local-storage';
 import prepareLocale from './prepare-locale';

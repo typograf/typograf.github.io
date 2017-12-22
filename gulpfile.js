@@ -1,27 +1,17 @@
 'use strict';
 
-const browserify = require('browserify');
-const gulp = require('gulp');
-const autoprefixer = require('gulp-autoprefixer');
-const concat = require('gulp-concat');
-const cleancss = require('gulp-cleancss');
-const less = require('gulp-less');
-const md5 = require('gulp-md5-assets');
-const source = require('vinyl-source-stream');
-const streamify = require('gulp-streamify');
-const uglify = require('gulp-uglify');
-
-const destDir = './build/';
-const apBrowsers = {
-    browsers: ['ie >= 9', 'Firefox >= 24', 'Chrome >= 26', 'iOS >= 5', 'Safari >= 6', 'Android > 2.3']
-};
-
-const uglifyOptions = {
-    output: {
-        ascii_only: true,
-        comments: 'some'
-    }
-};
+const
+    gulp = require('gulp'),
+    $ = require('gulp-load-plugins')(),
+    babel = require('rollup-plugin-babel'),
+    resolve = require('rollup-plugin-node-resolve'),
+    commonjs = require('rollup-plugin-commonjs'),
+    destDir = './build/',
+    apBrowsers = {browsers: [
+        'ie >= 9', 'Firefox >= 24', 'Chrome >= 26',
+        'iOS >= 5', 'Safari >= 6', 'Android > 4.0'
+    ]},
+    uglifyOptions = { output: { ascii_only: true, comments: 'some' } };
 
 gulp.task('jsTypograf', function() {
     return gulp.src('./node_modules/typograf/dist/typograf.all.min.js')
@@ -39,28 +29,37 @@ gulp.task('jsDiff', function() {
 });
 
 gulp.task('jsApp', function() {
-    return browserify('./src/js/app.js')
-        .bundle()
-        .pipe(source('app.min.js'))
-        .pipe(streamify(uglify(uglifyOptions)))
+    return gulp.src('./src/js/app.js')
+        .pipe($.rollup({
+            allowRealFiles: true,
+            input: './src/js/app.js',
+            format: 'iife',
+            plugins: [
+                resolve(),
+                commonjs(),
+                babel()
+            ]
+        }))
+        .pipe($.rename('app.min.js'))
+        .pipe($.uglify(uglifyOptions))
         .pipe(gulp.dest(destDir));
 });
 
 gulp.task('cssMobile', function() {
     return gulp.src('./src/less/mobile.less')
-        .pipe(concat('mobile.min.css'))
-        .pipe(less())
-        .pipe(cleancss())
-        .pipe(autoprefixer(apBrowsers))
+        .pipe($.concat('mobile.min.css'))
+        .pipe($.less())
+        .pipe($.cleancss())
+        .pipe($.autoprefixer(apBrowsers))
         .pipe(gulp.dest(destDir));
 });
 
 gulp.task('cssDesktop', function() {
     return gulp.src('./src/less/desktop.less')
-        .pipe(concat('desktop.min.css'))
-        .pipe(less())
-        .pipe(cleancss())
-        .pipe(autoprefixer(apBrowsers))
+        .pipe($.concat('desktop.min.css'))
+        .pipe($.less())
+        .pipe($.cleancss())
+        .pipe($.autoprefixer(apBrowsers))
         .pipe(gulp.dest(destDir));
 });
 
@@ -85,7 +84,7 @@ gulp.task(
         'copyTemplates'
     ],
     function() {
-        return gulp.src('./build/*.*').pipe(md5(10, './*.html'));
+        return gulp.src('./build/*.*').pipe($.md5Assets(10, './*.html'));
     }
 );
 

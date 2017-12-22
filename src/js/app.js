@@ -3,7 +3,7 @@ import './start';
 import hash from './lib/hash';
 import str from './lib/string';
 
-import i18n from './i18n';
+import i18n from './i18n/index';
 import langUI from './lang-ui';
 
 import diff from './diff';
@@ -162,11 +162,11 @@ class App {
 
         $('.header, .paranja').on('click', this._onprefs);
 
-        $('.result__as-text, .result__as-html, .result__as-diff').on('click', () => {
+        $('.result__as-text, .result__as-html, .result__as-diff').on('click', (e) => {
             $('.result__text').hide().val('');
             $('.result__html, .result__diff').hide().html('');
 
-            $('.result__' + this.value).show();
+            $('.result__' + e.target.value).show();
             this.updateResult();
         });
 
