@@ -1,11 +1,11 @@
-module.exports = {
-    getHashParams: function() {
-        var hash = window.location.hash.replace(/^#!/, ''),
-            buf = hash.split('&'),
+export default {
+    getHashParams() {
+        const
+            hash = window.location.hash.replace(/^#!/, ''),
             params = {};
 
-        for (var i = 0; i < buf.length; i++) {
-            var el = buf[i].split('=');
+        hash.split('&').forEach(function(item) {
+            const el = item.split('=');
             if (el.length > 1 && el[1] !== undefined) {
                 try {
                     params[el[0]] = window.decodeURIComponent(el[1]);
@@ -13,11 +13,12 @@ module.exports = {
                     params[el[0]] = el[1];
                 }
             }
-        }
+
+        });
 
         return params;
     },
-    getHashParam: function(param) {
+    getHashParam(param) {
         return this.getHashParams()[param];
     }
 };

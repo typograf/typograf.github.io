@@ -1,4 +1,4 @@
-var Typograf = window.Typograf;
+const Typograf = window.Typograf;
 
 Typograf.groupsByName = {};
 

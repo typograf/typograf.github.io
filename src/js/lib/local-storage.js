@@ -1,6 +1,6 @@
-module.exports = {
-    getItem: function(key) {
-        var result;
+export default {
+    getItem(key) {
+        let result;
 
         if (window.localStorage) {
             try {
@@ -12,7 +12,7 @@ module.exports = {
 
         return result;
     },
-    setItem: function(key, value) {
+    setItem(key, value) {
         if (window.localStorage) {
             try {
                 localStorage.setItem(key, value);

@@ -1,53 +1,50 @@
-require('./show-js-error');
+import './start';
 
-require('./lib/jquery.checked');
-require('./lib/metrika')(28700106);
-require('./lib/function');
+import hash from './lib/hash';
+import str from './lib/string';
 
-require('./typograf-groups');
-require('./extension');
-require('./version');
+import i18n from './i18n/index';
+import langUI from './lang-ui';
 
-var hash = require('./lib/hash');
-var str = require('./lib/string');
+import diff from './diff';
+import entityHighlight from './entity-highlight';
+import prepareLocale from './prepare-locale';
 
-var i18n = require('./i18n');
-var langUI = require('./lang-ui');
-var diff = require('./diff');
-var entityHighlight = require('./entity-highlight');
-var prepareLocale = require('./prepare-locale');
-var Prefs = require('./prefs');
-var saveFile = require('./save-file');
-var debounce = require('throttle-debounce/debounce');
-var typograf = new window.Typograf();
+import saveFile from './save-file';
+import debounce from 'throttle-debounce/debounce';
 
-var App = {
-    last: {value: '', result: ''},
-    isMobile: false,
-    init: function() {
+import Prefs from './prefs';
+
+const typograf = new window.Typograf();
+
+class App {
+    constructor() {
+        this.last = {value: '', result: ''};
+
         var body = $(document.body);
         body.removeClass('transition_no');
 
         this.isMobile = body.hasClass('page_is-mobile');
 
         if (window.location.hash === '#!prefs') {
-            setTimeout(function() {
+            setTimeout(() => {
                 this._onprefs();
-            }.bind(this), 1);
+            }, 1);
         }
 
         if (!this.isMobile) {
             this._setValue(hash.getHashParam('text') || '');
         }
 
-        Prefs.init(typograf);
-        Prefs.onChange = this.execute.bind(this);
-        langUI.onChange = Prefs.changeLangUI.bind(Prefs);
+        this._prefs = new Prefs(typograf);
+        this._prefs.onChange = this.execute.bind(this);
 
-        if (Prefs.rules) {
+        langUI.onChange = this._prefs.changeLangUI.bind(this._prefs);
+
+        if (this._prefs.rules) {
             typograf
-                .enableRule(Prefs.rules.enabled)
-                .disableRule(Prefs.rules.disabled);
+                .enableRule(this._prefs.rules.enabled)
+                .disableRule(this._prefs.rules.disabled);
         }
 
         this.updateResult = debounce(250, this.updateResult);
@@ -55,35 +52,37 @@ var App = {
         this._events();
 
         this.execute();
-    },
-    copyText: function(textarea) {
+    }
+
+    copyText(textarea) {
         try {
             textarea[0].select();
             document.execCommand('copy');
         } catch (e) {
             window.alert(i18n('notSupportCopy'));
         }
-    },
-    execute: function() {
-        var value = this._getValue(),
+    }
+
+    execute() {
+        const
+            value = this._getValue(),
             result = typograf.execute(value, {
-                locale: prepareLocale(Prefs.locale),
-                htmlEntity: {type: Prefs.mode}
+                locale: prepareLocale(this._prefs.locale),
+                htmlEntity: {type: this._prefs.mode}
             });
 
-        this.last = {
-            value: value,
-            result: result
-        };
+        this.last = { value, result };
 
         if (this.isMobile) {
             $('.input__text').val(result);
         } else {
             this.updateResult();
         }
-    },
-    updateResult: function() {
-        var value = this.last.value,
+    }
+
+    updateResult() {
+        const
+            value = this.last.value,
             result = this.last.result,
             resText = $('.result__text'),
             resHTML = $('.result__html'),
@@ -92,33 +91,38 @@ var App = {
         resText.is(':visible') && resText.val(result);
         resHTML.is(':visible') && resHTML.html(entityHighlight(result));
         resDiff.is(':visible') && resDiff.html(diff.make(value, result));
-    },
-    _setValue: function(value) {
+    }
+
+    _setValue(value) {
         $('.input__text').val(value);
 
         this._updateValue(value);
-    },
-    _getValue: function() {
+    }
+
+    _getValue() {
         return $('.input__text').val();
-    },
-    _updateValue: function(value) {
+    }
+
+    _updateValue(value) {
         if (!this.isMobile && window.location.hash !== '#!prefs') {
             window.location.hash = '#!text=' + window.encodeURIComponent(str.truncate(value, 512));
         }
 
         this._updateClearText(value);
-    },
-    _updateClearText: function(value) {
-        var clear = $('.input__clear');
+    }
+
+    _updateClearText(value) {
+        const clear = $('.input__clear');
         if (value.length > 0) {
             clear.show();
         } else {
             clear.hide();
         }
-    },
-    _events: function() {
-        window.addEventListener('message', function(e) {
-            var data;
+    }
+
+    _events() {
+        window.addEventListener('message', e => {
+            let data;
             try {
                 data = JSON.parse(e.data);
             } catch (e) {
@@ -130,67 +134,67 @@ var App = {
                     service: 'typograf',
                     command: 'return',
                     text: typograf.execute(data.text, {
-                        locale: prepareLocale(Prefs.locale),
-                        htmlEntity: {type: Prefs.mode}
+                        locale: prepareLocale(this._prefs.locale),
+                        htmlEntity: {type: this._prefs.mode}
                     })
                 }), '*');
             }
-        }.bind(this), false);
+        }, false);
 
-        this._onprefs = function() {
-            var el = $('.header'),
+        this._onprefs = () => {
+            const
+                el = $('.header'),
                 clSelected = '.header_selected';
 
             if (el.hasClass(clSelected)) {
                 window.location.hash = '';
 
-                setTimeout(function() {
+                setTimeout(() => {
                     this.execute();
-                }.bind(this), 0);
+                }, 0);
             } else {
                 window.location.hash = '#!prefs';
             }
 
             el.toggleClass(clSelected);
-            Prefs.toggle();
-        }.bind(this);
+            this._prefs.toggle();
+        };
 
         $('.header, .paranja').on('click', this._onprefs);
 
-        var that = this;
-        $('.result__as-text, .result__as-html, .result__as-diff').on('click', function() {
+        $('.result__as-text, .result__as-html, .result__as-diff').on('click', (e) => {
             $('.result__text').hide().val('');
             $('.result__html, .result__diff').hide().html('');
 
-            $('.result__' + this.value).show();
-            that.updateResult();
+            $('.result__' + e.target.value).show();
+            this.updateResult();
         });
 
-        $('.input__copy').on('click', function() {
+        $('.input__copy').on('click', () => {
             $('.result__as-text').click();
 
             this.copyText($('.result__text'));
-        }.bind(this));
+        });
 
-        $('.input__save').on('click', function() {
+        $('.input__save').on('click', () => {
             saveFile.save($('.result__text')[0], i18n('notSupportSave'));
-        }.bind(this));
+        });
 
-        $('.input__clear').on('click', function() {
+        $('.input__clear').on('click', () => {
             this._setValue('');
 
             $('.input__text').focus();
 
             this.execute();
-        }.bind(this));
+        });
 
-        var oldValue = null;
+        let oldValue = null;
 
         if (this.isMobile) {
             $('.input__execute').on('click', this.execute.bind(this));
         } else {
-            $('.input__text').on('keyup input click', function() {
-                var val = this._getValue();
+            $('.input__text').on('keyup input click', () => {
+                const val = this._getValue();
                 if (val === oldValue) {
                     return;
                 }
@@ -200,9 +204,11 @@ var App = {
                 this._updateValue(val);
 
                 this.execute();
-            }.bind(this));
+            });
         }
     }
-};
+}
 
-$(document).ready(App.init.bind(App));
+$(document).ready(function() {
+    new App();
+});

@@ -1,4 +1,4 @@
-module.exports = function(text) {
+export default function(text) {
     [
         [/(\u00A0|&nbsp;|&#160;)/g, '\u00A0', 'NO-BREAK SPACE'],
         [/(\u202F|&#8239;)/g, '\u202F', 'NARROW NO-BREAK SPACE'],
@@ -8,4 +8,4 @@ module.exports = function(text) {
     });
 
     return text;
-};
+}

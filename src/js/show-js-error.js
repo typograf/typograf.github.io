@@ -1,4 +1,6 @@
-require('show-js-error/dist/show-js-error.custom').init({
+import showJsError from 'show-js-error/dist/show-js-error.custom';
+
+showJsError.init({
     title: 'JavaScript error',
     userAgent: navigator.userAgent,
     sendText: 'Send 🐛',
