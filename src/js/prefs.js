@@ -398,7 +398,7 @@ export default class Prefs {
     _updateLocaleOptions() {
         const html = Typograf.getLocales()
             .sort(function(a, b) {
-                return i18n('locale-' + a) > i18n('locale-' + b);
+                return i18n('locale-' + a) > i18n('locale-' + b) ? 1 : -1;
             })
             .map(function(l) {
                 return '<option value="' + l + '" data-text-id="locale-' + l + '"></option>\n';
