@@ -179,6 +179,7 @@ export default class Prefs {
             .replace(/(&amp;#?[\da-z_-]+;)/gi, '<span style="color: green;">$1</span>');
 
         $('.prefs__html-entities-example').html(html);
+        $('.prefs__invisible-symbols-container')[this.mode ? 'show' : 'hide']();
     }
 
     onChange() {}
