@@ -209,6 +209,4 @@ class App {
     }
 }
 
-$(document).ready(function() {
-    new App();
-});
+new App();
