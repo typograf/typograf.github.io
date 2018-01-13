@@ -55,6 +55,10 @@ export default {
         'en-US': 'Copy',
         ru: 'Копировать'
     },
+    copied: {
+        'en-US': 'Copied',
+        ru: 'Скопировано'
+    },
     save: {
         'en-US': 'Save',
         ru: 'Сохранить'

@@ -1,0 +1,30 @@
+.tooltip {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    max-width: 300px;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+    padding: 5px 10px;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility .3s ease .3s, opacity .3s ease;
+    font-size: 16px;
+    line-height: 20px;
+
+    color: #fff;
+
+    &_type_ok {
+        background: #00ac51;
+    }
+
+    &_type_error {
+        background: #ac0051;
+    }
+
+    &_visible {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity .3s ease;
+    }
+}

@@ -10,6 +10,8 @@ import diff from './diff';
 import entityHighlight from './entity-highlight';
 import prepareLocale from './prepare-locale';
 
+import Tooltip from './tooltip';
+
 import saveFile from './save-file';
 import debounce from 'throttle-debounce/debounce';
 
@@ -36,6 +38,8 @@ class App {
             this._setValue(hash.getHashParam('text') || '');
         }
 
+        this._tooltip = new Tooltip();
+
         this._prefs = new Prefs(typograf);
         this._prefs.onChange = this.execute.bind(this);
 
@@ -58,8 +62,9 @@ class App {
         try {
             textarea[0].select();
             document.execCommand('copy');
+            this._tooltip.show(i18n('copied'), 'ok', true);
         } catch (e) {
-            window.alert(i18n('notSupportCopy'));
+            this._tooltip.show(i18n('notSupportCopy'), 'error', true);
         }
     }
 
