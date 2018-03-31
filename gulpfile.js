@@ -9,7 +9,7 @@ const
     destDir = './build/',
     apBrowsers = {browsers: [
         'ie >= 9', 'Firefox >= 24', 'Chrome >= 26',
-        'iOS >= 5', 'Safari >= 6', 'Android > 4.0'
+        'iOS >= 6', 'Safari >= 6', 'Android > 4.0'
     ]},
     uglifyOptions = { output: { ascii_only: true, comments: 'some' } };
 
@@ -33,7 +33,7 @@ gulp.task('jsApp', function() {
         .pipe($.rollup({
             allowRealFiles: true,
             input: './src/js/app.js',
-            format: 'iife',
+            output: { format: 'iife' },
             plugins: [
                 resolve(),
                 commonjs(),
