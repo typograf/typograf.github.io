@@ -52,7 +52,7 @@
     "rollup-plugin-node-resolve": "^3.3.0",
     "show-js-error": "^1.10.0",
     "throttle-debounce": "^1.0.1",
-    "typograf": "^6.7.0"
+    "typograf": "^6.7.1"
   },
   "scripts": {
     "test": "npm run-script eslint",
