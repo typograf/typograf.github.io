@@ -30,7 +30,7 @@
     "node": ">= 8.0"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-env": "^1.6.1",
     "diff": "^3.5.0",
@@ -47,12 +47,12 @@
     "gulp-rollup": "^2.16.2",
     "gulp-uglify": "^3.0.0",
     "jquery": "^3.3.1",
-    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-babel": "^3.0.4",
     "rollup-plugin-commonjs": "^8.4.1",
     "rollup-plugin-node-resolve": "^3.3.0",
     "show-js-error": "^1.10.0",
     "throttle-debounce": "^1.0.1",
-    "typograf": "^6.7.1"
+    "typograf": "^6.7.2"
   },
   "scripts": {
     "test": "npm run-script eslint",
