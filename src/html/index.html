@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title data-text-id="typograf">Типограф</title>
+    <title>Типограф</title>
     <meta charset="utf-8" />
     <link rel="icon" href="./icons/favicon.png" />
     <link rel="apple-touch-icon" href="./icons/touchicon.png" />
-    <link rel="stylesheet" href="./build/desktop.min.css" />
     <script>
     (function(ua, url) {
         if (window.location.href.search(/[\?&]full=1/) > -1) {
@@ -19,11 +18,10 @@
     })(navigator.userAgent || navigator.vendor || window.opera, './mobile.html');
     </script>
 </head>
-<body class="page_is-desktop transition_no">
-    <header class="header">
-        <h1 class="header__title"><span data-text-id="typograf">Типограф</span><span class="prefs-icon"></span></h1>
-    </header>
-    <div class="container">
+<body class="page_desktop transition_no">
+    <div class="app-container"></div>
+    
+    <!--<div class="container">
         <div class="prefs">
             <div class="prefs__items">
                 <div class="prefs__item prefs__item_first">
@@ -81,38 +79,8 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 
-    <footer class="footer">
-        <div class="footer__left">
-            <div class="footer__item">
-                <a href="./mobile.html" data-text-id="mobile-version">Мобильная версия</a>
-            </div>
-            <div class="footer__item">
-                <a href="https://github.com/typograf/typograf.github.io/issues/new" target="_blank" data-text-id="report-error">Сообщить об ошибке</a>
-            </div>
-
-            <div class="footer__item">
-                <span class="extension" data-text-id="extension">Дополнение для</span>
-                <a class="extension_firefox" href="https://addons.mozilla.org/ru/firefox/addon/typografy/" target="_blank">Mozilla Firefox</a>
-                <a class="extension_chrome" href="https://chrome.google.com/webstore/detail/red-typography/dgmmkhdeghobfcedlnmgbncknnfjhnmo" target="_blank">Google Chrome</a>
-                <a class="extension_opera" href="https://addons.opera.com/ru/extensions/details/red-typography/">Opera</a>
-                <a class="extension_yabro" href="https://addons.opera.com/ru/extensions/details/red-typography/" data-text-id="yabro">Яндекс.Браузер</a>
-            </div>
-        </div>
-        <div class="footer__right">
-            <div class="footer__item">
-                <span data-text-id="powered-by">На основе</span> <a href="https://github.com/typograf/typograf/releases/" target="_blank">Typograf<span id="version"></span></a>
-            </div>
-            <div class="footer__item">
-                <span class="lang-ui"></span>
-            </div>
-        </div>
-    </footer>
-
-    <script src="./build/typograf.all.min.js"></script>
-    <script src="./build/jquery.min.js"></script>
     <script src="./build/diff.min.js"></script>
-    <script src="./build/app.min.js"></script>
 </body>
 </html>
