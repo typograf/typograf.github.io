@@ -32,17 +32,19 @@ class App extends Component {
             result: ''
         };
 
-        if (window.location.hash === '#!prefs') {
-            setTimeout(() => {
-                this.setState({isVisiblePrefs: true});
-            }, 1);
-        }
-
         /*if (this._prefs.rules) {
             typograf
                 .enableRule(this._prefs.rules.enabled)
                 .disableRule(this._prefs.rules.disabled);
         }*/
+    }
+
+    componentDidMount() {
+        if (window.location.hash === '#!prefs') {
+            setTimeout(() => {
+                this.setState({isVisiblePrefs: true});
+            }, 1);
+        }
     }
 
     _bindEvents() {
@@ -91,9 +93,9 @@ class App extends Component {
             window.location.hash = '#!prefs';
         } else {           
             window.location.hash = '';
-                setTimeout(() => {
-                    this.execute();
-                }, 0);
+            setTimeout(() => {
+                this.execute();
+            }, 0);
         }
     }
 
@@ -115,11 +117,9 @@ class App extends Component {
     render(props, state) {
         return <div class="app">
             <Header onClick={this.onHeaderClick} selected={state.isVisiblePrefs} />
-            <div class="app__container">
-                <div class="app__table">
-                    <Input onChange={this.onValueChange} onLocaleChange={this.onLocaleChange} value={state.value} />
-                    <Output value={state.value} result={state.result}></Output>
-                </div>
+            <div class="app__body">
+                <Input onChange={this.onValueChange} onLocaleChange={this.onLocaleChange} value={state.value} />
+                <Output value={state.value} result={state.result}></Output>
             </div>
             <Footer onLangUIChange={this.onLangUIChange} />
         </div>;

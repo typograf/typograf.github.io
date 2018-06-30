@@ -3,6 +3,7 @@
 import {h, Component} from 'preact';
 import i18n from '../i18n';
 import diffChars from '../diff/diff';
+import saveFile from '../helpers/file-request';
 import UpdatedTextarea from '../updated-textarea/updated-textarea';
 import Tooltip from '../tooltip/tooltip';
 
@@ -30,13 +31,9 @@ export default class Output extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         this.currentResult = nextProps.result;
     }    
-
-    shouldComponentUpdate(nextProps) {
-
-    }
 
     onChange(e) {
         this.currentResult = e.target.value;
@@ -63,7 +60,7 @@ export default class Output extends Component {
     }
 
     onSave() {
-        saveFile.save(this.state.result, i18n('notSupportSave'));    
+        saveFile(this.state.result, i18n('notSupportSave'));
     }
 
     onSuccessTooltipClose() {

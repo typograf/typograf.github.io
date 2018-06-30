@@ -12,7 +12,7 @@ export default class Tooltip extends Component {
         this.state.visible = this.props.visible;
     }   
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.state.visible !== nextProps.visible) {
             this.setState({visible: nextProps.visible});
         }

@@ -522,29 +522,17 @@ a {
 .page_desktop .app {
   min-width: 800px;
 }
-.page_desktop .app__table {
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-  padding: 10px 10px;
-}
-.page_desktop .app__container {
+.app__body {
   position: absolute;
-  top: 55px;
-  bottom: 30px;
-  left: 0;
-  margin: 0;
-  box-sizing: border-box;
-  width: 100%;
-  padding: 5px 0;
 }
-.page_mobile .app__container {
-  position: absolute;
-  top: 40px;
-  bottom: 40px;
-  left: 0;
-  box-sizing: border-box;
-  width: 100%;
-  padding: 5px 0;
+.page_desktop .app__body {
+  left: 10px;
+  right: 10px;
+  top: 70px;
+  bottom: 45px;
+}
+.page_mobile .app__body {
+  top: 45px;
+  bottom: 45px;
 }
 
