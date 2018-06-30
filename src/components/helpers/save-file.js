@@ -8,14 +8,13 @@ function getFilename(text) {
     return (str.truncate(file, 32) || 'text') + '.' + ext;
 }
 
-export default function saveFile(textarea, notSupportSave) {
+export default function saveFile(textToWrite, notSupportSave) {
     if (!window.Blob) {
         window.alert(notSupportSave);
         return;
     }
 
     const
-        textToWrite = textarea.value,
         textFileAsBlob = new Blob([ textToWrite ], {type: 'text/plain'}),
         downloadLink = document.createElement('a');
 

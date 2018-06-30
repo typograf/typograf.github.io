@@ -9,10 +9,16 @@ export default class Tooltip extends Component {
     constructor(props) {
         super(props);
 
-        this.state.visible = true;
+        this.state.visible = this.props.visible;
     }   
 
-    componentWillUnmount() {
+    componentWillReceiveProps(nextProps) {
+        if (this.state.visible !== nextProps.visible) {
+            this.setState({visible: nextProps.visible});
+        }
+    }
+
+    componentWillUnmount() {        
         clearTimeout(this._timer);
     }
  
@@ -28,7 +34,7 @@ export default class Tooltip extends Component {
         }
 
         return <div class={
-            cl(`tooltip tooltip_type_${this.props.type || 'ok'}`, {
+            cl(`tooltip tooltip_type_${this.props.type}`, {
                 tooltip_visible: state.visible
             })
         }>{this.props.children}</div>;

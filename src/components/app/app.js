@@ -3,13 +3,11 @@
 import {h, render, Component} from 'preact';
 import 'preact/debug';
 
-import i18n from '../i18n';
 import hash from '../lib/hash';
 
 import Header from '../header/header';
 import Input from '../input/input';
 import Output from '../output/output';
-import Tooltip from '../tooltip/tooltip';
 import Footer from '../footer/footer';
 
 import storage from '../storage/storage';
@@ -40,16 +38,11 @@ class App extends Component {
             }, 1);
         }
 
-        //this._prefs = new Prefs(typograf);
-        //this._prefs.onChange = this.execute.bind(this);
-
         /*if (this._prefs.rules) {
             typograf
                 .enableRule(this._prefs.rules.enabled)
                 .disableRule(this._prefs.rules.disabled);
         }*/
-
-        //this.execute();
     }
 
     _bindEvents() {
@@ -90,9 +83,18 @@ class App extends Component {
     }
 
     onHeaderClick() {
-        this.setState({
-            isVisiblePrefs: !this.state.isVisiblePrefs
-        });
+        const isVisiblePrefs = !this.state.isVisiblePrefs;
+
+        this.setState({isVisiblePrefs});
+
+        if (isVisiblePrefs) {
+            window.location.hash = '#!prefs';
+        } else {           
+            window.location.hash = '';
+                setTimeout(() => {
+                    this.execute();
+                }, 0);
+        }
     }
 
     onLangUIChange() {
@@ -123,17 +125,6 @@ class App extends Component {
         </div>;
     }
 
-    copyText(textarea) {
-        try {
-            textarea[0].select();
-            document.execCommand('copy');
-
-            render(<Tooltip autocloseable>{i18n('copied')}</Tooltip>, document.querySelector('.tooltip-container'));
-        } catch (e) {
-            render(<Tooltip type="error" autocloseable>{i18n('notSupportCopy')}</Tooltip>, document.querySelector('.tooltip-contianer'));
-        }
-    }
-
     execute() {
         const
             value = this.state.value,
@@ -146,41 +137,6 @@ class App extends Component {
 
         this.setState({result});
     }
-
-/*    _events() {
-        this._onprefs = () => {
-            if (el.hasClass(clSelected)) {
-                window.location.hash = '';
-
-                setTimeout(() => {
-                    this.execute();
-                }, 0);
-            } else {
-                window.location.hash = '#!prefs';
-            }
-
-            el.toggleClass(clSelected);
-            this._prefs.toggle();
-        };
-
-        $('.result__as-text, .result__as-html, .result__as-diff').on('click', (e) => {
-            $('.result__text').hide().val('');
-            $('.result__html, .result__diff').hide().html('');
-
-            $('.result__' + e.target.value).show();
-            this.updateResult();
-        });
-
-        $('.input__copy').on('click', () => {
-            $('.result__as-text').click();
-
-            this.copyText($('.result__text'));
-        });
-
-        $('.input__save').on('click', () => {
-            saveFile.save($('.result__text')[0], i18n('notSupportSave'));
-        });
-    }*/
 }
 
 render(<App/>, document.querySelector('.app-container'));

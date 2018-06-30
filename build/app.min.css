@@ -151,6 +151,34 @@ ins.diff {
   background: #eaf2c2;
 }
 
+.tooltip {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  max-width: 300px;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  border-radius: 5px;
+  padding: 5px 10px;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility .3s ease .3s, opacity .3s ease;
+  font-size: 16px;
+  line-height: 20px;
+  color: #fff;
+}
+.tooltip_type_ok {
+  background: #00ac51;
+}
+.tooltip_type_error {
+  background: #ac0051;
+}
+.tooltip_visible {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .3s ease;
+}
+
 .output {
   position: relative;
   width: 50%;
@@ -250,34 +278,6 @@ ins.diff {
 .output__html p {
   margin: 0 0 1em 0;
   padding: 0;
-}
-
-.tooltip {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  max-width: 300px;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-  border-radius: 5px;
-  padding: 5px 10px;
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility .3s ease .3s, opacity .3s ease;
-  font-size: 16px;
-  line-height: 20px;
-  color: #fff;
-}
-.tooltip_type_ok {
-  background: #00ac51;
-}
-.tooltip_type_error {
-  background: #ac0051;
-}
-.tooltip_visible {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity .3s ease;
 }
 
 .browser-extension {
