@@ -1,7 +1,10 @@
 {
     "parserOptions": {
-        "ecmaVersion": 6,
-        "sourceType": "module"
+      "ecmaVersion": 2018,
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "sourceType": "module"
     },
     "rules": {
         "semi": [2, "always"],
@@ -58,26 +61,16 @@
             "SwitchCase": 1
           }
         ],
-        "valid-jsdoc": [
-          2,
-          {
-            "prefer": {
-              "return": "returns"
-            },
-            "requireParamDescription": false,
-            "requireReturnDescription": false,
-            "requireReturn": false
-          }
-        ]
+        "react/jsx-no-target-blank": 0,
+        "react/prop-types": 0,
+        "react/no-unknown-property": 0
     },
     "env": {
-        "browser": true,
         "node": true,
-        "jquery": true
+        "browser": true
     },
-    "globals": {
-        "Typograf": true,
-        "JsDiff": true
-    },
-    "extends": "eslint:recommended"
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ]
 }

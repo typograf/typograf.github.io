@@ -31,6 +31,6 @@ export default class Tooltip extends Component {
             cl(`tooltip tooltip_type_${this.props.type || 'ok'}`, {
                 tooltip_visible: state.visible
             })
-        }>{this.props.children}</div>
+        }>{this.props.children}</div>;
     }
 }

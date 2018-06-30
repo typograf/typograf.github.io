@@ -10,4 +10,4 @@ export default function checked(dom, checked) {
     } else {
         return dom.checked;
     }
-};
+}

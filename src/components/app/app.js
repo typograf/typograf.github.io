@@ -3,8 +3,6 @@
 import {h, render, Component} from 'preact';
 import 'preact/debug';
 
-import saveFile from '../helpers/save-file';
-
 import i18n from '../i18n';
 import hash from '../lib/hash';
 
@@ -14,8 +12,6 @@ import Output from '../output/output';
 import Tooltip from '../tooltip/tooltip';
 import Footer from '../footer/footer';
 
-import diffChars from '../diff/diff';
-import entityHighlight from '../entity-highlight/entity-highlight';
 import storage from '../storage/storage';
 import {default as Typograf, prepareLocale} from '../typograf/typograf';
 import Page from '../page/page';
@@ -96,7 +92,7 @@ class App extends Component {
     onHeaderClick() {
         this.setState({
             isVisiblePrefs: !this.state.isVisiblePrefs
-        })
+        });
     }
 
     onLangUIChange() {
@@ -120,7 +116,7 @@ class App extends Component {
             <div class="app__container">
                 <div class="app__table">
                     <Input onChange={this.onValueChange} onLocaleChange={this.onLocaleChange} value={state.value} />
-                    <Output value={state.result}></Output>
+                    <Output value={state.value} result={state.result}></Output>
                 </div>
             </div>
             <Footer onLangUIChange={this.onLangUIChange} />
@@ -151,20 +147,7 @@ class App extends Component {
         this.setState({result});
     }
 
-    updateResult() {
-        const
-            value = this.last.value,
-            result = this.last.result,
-            resText = $('.result__text'),
-            resHTML = $('.result__html'),
-            resDiff = $('.result__diff');
-
-        resText.is(':visible') && resText.val(result);
-        resHTML.is(':visible') && resHTML.html(entityHighlight(result));
-        resDiff.is(':visible') && resDiff.html(diffChars(value, result));
-    }
-
-    _events() {
+/*    _events() {
         this._onprefs = () => {
             if (el.hasClass(clSelected)) {
                 window.location.hash = '';
@@ -197,7 +180,7 @@ class App extends Component {
         $('.input__save').on('click', () => {
             saveFile.save($('.result__text')[0], i18n('notSupportSave'));
         });
-    }
+    }*/
 }
 
 render(<App/>, document.querySelector('.app-container'));

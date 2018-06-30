@@ -22,7 +22,7 @@ module.exports = function(env, options) {
             //filename: '[name].[chunkhash].js'
         },
         plugins: [
-            new CleanWebpackPlugin(['build/']),
+            new CleanWebpackPlugin([ 'build/' ]),
             new CopyWebpackPlugin([
                 './node_modules/diff/dist/diff.min.js'
             ]),

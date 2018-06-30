@@ -1,5 +1,7 @@
 /** @jsx h */
 
+/* eslint-disable */
+
 import { h, Component } from 'preact';
 
 import i18n from '../i18n';
@@ -11,7 +13,6 @@ import './prefs.less';
 import '../button/button.less';
 
 const
-    Typograf = window.Typograf,
     typografPrefs = new Typograf({
         disableRule: '*',
         enableRule: ['common/nbsp/*', 'ru/nbsp/*']

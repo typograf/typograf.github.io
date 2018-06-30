@@ -38,4 +38,4 @@ export default function saveFile(textarea, notSupportSave) {
     }
 
     downloadLink.click();
-};
+}

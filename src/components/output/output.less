@@ -56,19 +56,14 @@
 
     &__copy {
 		background-image: data-uri('./assets/copy.svg');
-	}
-}
-
-.result {
+    }
+    
     &__html {
-        display: none;
-
         border: 1px solid #a0a0a0;
         background: #fefefe;
     }
 
     &__diff {
-        display: none;
         overflow-y: auto;
 
         white-space: pre-wrap;
@@ -77,12 +72,25 @@
         background: #fefefe;
     }
 
+    &__diff1 {
+        border-bottom: 1px solid rgba(255, 0, 0, .5);
+    }
+
+    &__diff2 {
+        border-bottom: 1px solid rgba(0, 255, 0, .5);
+    }
+
+    &__tag {
+        color: #cf5b25;
+        font-size: 0.9em;        
+    }
+
     &__as {
 		position: relative;
 		top: -5px;
     }
 
-    &__text,
+    &__textarea,
     &__html,
     &__diff {
         box-sizing: border-box;
@@ -119,6 +127,4 @@
 			padding: 0;
 		}
 	}
-
 }
-

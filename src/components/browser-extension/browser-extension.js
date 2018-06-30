@@ -42,6 +42,6 @@ const data = {
 export default function BrowserExtension() {
     return <div class="browser-extension">
         <span class="browser-extension__title" data-text-id="browser-extension">{i18n('browser-extension')}</span>&nbsp;
-        <a target="_blank" href={data.href} data-text-id={data.id}>{data.name}</a>
+        <a target="_blank" href={data.href} data-text-id={data.id} rel="noopener">{data.name}</a>
     </div>;
-};
+}

@@ -47,6 +47,6 @@ export default class Input extends Component {
                 <div class="input__clear" title={i18n('clear')} onClick={this.onClear}>×</div>
                 : null}
             <textarea class="input__textarea" onInput={this.onChange} onKeyUp={this.onChange} onSelect={this.onSelect} value={state.value}></textarea>
-        </div>
+        </div>;
     }
-};
+}

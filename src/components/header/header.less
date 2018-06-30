@@ -28,6 +28,7 @@
 
     &__icon {
         display: inline-block;
+        position: relative;
     
         width: 16px;
         height: 16px;
@@ -35,5 +36,11 @@
         margin-left: 7px;
         
         background: data-uri('./prefs.svg') 0 0 no-repeat;
-    }    
+
+        transition: transform 1s ease;
+    }
+
+    &_selected &__icon {
+        transform: rotate(360deg);
+    }
 }

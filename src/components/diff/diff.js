@@ -33,4 +33,4 @@ export default function diffChars(before, after) {
 
         return html;
     }, this).join('');
-};
+}

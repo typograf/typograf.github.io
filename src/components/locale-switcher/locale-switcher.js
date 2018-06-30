@@ -29,16 +29,16 @@ export default class LocaleSwitcher extends Component {
     render(props, state) {
         const locales = Typograf.getLocales().sort(function(a, b) {
             return i18n('locale-' + a) > i18n('locale-' + b) ? 1 : -1;
-        })
+        });
         
         return <div class="locale-switcher">
             {i18n('locale')}: <select onChange={this.onChange}>
-            {locales.map((value, i) => {
-                const selected = value === state.value;
-                return <option key={i} value={value} selected={selected}>
-                    {i18n(`locale-${value}`)}
-                </option>;
-            })}
+                {locales.map((value, i) => {
+                    const selected = value === state.value;
+                    return <option key={i} value={value} selected={selected}>
+                        {i18n(`locale-${value}`)}
+                    </option>;
+                })}
             </select>
         </div>;
     }
