@@ -1,6 +1,8 @@
 /** @jsx h */
 
 import {h, render, Component} from 'preact';
+
+// TODO
 import 'preact/debug';
 
 import hash from '../lib/hash';
@@ -27,36 +29,28 @@ class App extends Component {
         this._bindEvents();
 
         this.state = {
-            isVisiblePrefs: false,
+            isVisiblePrefs: window.location.hash === '#!prefs',
             value: this.isMobile ? '' : (hash.getHashParam('text') || ''),
             result: ''
         };
 
-        /*if (this._prefs.rules) {
+        if (this._prefs.rules) {
             typograf
                 .enableRule(this._prefs.rules.enabled)
                 .disableRule(this._prefs.rules.disabled);
-        }*/
-    }
-
-    componentDidMount() {
-        if (window.location.hash === '#!prefs') {
-            setTimeout(() => {
-                this.setState({isVisiblePrefs: true});
-            }, 1);
         }
     }
-
+    
     _bindEvents() {
         [
             'onHeaderClick',
             'onLangUIChange',
             'onLocaleChange',
+            'onPrefsClose',
             'onValueChange'
         ].forEach(method => {
             this[method] = this[method].bind(this);
         });
-
 
         // Для работы букмарклета.
         window.addEventListener('message', e => {
@@ -88,8 +82,18 @@ class App extends Component {
         const isVisiblePrefs = !this.state.isVisiblePrefs;
 
         this.setState({isVisiblePrefs});
+        this._onVisiblePrefs(isVisiblePrefs);
+    }
 
-        if (isVisiblePrefs) {
+    onPrefsClose() {
+        this.setState({isVisiblePrefs: false});
+        this._onVisiblePrefs(false);
+    }
+
+    _onVisiblePrefs(isVisible) {
+        this.execute();
+
+        if (isVisible) {
             window.location.hash = '#!prefs';
         } else {           
             window.location.hash = '';
@@ -118,6 +122,8 @@ class App extends Component {
         return <div class="app">
             <Header onClick={this.onHeaderClick} selected={state.isVisiblePrefs} />
             <div class="app__body">
+                <Paranja visible={this.isVisiblePrefs} />
+                <Prefs visible={this.isVisiblePrefs} onClose={this.onPrefsClose} typograf={typograf} />
                 <Input onChange={this.onValueChange} onLocaleChange={this.onLocaleChange} value={state.value} />
                 <Output value={state.value} result={state.result}></Output>
             </div>

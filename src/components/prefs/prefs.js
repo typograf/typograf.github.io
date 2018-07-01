@@ -1,83 +1,127 @@
 /** @jsx h */
 
-/* eslint-disable */
-
-import { h, Component } from 'preact';
+import { h, Component, cloneElement } from 'preact';
 
 import i18n from '../i18n';
 import str from '../lib/string';
 import storage from '../storage/storage';
+import PrefsHtmlEntities from '../prefs-html-entities/prefs-html-entities';
 import {default as Typograf, prepareLocale} from '../typograf/typograf';
 
 import './prefs.less';
 import '../button/button.less';
 
-const
-    typografPrefs = new Typograf({
-        disableRule: '*',
-        enableRule: ['common/nbsp/*', 'ru/nbsp/*']
-    }),
-    typografEntities = new Typograf({
-        disableRule: '*',
-        enableRule: ['common/nbsp/*', 'common/punctuation/quote'],
-        locale: ['ru', 'en-US']
-    });
+const typografPrefs = new Typograf({
+    disableRule: '*',
+    enableRule: ['common/nbsp/*', 'ru/nbsp/*']
+});
 
-export default class Prefs {
-    constructor(typograf) {
-        this._typograf = typograf;
-        this._wasRebuilt = false;
+export default class Prefs extends Component {
+    constructor(props) {
+        super(props);
 
-        let rules;
-        try {
-            rules = JSON.parse(storage.get('rules'));
-        } catch (e) {
-            console.log(e);
-        }
+        const
+            mode = storage.get('mode') || '',
+            onlyInvisible = storage.get('onlyInvisible', false);
 
-        this.locale = storage.get('locale');
-        this.mode = storage.get('mode');
-        this.onlyInvisible = storage.get('onlyInvisible');
+        this.state = {
+            all: undefined,
+            locale: storage.get('locale', 'ru'),
+            mode,
+            onlyInvisible
+        };
 
+        const rules = storage.get('rules');
         if (rules && Array.isArray(rules.disabled) && Array.isArray(rules.enabled)) {
-            this.rules = rules;
+            this.state.rules = rules;
         }
 
-        this.locale = this.locale || 'ru';
-
-        this.mode = this.mode || '';
-        this.onlyInvisible = this.onlyInvisible || false;
-
-        this._events();
-
-        this.changeLangUI();
-        this._updateSelects();
+        [
+            'onClose',
+            'onDefault',
+            'onModeChange',
+            'onOnlyInvisibleChange'
+        ].forEach(function(method) {
+            this[method] = this[method].bind(this);
+        });
     }
 
-    show() {
-        if (!this._wasRebuilt) {
-            this.rebuild();
-            this._wasRebuilt = true;
-        }
+    onRuleClick(id, e) {
+        const checked = e.target.checked;
 
-        $('.prefs').addClass('prefs_opened');
-        $('.paranja').addClass('paranja_opened');
-
-        this._updateSelects();
-        this._synchronizeMainCheckbox();
-    }
-
-    hide() {
-        $('.prefs').removeClass('prefs_opened');
-        $('.paranja').removeClass('paranja_opened');
-    }
-
-    toggle() {
-        if ($('.prefs').is('.prefs_opened')) {
-            this.hide();
+        if (checked) {
+            this.props.typograf.enableRule(id);
         } else {
-            this.show();
+            this.props.typograf.disableRule(id);
         }
+
+        this.state.rules.some(function(rule) {
+            if (rule.id === id) {
+                rules.checked = checked;
+            }
+        });
+    
+        this._synchronizeMainCheckbox();
+            
+        this.props.onChange();
+    }
+
+    onModeChange(e) {
+        const mode = e.target.value;
+        this.setState({mode});
+
+        storage.set('mode', mode);
+    }
+
+    onDefault() {
+        this.setState({
+            mode: '',
+            locale: 'ru',
+            rules: '',
+            onlyInvisible: false
+        })
+    }
+
+    onClose() {
+        this.props.onClose();
+    }
+
+    render(props, state) {
+        const langUI = i18n.getLang();
+
+        return <div class="prefs">
+            <div class="prefs__items">
+                <div class="prefs__item prefs__item_first">
+                    <div class="prefs__title">{i18n('prefs')}</div>
+                </div>
+                <div class="prefs__mode prefs__item">
+                    <PrefsHtmlEntities onModeChange={this.onModeChange} mode={state.mode} onOnlyInvisibleChange={state.onOnlyInvisibleChange} onlyInvisible={state.onlyInvisible} />
+                </div>
+                <div class="prefs__item prefs__item_last">
+                    <div class="prefs__rules-title">{i18n('rules')}</div>
+                    <div class="prefs__top">
+                        <label><input type="checkbox" class="prefs__all-rules" autocomplete="off" /> {i18n('select-all')}</label>
+                    </div>
+                    <div class="prefs__rules">
+                    {
+                        groups.map(function(group) {
+                            const
+                                name = group[0]._group,
+                                title = typografPrefs.execute(
+                                    Typograf.getGroupTitle(name, langUI),
+                                    {locale: prepareLocale(langUI)}
+                                );
+                            return <PrefsRuleGroup list= title={title} />
+                        }, this)
+                    }
+                    </div>
+                </div>
+            </div>
+            <div class="prefs__actions">
+                <span class="prefs__default button" onClick={this.onDefault}>{i18n('default')}</span>
+                <span class="prefs__close button button_active" onClick={this.onClose}>{i18n('close')}</span>
+            </div>
+        </div>;
     }
 
     save() {
@@ -101,19 +145,14 @@ export default class Prefs {
     }
 
     byDefault() {
-        this._getCheckboxes().each((i, el) => {
-            el = $(el);
-            const id = el.data('id');
-
-            Typograf.prototype._rules.some(rule => {
-                if (id === rule.name) {
-                    const checked = rule.disabled !== true;
-                    el.checked(checked);
-
+        this.state.rules.forEach(function(rule) {
+            Typograf.prototype._rules.some(typografRule => {
+                if (rule.id === typografRule.id) {
+                    rule.checked = typografRule.disabled !== true
                     if (checked) {
-                        this._typograf.enableRule(id);
+                        props.typograf.enableRule(id);
                     } else {
-                        this._typograf.disableRule(id);
+                        props.typograf.disableRule(id);
                     }
 
                     return true;
@@ -122,80 +161,12 @@ export default class Prefs {
                 return false;
             });
         });
-
-        $('.prefs__all-rules').checked(undefined);
-
-        $('.prefs__set-mode').val('');
-        $('.prefs__only-invisible').checked(false);
-
-        this.changeMode();
-
-        this.save();
-        this.onChange();
-    }
-
-    changeLocale() {
-        this.locale = $('.prefs__set-locale').val();
-        this.save();
-
-        this.onChange();
-    }
-
-    changeLangUI() {
-        this._updateLocaleOptions();
-
-        $('[data-text-id]').each(function(i, el) {
-            el.innerHTML = i18n(el.dataset.textId);
-        });
-
-        $('[data-value-id]').each(function(i, el) {
-            el.value = i18n(el.dataset.valueId);
-        });
-
-        $('[data-title-id]').each(function(i, el) {
-            el.title = i18n(el.dataset.titleId);
-        });
-
-        $('[data-placeholder-id]').each(function(i, el) {
-            el.placeholder = i18n(el.dataset.placeholderId);
-        });
-
-        this.rebuild();
-        this.save();
-
-        this.onChange();
-    }
-
-    changeMode() {
-        this.mode = $('.prefs__set-mode').val();
-        this.onlyInvisible = $('.prefs__only-invisible').checked();
-        this.save();
-        this.updateInvisibleSymbols();
-        this.onChange();
-    }
-
-    updateInvisibleSymbols() {
-        let html = typografEntities.execute(i18n('html-entities-example'), {
-            htmlEntity: {
-                type: this.mode,
-                onlyInvisible: this.onlyInvisible
-            }
-        });
-
-        html = str
-            .escapeHTML(html)
-            .replace(/(&amp;#?[\da-z_-]+;)/gi, '<span style="color: green;">$1</span>');
-
-        $('.prefs__html-entities-example').html(html);
-        $('.prefs__invisible-symbols-container')[this.mode ? 'show' : 'hide']();
     }
 
     onChange() {}
 
     rebuild() {
         const groups = this._getSortedGroups(Typograf.prototype._rules, i18n.getLang());
-
-        $('.prefs__rules').html(this._buildHTML(groups));
     }
 
     _sortByGroupIndex(rules) {
@@ -290,9 +261,6 @@ export default class Prefs {
 
             group.forEach(function(rule) {
                 const
-                    name = rule.name,
-                    ruleLang = name.split('/')[0],
-                    langPrefix = ruleLang === 'common' ? '' : '<span class="prefs__rule-lang">' + ruleLang + '</span>',
                     buf = Typograf.titles[name];
 
                 if (!buf || !(buf[langUI] || buf.common)) {
@@ -320,29 +288,6 @@ export default class Prefs {
 
         return html;
     }
-
-    _getCheckboxes() {
-        return $('.prefs__rule-checkbox');
-    }
-
-    _clickRule() {
-        this._getCheckboxes().each((i, el) => {
-            el = $(el);
-            const id = el.data('id');
-
-            if (el.checked()) {
-                this._typograf.enableRule(id);
-            } else {
-                this._typograf.disableRule(id);
-            }
-        });
-
-        this._synchronizeMainCheckbox();
-        this.save();
-
-        this.onChange();
-    }
-
     _clickLegend() {
         $(this)
             .closest('.prefs__fieldset')
@@ -351,41 +296,35 @@ export default class Prefs {
             .slideToggle('fast');
     }
 
-    _selectAll() {
-        const
-            checked = $('.prefs__all-rules').checked(),
-            els = this._getCheckboxes();
+    _selectAll(checked) {
+        const rules = this.state.rules.map(rule => {
+            const result = clone(rule);
 
-        $.each(els, (i, el) => {
-            el = $(el);
-            const id = el.data('id');
+            result.checked = checked;
 
-            el.checked(checked);
             if (checked) {
-                this._typograf.enableRule(id);
+                this.props.typograf.enableRule(rule.id);
             } else {
-                this._typograf.disableRule(id);
+                this.props.typograf.disableRule(rule.id);
             }
-        });
 
-        this.save();
+            return result;
+        });
 
         this.onChange();
     }
 
-    _synchronizeMainCheckbox() {
-        let
-            count = 0,
-            checked;
+    _getAllChecked() {
+        let count = 0;
 
-        const els = this._getCheckboxes();
-        els.each(function(i, el) {
+        const rules = this.state.rules;
+        rules.forEach(function() {
             if (el.checked) {
                 count++;
             }
         });
 
-        if (count === els.length) {
+        if (count === rules.length) {
             checked = true;
         } else if (!count) {
             checked = false;
@@ -393,46 +332,6 @@ export default class Prefs {
             checked = undefined;
         }
 
-        $('.prefs__all-rules').checked(checked);
-    }
-
-    _updateSelects() {
-        $('.prefs__set-locale').val(this.locale);
-        $('.prefs__set-mode').val(this.mode);
-        $('.prefs__only-invisible').val(this.onlyInvisible);
-
-        this.updateInvisibleSymbols();
-    }
-
-    _updateLocaleOptions() {
-        const html = Typograf.getLocales()
-            .sort(function(a, b) {
-                return i18n('locale-' + a) > i18n('locale-' + b) ? 1 : -1;
-            })
-            .map(function(l) {
-                return '<option value="' + l + '" data-text-id="locale-' + l + '"></option>\n';
-            }).join('');
-
-        $('.prefs__set-locale')
-            .html(html)
-            .val(this.locale);
-    }
-
-    _events() {
-        $('.prefs__set-locale').on('change', this.changeLocale.bind(this));
-
-        $('.prefs__set-mode, .prefs__only-invisible').on('change', this.changeMode.bind(this));
-
-        $('.prefs__all-rules').on('click', this._selectAll.bind(this));
-
-        $('.prefs__default').on('click', this.byDefault.bind(this));
-
-        $('.prefs__close').on('click', this.hide.bind(this));
-
-        var rules = $('.prefs__rules');
-
-        rules.on('click', '.prefs__legend', this._clickLegend);
-
-        rules.on('click', '.prefs__rule-checkbox', this._clickRule.bind(this));
+        return checked;
     }
 }
