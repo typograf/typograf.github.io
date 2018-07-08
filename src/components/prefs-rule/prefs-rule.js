@@ -5,7 +5,7 @@ export default function PrefsRule(props) {
         lang = name.split('/')[0];
 
     return <div class="prefs-rule" title={props.name}>
-        <label><input type="checkbox" class="prefs-rule__checkbox" checked={props.checked} onChange={props.onChange.bind(this, props.id)} /> {props.title}{
+        <label><input type="checkbox" class="prefs-rule__checkbox" checked={props.checked} onChange={props.onChange.bind(this, props.name)} /> {props.title}{
             lang === 'common' ? null : <span class="prefs-rule__lang">{lang}</span>
         }</label>
     </div>;

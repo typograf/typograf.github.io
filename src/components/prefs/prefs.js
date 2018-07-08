@@ -1,9 +1,8 @@
 /** @jsx h */
 
-import { h, Component, cloneElement } from 'preact';
+import { h, Component } from 'preact';
 
 import i18n from '../i18n';
-import str from '../lib/string';
 import storage from '../storage/storage';
 import PrefsHtmlEntities from '../prefs-html-entities/prefs-html-entities';
 import {default as Typograf, prepareLocale} from '../typograf/typograf';
@@ -20,20 +19,17 @@ export default class Prefs extends Component {
     constructor(props) {
         super(props);
 
-        const
-            mode = storage.get('mode') || '',
-            onlyInvisible = storage.get('onlyInvisible', false);
-
         this.state = {
-            all: undefined,
+            main: undefined,
             locale: storage.get('locale', 'ru'),
-            mode,
-            onlyInvisible
+            mode: storage.get('mode') || '',
+            onlyInvisible: storage.get('onlyInvisible', false),
+            groups: this.getSortedGroups()
         };
 
         const rules = storage.get('rules');
         if (rules && Array.isArray(rules.disabled) && Array.isArray(rules.enabled)) {
-            this.state.rules = rules;
+            this._enableDisableRules(this.state.groups, rules.enabled, rules.disabled);
         }
 
         [
@@ -49,21 +45,39 @@ export default class Prefs extends Component {
     onRuleClick(id, e) {
         const checked = e.target.checked;
 
-        if (checked) {
-            this.props.typograf.enableRule(id);
-        } else {
-            this.props.typograf.disableRule(id);
-        }
+        const groups = clone(this.state.groups);
+        groups.forEach(group => {
+            group.rules.some(function(rule) {
+                if (rule.name === id) {
+                    rule.checked = checked;
+                    return true;
+                }
 
-        this.state.rules.some(function(rule) {
-            if (rule.id === id) {
-                rules.checked = checked;
-            }
+                return false;
+            })
         });
-    
-        this._synchronizeMainCheckbox();
-            
-        this.props.onChange();
+
+        this.setState({
+            main: this._getMainChecked,
+            groups
+        });            
+    }
+
+    onMainChange(e) {
+        const
+            groups = clone(this.state.groups),
+            checked = e.target.checked;
+
+        groups.forEach(group => {
+            group.rules.forEach(rule => {
+                rule.checked = checked;
+            });
+        });
+
+        this.setState({
+            main: checked,
+            groups
+        });
     }
 
     onModeChange(e) {
@@ -77,8 +91,8 @@ export default class Prefs extends Component {
         this.setState({
             mode: '',
             locale: 'ru',
-            rules: '',
-            onlyInvisible: false
+            onlyInvisible: false,
+            groups: this.getSortedGroups()
         })
     }
 
@@ -87,8 +101,6 @@ export default class Prefs extends Component {
     }
 
     render(props, state) {
-        const langUI = i18n.getLang();
-
         return <div class="prefs">
             <div class="prefs__items">
                 <div class="prefs__item prefs__item_first">
@@ -100,20 +112,10 @@ export default class Prefs extends Component {
                 <div class="prefs__item prefs__item_last">
                     <div class="prefs__rules-title">{i18n('rules')}</div>
                     <div class="prefs__top">
-                        <label><input type="checkbox" class="prefs__all-rules" autocomplete="off" /> {i18n('select-all')}</label>
+                        <label><input type="checkbox" class="prefs__all-rules" autocomplete="off" onMainChange={this.onMainChange} /> {i18n('select-all')}</label>
                     </div>
                     <div class="prefs__rules">
-                    {
-                        groups.map(function(group) {
-                            const
-                                name = group[0]._group,
-                                title = typografPrefs.execute(
-                                    Typograf.getGroupTitle(name, langUI),
-                                    {locale: prepareLocale(langUI)}
-                                );
-                            return <PrefsRuleGroup list= title={title} />
-                        }, this)
-                    }
+                    {state.groups.map(group => <PrefsRuleGroup rules={group.rules} title={group.title} />)}
                     </div>
                 </div>
             </div>
@@ -124,50 +126,93 @@ export default class Prefs extends Component {
         </div>;
     }
 
+    getSortedGroups() {
+        const rules = Typograf.prototype._rules,
+            lang = i18n.getLang(),
+            filteredRules = [];
+
+        // Правила для live-режима не показываем в настройках.
+        rules.forEach(function(el) {
+            if (!el.live) {
+                filteredRules.push(el);
+            }
+        });
+
+        this._sortByGroupIndex(filteredRules);
+
+        const groups = this._splitGroups(filteredRules);
+        this._sortGroupsByTitle(groups, lang);
+
+        return groups;
+    }
+
     save() {
         const
             enabled = [],
-            disabled = [];
+            disabled = [],
+            state = this.state;
 
-        Object.keys(this._typograf._enabledRules).forEach(function(name) {
-            if (this._typograf._enabledRules[name]) {
-                enabled.push(name);
-            } else {
-                disabled.push(name);
-            }
-        }, this);
+        state.groups.forEach(group => {
+            group.rules.forEach(rule => {
+                const name = rule.name;
+                if (rule.checked) {
+                    enabled.push(name);
+                } else {
+                    disabled.push(name);
+                }
+            });
+        });
 
         storage
             .set('settings.rules', JSON.stringify({ enabled, disabled }))
-            .set('settings.locale', this.locale)
-            .set('settings.mode', this.mode)
-            .set('settings.onlyInvisible', this.onlyInvisible);
+            .set('settings.locale', state.locale)
+            .set('settings.mode', state.mode)
+            .set('settings.onlyInvisible', state.onlyInvisible);
     }
 
     byDefault() {
-        this.state.rules.forEach(function(rule) {
-            Typograf.prototype._rules.some(typografRule => {
-                if (rule.id === typografRule.id) {
-                    rule.checked = typografRule.disabled !== true
-                    if (checked) {
-                        props.typograf.enableRule(id);
-                    } else {
-                        props.typograf.disableRule(id);
+        const groups = clone(this.state.groups);
+        groups.forEach(group => {
+            group.rules.forEach(rule => {
+                Typograf.prototype._rules.some(typografRule => {
+                    if (rule.id === typografRule.id) {
+                        rule.checked = typografRule.disabled !== true;
+
+                        return true;
                     }
 
-                    return true;
-                }
-
-                return false;
+                    return false;
+                });
             });
+        });
+
+        this.setState({
+            all: undefined,
+            groups
         });
     }
 
-    onChange() {}
+    _enableDisableRules(groups, enabled, disabled) {
+        groups.forEach(group => {
+            group.rules.forEach(rule => {
+                const name = rule.name;
+                if (enabled.indexOf(name) > -1) {
+                    rule.checked = true;
+                } else if (disabled.indexOf(name) > -1) {
+                    rule.checked = false;
+                } else {
+                    Typograf.prototype._rules.some(typografRule => {
+                        if (typografRule.name === rule.name) {
+                            rule.checked = rule.disabled === true ? false : true;
+                            return true;
+                        }
 
-    rebuild() {
-        const groups = this._getSortedGroups(Typograf.prototype._rules, i18n.getLang());
-    }
+                        return false;
+                    });
+                }
+            });
+        });
+    }    
 
     _sortByGroupIndex(rules) {
         rules.sort(function(a, b) {
@@ -225,69 +270,6 @@ export default class Prefs extends Component {
         });
     }
 
-    _getSortedGroups(rules, lang) {
-        const filteredRules = [];
-
-        // Правила для live-режима не показываем в настройках
-        rules.forEach(function(el) {
-            if (!el.live) {
-                filteredRules.push(el);
-            }
-        });
-
-        this._sortByGroupIndex(filteredRules);
-
-        const groups = this._splitGroups(filteredRules);
-        this._sortGroupsByTitle(groups, lang);
-
-        return groups;
-    }
-
-    _buildHTML(groups) {
-        let html = '';
-        const langUI = i18n.getLang();
-
-        groups.forEach(function(group) {
-            const
-                groupName = group[0]._group,
-                groupTitle = typografPrefs.execute(
-                    Typograf.getGroupTitle(groupName, langUI),
-                    {locale: prepareLocale(langUI)}
-                );
-
-            html += '<fieldset class="prefs__fieldset"><legend class="prefs__legend button">' +
-                groupTitle +
-                '</legend><div class="prefs__group-rules">';
-
-            group.forEach(function(rule) {
-                const
-                    buf = Typograf.titles[name];
-
-                if (!buf || !(buf[langUI] || buf.common)) {
-                    console.warn('Not found title for name "' + name + '".');
-                }
-
-                const
-                    title = typografPrefs.execute(
-                        str.escapeHTML(buf[langUI] || buf.common),
-                        {locale: prepareLocale(langUI)}
-                    ),
-                    id = 'setting-' + name,
-                    ch = this._typograf.isEnabledRule(name),
-                    checked = ch ? ' checked="checked"' : '';
-
-                html += '<div class="prefs__rule" title="' + name + '">' +
-                    '<input type="checkbox" class="prefs__rule-checkbox"' +
-                    checked + ' id="' + id + '" data-id="' + name + '" /> ' +
-                    '<label for="' + id + '">' + title + langPrefix + '</label>' +
-                    '</div>';
-            }, this);
-
-            html += '</div></fieldset>';
-        }, this);
-
-        return html;
-    }
     _clickLegend() {
         $(this)
             .closest('.prefs__fieldset')
@@ -296,42 +278,26 @@ export default class Prefs extends Component {
             .slideToggle('fast');
     }
 
-    _selectAll(checked) {
-        const rules = this.state.rules.map(rule => {
-            const result = clone(rule);
+    _getMainChecked(groups) {
+        let 
+            count = 0,
+            countChecked = 0;
 
-            result.checked = checked;
-
-            if (checked) {
-                this.props.typograf.enableRule(rule.id);
-            } else {
-                this.props.typograf.disableRule(rule.id);
-            }
-
-            return result;
-        });
-
-        this.onChange();
-    }
-
-    _getAllChecked() {
-        let count = 0;
-
-        const rules = this.state.rules;
-        rules.forEach(function() {
-            if (el.checked) {
+        groups.forEach(group => {
+            group.rules.forEach(rule => {
                 count++;
-            }
+                if (rule.checked) {
+                    countChhecked++;
+                }
+            });
         });
 
-        if (count === rules.length) {
-            checked = true;
-        } else if (!count) {
-            checked = false;
-        } else {
-            checked = undefined;
+        if (countChecked === count) {
+            return true;
+        } else if (!countChecked) {
+            return false;
         }
 
-        return checked;
+        return undefined;
     }
 }

@@ -20,3 +20,13 @@ Typograf.getGroupIndex = function(groupName) {
 Typograf.getGroupTitle = function(name, lang) {
     return Typograf.groupsByName[name].title[lang];
 };
+
+Typograf.getTitle = function(ruleName, lang) {
+    const title = Typograf.titles[ruleName],
+
+    if (!title || !(title[lang] || title.common)) {
+        console.warn(`Not found title for name "${ruleName}".`);
+    }
+
+    return title[lang] || title.common;
+}

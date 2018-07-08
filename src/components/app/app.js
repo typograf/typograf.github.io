@@ -123,7 +123,7 @@ class App extends Component {
             <Header onClick={this.onHeaderClick} selected={state.isVisiblePrefs} />
             <div class="app__body">
                 <Paranja visible={this.isVisiblePrefs} />
-                <Prefs visible={this.isVisiblePrefs} onClose={this.onPrefsClose} typograf={typograf} />
+                <Prefs visible={this.isVisiblePrefs} onClose={this.onPrefsClose} />
                 <Input onChange={this.onValueChange} onLocaleChange={this.onLocaleChange} value={state.value} />
                 <Output value={state.value} result={state.result}></Output>
             </div>
