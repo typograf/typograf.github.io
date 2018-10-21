@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 export default class Tooltip {
     constructor(data) {
         data = data || {};

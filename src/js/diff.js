@@ -1,4 +1,5 @@
 import str from './lib/string';
+import { diffChars } from 'diff';
 
 export default {
     getDiffTitle(sym) {
@@ -14,7 +15,7 @@ export default {
         return title;
     },
     make(before, after) {
-        return window.JsDiff.diffChars(before, after).map(function(part){
+        return diffChars(before, after).map((part) => {
             const
                 val = str.escapeHTML(part.value),
                 title = this.getDiffTitle(part.value);

@@ -1,10 +1,13 @@
+import $ from 'jquery';
+
+import Typograf from 'typograf/dist/typograf.all';
+
 import i18n from './i18n/index';
 import str from './lib/string';
 import localStorage from './lib/local-storage';
 import prepareLocale from './prepare-locale';
 
 const
-    Typograf = window.Typograf,
     typografPrefs = new Typograf({
         disableRule: '*',
         enableRule: ['common/nbsp/*', 'ru/nbsp/*']
@@ -218,7 +221,7 @@ export default class Prefs {
         const groups = [];
 
         rules.forEach(function(rule) {
-            var groupName = rule._group;
+            const groupName = rule._group;
 
             if (groupName !== currentGroupName) {
                 currentGroupName = groupName;
@@ -421,7 +424,7 @@ export default class Prefs {
 
         $('.prefs__close').on('click', this.hide.bind(this));
 
-        var rules = $('.prefs__rules');
+        const rules = $('.prefs__rules');
 
         rules.on('click', '.prefs__legend', this._clickLegend);
 

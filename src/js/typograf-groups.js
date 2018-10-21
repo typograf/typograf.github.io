@@ -1,4 +1,4 @@
-const Typograf = window.Typograf;
+import Typograf from 'typograf/dist/typograf.all';
 
 Typograf.groupsByName = {};
 

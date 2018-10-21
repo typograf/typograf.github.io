@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 $.fn.checked = function(checked) {
     const el = this[0];
     if (arguments.length) {

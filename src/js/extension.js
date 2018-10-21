@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 let browser = 'chrome';
 
 if (navigator.userAgent.search('YaBrowser') > -1) {

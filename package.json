@@ -30,33 +30,32 @@
     "node": ">= 8.0"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-plugin-external-helpers": "^6.22.0",
-    "babel-preset-env": "^1.6.1",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
     "diff": "^3.5.0",
-    "eslint": "^4.19.1",
-    "gulp": "^3.9.0",
-    "gulp-autoprefixer": "^5.0.0",
-    "gulp-cleancss": "^0.2.2",
-    "gulp-concat": "^2.6.0",
-    "gulp-less": "^4.0.0",
-    "gulp-load-plugins": "^1.5.0",
-    "gulp-md5-assets": "^1.0.1",
-    "gulp-rename": "^1.2.2",
-    "gulp-replace": "^0.6.1",
-    "gulp-rollup": "^2.16.2",
-    "gulp-uglify": "^3.0.0",
+    "eslint": "^5.7.0",
     "jquery": "^3.3.1",
-    "rollup-plugin-babel": "^3.0.4",
-    "rollup-plugin-commonjs": "^8.4.1",
-    "rollup-plugin-node-resolve": "^3.3.0",
     "show-js-error": "^1.10.0",
-    "throttle-debounce": "^1.0.1",
-    "typograf": "^6.7.2"
+    "throttle-debounce": "^2.0.1",
+    "typograf": "^6.7.3",
+    "autoprefixer": "^9.2.1",
+    "babel-loader": "^8.0.2",
+    "css-loader": "^1.0.0",
+    "clean-webpack-plugin": "^0.1.19",
+    "html-webpack-plugin": "^3.2.0",
+    "less": "^3.0.4",
+    "less-loader": "^4.1.0",
+    "mini-css-extract-plugin": "^0.4.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "postcss-loader": "^3.0.0",
+    "webpack": "^4.13.0",
+    "webpack-cli": "^3.0.8",
+    "webpack-md5-hash": "0.0.6"
   },
   "scripts": {
     "test": "npm run-script eslint",
     "eslint": "eslint .",
-    "dist": "gulp"
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production"
   }
 }

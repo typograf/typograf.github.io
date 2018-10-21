@@ -1,29 +1,32 @@
 import './start';
 
+import $ from 'jquery';
+
+import { debounce } from 'throttle-debounce';
+import Typograf from 'typograf/dist/typograf.all';
+
 import hash from './lib/hash';
 import str from './lib/string';
 
 import i18n from './i18n/index';
 import langUI from './lang-ui';
 
-import diff from './diff';
 import entityHighlight from './entity-highlight';
 import prepareLocale from './prepare-locale';
+import diff from './diff';
 
 import Tooltip from './tooltip';
 
 import saveFile from './save-file';
-import debounce from 'throttle-debounce/debounce';
-
 import Prefs from './prefs';
 
-const typograf = new window.Typograf();
+const typograf = new Typograf();
 
-class App {
+export default class App {
     constructor() {
         this.last = {value: '', result: ''};
 
-        var body = $(document.body);
+        const body = $(document.body);
         body.removeClass('transition_no');
 
         this.isMobile = body.hasClass('page_is-mobile');
@@ -213,5 +216,3 @@ class App {
         }
     }
 }
-
-new App();

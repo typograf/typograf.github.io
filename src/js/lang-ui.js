@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 import i18n from './i18n/index';
 import localStorage from './lib/local-storage';
 

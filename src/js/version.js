@@ -1,1 +1,4 @@
-$('#version').text(window.Typograf.version);
+import $ from 'jquery';
+import Typograf from 'typograf/dist/typograf.all';
+
+$('#version').text(Typograf.version);
