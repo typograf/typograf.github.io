@@ -14,7 +14,7 @@ module.exports = function(env, options) {
     const isProd = options.mode === 'production';
 
     return {
-        watch: true,
+        watch: false,
         entry: {
             desktop: './src/js/app.desktop.js',
             mobile: './src/js/app.mobile.js'
