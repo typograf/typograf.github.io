@@ -61,14 +61,22 @@ export default class App {
         this.execute();
     }
 
-    copyText(textarea) {
+    copyText(text) {
+        const textarea = document.createElement('textarea');
+        textarea.style.position = 'absolute';
+        textarea.style.left = '-9999px';
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+
         try {
-            textarea[0].select();
             document.execCommand('copy');
             this._tooltip.show(i18n('copied'), 'ok', true);
         } catch (e) {
             this._tooltip.show(i18n('notSupportCopy'), 'error', true);
         }
+
+        document.body.removeChild(textarea);
     }
 
     execute() {
@@ -179,9 +187,7 @@ export default class App {
         });
 
         $('.input__copy').on('click', () => {
-            $('.result__as-text').click();
-
-            this.copyText($('.result__text'));
+            this.copyText(this.last.result);
         });
 
         $('.input__save').on('click', () => {
