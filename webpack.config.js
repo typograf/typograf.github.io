@@ -24,7 +24,7 @@ module.exports = function(env, options) {
             filename: '[name].min.js'
         },
         plugins: [
-            new CleanWebpackPlugin([ 'build/' ]),
+            new CleanWebpackPlugin(),
             new MiniCssExtractPlugin({
                 filename: '[name].min.css'
             }),
