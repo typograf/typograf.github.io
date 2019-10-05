@@ -8,7 +8,7 @@ const
     UglifyJsPlugin = require('uglifyjs-webpack-plugin'),
     //CopyWebpackPlugin = require('copy-webpack-plugin'),
     OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin'),
-    CleanWebpackPlugin = require('clean-webpack-plugin');
+    { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = function(env, options) {
     const isProd = options.mode === 'production';
