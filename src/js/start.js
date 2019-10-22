@@ -6,5 +6,5 @@ import './typograf-groups';
 import './extension';
 import './version';
 
-import Metrika from './lib/metrika';
-Metrika(28700106);
+import { hit } from 'lyam';
+hit('28700106');
