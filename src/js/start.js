@@ -6,5 +6,5 @@ import './typograf-groups';
 import './extension';
 import './version';
 
-import { hit } from 'lyam';
-hit('28700106');
+import { metrikaHit } from './metrika';
+metrikaHit();

@@ -12,8 +12,9 @@ class LangUI {
         ];
 
         this._elem = $('.lang-ui').click(e => {
+            const value = this.val();
             this._next();
-            this.onChange(e, this.val());
+            this.onChange(e, value);
         });
 
         this._langsByValue = {};

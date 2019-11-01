@@ -19,6 +19,7 @@ import Tooltip from './tooltip';
 
 import saveFile from './save-file';
 import Prefs from './prefs';
+import { metrikaReachGoal } from './metrika';
 
 const typograf = new Typograf();
 
@@ -46,7 +47,11 @@ export default class App {
         this._prefs = new Prefs(typograf);
         this._prefs.onChange = this.execute.bind(this);
 
-        langUI.onChange = this._prefs.changeLangUI.bind(this._prefs);
+        langUI.onChange = () => {
+            this._prefs.changeLangUI();
+
+            metrikaReachGoal('switch-lang');
+        };
 
         if (this._prefs.rules) {
             typograf
@@ -188,10 +193,14 @@ export default class App {
 
         $('.input__copy').on('click', () => {
             this.copyText(this.last.result);
+
+            metrikaReachGoal('copy-text');
         });
 
         $('.input__save').on('click', () => {
             saveFile.save($('.result__text')[0], i18n('notSupportSave'));
+
+            metrikaReachGoal('save-text');
         });
 
         $('.input__clear').on('click', () => {

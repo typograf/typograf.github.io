@@ -1,6 +1,7 @@
 import $ from 'jquery';
 
 import Typograf from 'typograf/dist/typograf.all';
+import { metrikaReachGoal } from './metrika';
 
 import i18n from './i18n/index';
 import str from './lib/string';
@@ -60,11 +61,15 @@ export default class Prefs {
 
         this._updateSelects();
         this._synchronizeMainCheckbox();
+
+        metrikaReachGoal('settings-open');        
     }
 
     hide() {
         $('.prefs').removeClass('prefs_opened');
         $('.paranja').removeClass('paranja_opened');
+
+        metrikaReachGoal('settings-close');
     }
 
     toggle() {
@@ -127,6 +132,8 @@ export default class Prefs {
 
         this.save();
         this.onChange();
+
+        metrikaReachGoal('settings-default');
     }
 
     changeLocale() {
@@ -134,6 +141,8 @@ export default class Prefs {
         this.save();
 
         this.onChange();
+
+        metrikaReachGoal('settings-select-locale');
     }
 
     changeLangUI() {
@@ -167,6 +176,8 @@ export default class Prefs {
         this.save();
         this.updateInvisibleSymbols();
         this.onChange();
+
+        metrikaReachGoal('settings-select-html-entity');
     }
 
     updateInvisibleSymbols() {
@@ -336,6 +347,8 @@ export default class Prefs {
         this.save();
 
         this.onChange();
+
+        metrikaReachGoal('settings-click-rule');
     }
 
     _clickLegend() {
@@ -344,6 +357,8 @@ export default class Prefs {
             .toggleClass('prefs__fieldset_visible')
             .find('.prefs__group-rules')
             .slideToggle('fast');
+
+        metrikaReachGoal('settings-click-group-rule');
     }
 
     _selectAll() {
@@ -366,6 +381,8 @@ export default class Prefs {
         this.save();
 
         this.onChange();
+
+        metrikaReachGoal('settings-select-all-rules');
     }
 
     _synchronizeMainCheckbox() {
