@@ -5,7 +5,7 @@ const
     MiniCssExtractPlugin = require('mini-css-extract-plugin'),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
     WebpackMd5Hash = require('webpack-md5-hash'),
-    UglifyJsPlugin = require('uglifyjs-webpack-plugin'),
+    TerserPlugin = require('terser-webpack-plugin'),    
     //CopyWebpackPlugin = require('copy-webpack-plugin'),
     OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin'),
     { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -64,13 +64,11 @@ module.exports = function(env, options) {
             ]
         },
         optimization: {
-            minimizer: isProd ? [
-                new UglifyJsPlugin({
-                    cache: true,
-                    parallel: true
-                }),
-                new OptimizeCSSAssetsPlugin({})
-            ] : undefined
-        }
+            minimize: isProd,
+            minimizer: [
+                new TerserPlugin(),
+                new OptimizeCSSAssetsPlugin({})                        
+            ],
+        },
     };
 };
