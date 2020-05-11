@@ -1,8 +1,11 @@
 import $ from 'jquery';
 
-let browser = 'chrome';
+import './extension.less';
 
-if (navigator.userAgent.search('YaBrowser') > -1) {
+let browser = 'chrome';
+const ua = navigator.userAgent;
+
+if (ua.search('YaBrowser') > -1) {
     browser = 'yabro';
 }
 
@@ -10,8 +13,8 @@ if (typeof InstallTrigger !== 'undefined') {
     browser = 'firefox';
 }
 
-if (navigator.userAgent.search(' OPR/') > -1) {
+if (ua.search(' OPR/') > -1) {
     browser = 'opera';
 }
 
-$('.extension_' + browser).show();
+$(`.extension_${browser}`).show();

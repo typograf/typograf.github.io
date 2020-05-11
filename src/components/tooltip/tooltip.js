@@ -1,5 +1,7 @@
 import $ from 'jquery';
 
+import './tooltip.less';
+
 export default class Tooltip {
     constructor(data) {
         data = data || {};

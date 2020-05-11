@@ -1,4 +1,4 @@
-import '../less/mobile.less';
+import './less/mobile.less';
 
 import App from './app';
 

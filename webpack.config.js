@@ -16,8 +16,8 @@ module.exports = function(env, options) {
     return {
         watch: false,
         entry: {
-            desktop: './src/js/app.desktop.js',
-            mobile: './src/js/app.mobile.js'
+            desktop: './src/app.desktop.js',
+            mobile: './src/app.mobile.js'
         },
         output: {
             path: path.resolve(__dirname, 'build'),
