@@ -1,4 +1,4 @@
-import '../less/desktop.less';
+import './less/desktop.less';
 
 import App from './app';
 

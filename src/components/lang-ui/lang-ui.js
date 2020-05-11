@@ -1,7 +1,9 @@
 import $ from 'jquery';
 
-import i18n from './i18n/index';
-import localStorage from './lib/local-storage';
+import i18n from '../../i18n/index';
+import localStorage from '../../helpers/local-storage';
+
+import './lang-ui.less';
 
 class LangUI {
     constructor() {

@@ -1,25 +1,31 @@
-import './start';
+import './services/show-js-error';
 
 import $ from 'jquery';
+import './helpers/jquery.checked';
 
 import { debounce } from 'throttle-debounce';
 import Typograf from 'typograf/dist/typograf.all';
 
-import hash from './lib/hash';
-import str from './lib/string';
-
 import i18n from './i18n/index';
-import langUI from './lang-ui';
 
-import entityHighlight from './entity-highlight';
-import prepareLocale from './prepare-locale';
-import diff from './diff';
+import prepareLocale from './helpers/prepare-locale';
+import { getHashParam } from './helpers/hash';
+import { truncate } from './helpers/string';
+import { copyText } from './helpers/copy-text';
 
-import Tooltip from './tooltip';
+import langUI from './components/lang-ui/lang-ui';
+import diff from './components/diff/diff';
+import Tooltip from './components/tooltip/tooltip';
+import entityHighlight from './components/entity-highlight/entity-highlight';
+import Prefs from './components/prefs/prefs';
+import './components/extension/extension';
+import './components/version/version';
 
-import saveFile from './save-file';
-import Prefs from './prefs';
-import { metrikaReachGoal } from './metrika';
+import { saveFile } from './helpers/save-file';
+import './helpers/typograf-groups';
+
+import { metrikaHit, metrikaReachGoal } from './services/metrika';
+metrikaHit();
 
 const typograf = new Typograf();
 
@@ -39,7 +45,7 @@ export default class App {
         }
 
         if (!this.isMobile) {
-            this._setValue(hash.getHashParam('text') || '');
+            this._setValue(getHashParam('text') || '');
         }
 
         this._tooltip = new Tooltip();
@@ -67,21 +73,16 @@ export default class App {
     }
 
     copyText(text) {
-        const textarea = document.createElement('textarea');
-        textarea.style.position = 'absolute';
-        textarea.style.left = '-9999px';
-        textarea.value = text;
-        document.body.appendChild(textarea);
-        textarea.select();
-
-        try {
-            document.execCommand('copy');
-            this._tooltip.show(i18n('copied'), 'ok', true);
-        } catch (e) {
-            this._tooltip.show(i18n('notSupportCopy'), 'error', true);
+        let message, status;
+        if (copyText(text)) {
+            message = i18n('copied');
+            status = 'ok';
+        } else {
+            message = i18n('notSupportCopy');
+            status = 'error';
         }
 
-        document.body.removeChild(textarea);
+        this._tooltip.show(message, status, true);
     }
 
     execute() {
@@ -126,7 +127,7 @@ export default class App {
 
     _updateValue(value) {
         if (!this.isMobile && window.location.hash !== '#!prefs') {
-            window.location.hash = '#!text=' + window.encodeURIComponent(str.truncate(value, 512));
+            window.location.hash = '#!text=' + window.encodeURIComponent(truncate(value, 512));
         }
 
         this._updateClearText(value);
@@ -198,7 +199,7 @@ export default class App {
         });
 
         $('.input__save').on('click', () => {
-            saveFile.save($('.result__text')[0], i18n('notSupportSave'));
+            saveFile($('.result__text')[0], i18n('notSupportSave'));
 
             metrikaReachGoal('save-text');
         });

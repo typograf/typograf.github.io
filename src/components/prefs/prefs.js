@@ -1,12 +1,12 @@
 import $ from 'jquery';
 
 import Typograf from 'typograf/dist/typograf.all';
-import { metrikaReachGoal } from './metrika';
+import { metrikaReachGoal } from '../../services/metrika';
 
-import i18n from './i18n/index';
-import str from './lib/string';
-import localStorage from './lib/local-storage';
-import prepareLocale from './prepare-locale';
+import i18n from '../../i18n/index';
+import { escapeHTML } from '../../helpers/string';
+import localStorage from '../../helpers/local-storage';
+import prepareLocale from '../../helpers/prepare-locale';
 
 const
     typografPrefs = new Typograf({
@@ -188,8 +188,7 @@ export default class Prefs {
             }
         });
 
-        html = str
-            .escapeHTML(html)
+        html = escapeHTML(html)
             .replace(/(&amp;#?[\da-z_-]+;)/gi, '<span style="color: green;">$1</span>');
 
         $('.prefs__html-entities-example').html(html);
@@ -307,7 +306,7 @@ export default class Prefs {
 
                 const
                     title = typografPrefs.execute(
-                        str.escapeHTML(buf[langUI] || buf.common),
+                        escapeHTML(buf[langUI] || buf.common),
                         {locale: prepareLocale(langUI)}
                     ),
                     id = 'setting-' + name,
