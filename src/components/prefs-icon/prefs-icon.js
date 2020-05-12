@@ -1,1 +1,0 @@
-import './prefs-icon.less';

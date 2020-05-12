@@ -11,7 +11,6 @@ import paranja from '../paranja/paranja';
 
 import './prefs.less';
 import '../button/button';
-import '../prefs-icon/prefs-icon';
 
 const
     typografPrefs = new Typograf({
