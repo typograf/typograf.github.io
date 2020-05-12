@@ -3,7 +3,7 @@ import { diffChars } from 'diff';
 
 import './diff.less';
 
-export function getDiffTitle(sym) {
+function getDiffTitle(sym) {
     let title = '';
     if (sym === '\u00A0') {
         title = 'NO-BREAK SPACE';
@@ -20,7 +20,7 @@ export function makeDiff(before, after) {
     return diffChars(before, after).map((part) => {
         const
             val = escapeHTML(part.value),
-            title = this.getDiffTitle(part.value);
+            title = getDiffTitle(part.value);
 
         let html;
 

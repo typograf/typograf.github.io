@@ -3,10 +3,15 @@ import $ from 'jquery';
 import Typograf from 'typograf/dist/typograf.all';
 import { metrikaReachGoal } from '../../services/metrika';
 
-import i18n from '../../i18n/index';
+import i18n from '../../helpers/i18n';
 import { escapeHTML } from '../../helpers/string';
 import localStorage from '../../helpers/local-storage';
 import prepareLocale from '../../helpers/prepare-locale';
+import paranja from '../paranja/paranja';
+
+import './prefs.less';
+import '../button/button';
+import '../prefs-icon/prefs-icon';
 
 const
     typografPrefs = new Typograf({
@@ -57,17 +62,17 @@ export default class Prefs {
         }
 
         $('.prefs').addClass('prefs_opened');
-        $('.paranja').addClass('paranja_opened');
+        paranja.show();
 
         this._updateSelects();
         this._synchronizeMainCheckbox();
 
-        metrikaReachGoal('settings-open');        
+        metrikaReachGoal('settings-open');
     }
 
     hide() {
         $('.prefs').removeClass('prefs_opened');
-        $('.paranja').removeClass('paranja_opened');
+        paranja.hide();
 
         metrikaReachGoal('settings-close');
     }

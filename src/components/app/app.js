@@ -1,31 +1,39 @@
-import './services/show-js-error';
+import '../../services/show-js-error';
 
 import $ from 'jquery';
-import './helpers/jquery.checked';
+import '../../helpers/jquery.checked';
 
 import { debounce } from 'throttle-debounce';
 import Typograf from 'typograf/dist/typograf.all';
 
-import i18n from './i18n/index';
+import langUI from '../lang-ui/lang-ui';
 
-import prepareLocale from './helpers/prepare-locale';
-import { getHashParam } from './helpers/hash';
-import { truncate } from './helpers/string';
-import { copyText } from './helpers/copy-text';
+import entityHighlight from '../entity-highlight/entity-highlight';
+import prepareLocale from '../../helpers/prepare-locale';
+import { makeDiff } from '../diff/diff';
 
-import langUI from './components/lang-ui/lang-ui';
-import diff from './components/diff/diff';
-import Tooltip from './components/tooltip/tooltip';
-import entityHighlight from './components/entity-highlight/entity-highlight';
-import Prefs from './components/prefs/prefs';
-import './components/extension/extension';
-import './components/version/version';
+import Tooltip from '../tooltip/tooltip';
 
-import { saveFile } from './helpers/save-file';
-import './helpers/typograf-groups';
+import { saveFile } from '../../helpers/save-file';
+import Prefs from '../prefs/prefs';
+import i18n from '../../helpers/i18n';
+import texts from '../../i18n/texts';
+i18n.texts = texts;
 
-import { metrikaHit, metrikaReachGoal } from './services/metrika';
+import { getHashParam } from '../../helpers/hash';
+import { truncate } from '../../helpers/string';
+import { copyText } from '../../helpers/copy-text';
+
+import '../input/input';
+import '../header/header';
+import '../footer/footer';
+
+import '../../helpers/typograf-groups';
+
+import { metrikaHit, metrikaReachGoal } from '../../services/metrika';
 metrikaHit();
+
+import './app.less';
 
 const typograf = new Typograf();
 
@@ -73,16 +81,11 @@ export default class App {
     }
 
     copyText(text) {
-        let message, status;
         if (copyText(text)) {
-            message = i18n('copied');
-            status = 'ok';
+            this._tooltip.show(i18n('copied'), 'ok', true);
         } else {
-            message = i18n('notSupportCopy');
-            status = 'error';
+            this._tooltip.show(i18n('notSupportCopy'), 'error', true);
         }
-
-        this._tooltip.show(message, status, true);
     }
 
     execute() {
@@ -112,7 +115,7 @@ export default class App {
 
         resText.is(':visible') && resText.val(result);
         resHTML.is(':visible') && resHTML.html(entityHighlight(result));
-        resDiff.is(':visible') && resDiff.html(diff.make(value, result));
+        resDiff.is(':visible') && resDiff.html(makeDiff(value, result));
     }
 
     _setValue(value) {

@@ -5,7 +5,7 @@ const
     MiniCssExtractPlugin = require('mini-css-extract-plugin'),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
     WebpackMd5Hash = require('webpack-md5-hash'),
-    TerserPlugin = require('terser-webpack-plugin'),    
+    TerserPlugin = require('terser-webpack-plugin'),
     //CopyWebpackPlugin = require('copy-webpack-plugin'),
     OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin'),
     { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -16,8 +16,8 @@ module.exports = function(env, options) {
     return {
         watch: false,
         entry: {
-            desktop: './src/app.desktop.js',
-            mobile: './src/app.mobile.js'
+            desktop: './src/components/app/app@desktop.js',
+            mobile: './src/components/app/app@mobile.js'
         },
         output: {
             path: path.resolve(__dirname, 'build'),
@@ -67,7 +67,7 @@ module.exports = function(env, options) {
             minimize: isProd,
             minimizer: [
                 new TerserPlugin(),
-                new OptimizeCSSAssetsPlugin({})                        
+                new OptimizeCSSAssetsPlugin({})
             ],
         },
     };

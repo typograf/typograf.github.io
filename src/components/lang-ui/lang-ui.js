@@ -1,7 +1,7 @@
 import $ from 'jquery';
 
-import i18n from '../../i18n/index';
 import localStorage from '../../helpers/local-storage';
+import i18n from '../../helpers/i18n';
 
 import './lang-ui.less';
 

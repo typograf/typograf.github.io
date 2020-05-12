@@ -1,7 +1,5 @@
-import texts from './texts';
-
 export default function i18n(id, lang) {
-    const key = texts[id];
+    const key = i18n.texts[id];
     if (!key) {
         console.warn(`Not found key "${id}" in getText().`);
         return '';
@@ -18,3 +16,5 @@ export default function i18n(id, lang) {
 
     return value;
 }
+
+i18n.texts = {};
