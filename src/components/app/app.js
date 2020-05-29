@@ -169,7 +169,7 @@ export default class App {
         this._onprefs = () => {
             const
                 el = $('.header'),
-                clSelected = '.header_selected';
+                clSelected = 'header_selected';
 
             if (el.hasClass(clSelected)) {
                 window.location.hash = '';
