@@ -7,10 +7,6 @@
     margin: 0;
     padding: 0;
 
-    cursor: pointer;
-
-    user-select: none;
-
     color: white;
     border-bottom: 1px solid #008cb7;
     background: #00acc7;
@@ -38,5 +34,19 @@
         margin-left: 7px;
 
         background: data-uri('../../images/prefs.svg') 0 0 no-repeat;
+    }
+
+    &__prefs {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+
+        color: transparent;
+
+        cursor: pointer;
+
+        user-select: none;
     }
 }

@@ -1,4 +1,8 @@
 export default {
+    documentTitle: {
+        'en-US': 'Typograf',
+        ru: 'Типограф — помощь с монотонной вёрсткой текстов'
+    },
     typograf: {
         'en-US': 'Typograf',
         ru: 'Типограф'
