@@ -29,6 +29,7 @@ import '../header/header';
 import '../footer/footer';
 
 import '../../helpers/typograf-groups';
+import '../../sw';
 
 import { metrikaHit, metrikaReachGoal } from '../../services/metrika';
 metrikaHit();

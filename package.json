@@ -52,7 +52,8 @@
     "typograf": "^6.11.1",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12",
-    "webpack-md5-hash": "0.0.6"
+    "webpack-md5-hash": "0.0.6",
+    "workbox-webpack-plugin": "^5.1.4"
   },
   "scripts": {
     "test": "npm run-script eslint",

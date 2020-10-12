@@ -8,7 +8,8 @@ const
     TerserPlugin = require('terser-webpack-plugin'),
     //CopyWebpackPlugin = require('copy-webpack-plugin'),
     OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin'),
-    { CleanWebpackPlugin } = require('clean-webpack-plugin');
+    { CleanWebpackPlugin } = require('clean-webpack-plugin'),
+    { GenerateSW } = require('workbox-webpack-plugin');
 
 module.exports = function(env, options) {
     const isProd = options.mode === 'production';
@@ -42,7 +43,8 @@ module.exports = function(env, options) {
                 template: './src/html/mobile.html',
                 filename: '../mobile.html'
             }),
-            new WebpackMd5Hash()
+            new WebpackMd5Hash(),
+            new GenerateSW(),
         ],
         module: {
             rules: [
