@@ -1,0 +1,22 @@
+{
+  "short_name": "Typograf",
+  "name": "Typograf",
+  "description": "Typograf helps you automatically place unbroken spaces, correct small typos, put quotation marks in the correct form, replace hyphens with dashes in the right places, and much more.",
+  "icons": [
+    {
+      "src": "/icons/favicon.png",
+      "type": "image/png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "/images/touchicon.png",
+      "type": "image/png",
+      "sizes": "152x152"
+    }
+  ],
+  "start_url": "/?source=pwa",
+  "background_color": "#00acc7",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#00acc7"
+}
