@@ -1,26 +1,33 @@
-export default {
-    getItem(key) {
+const myLocalStorage = {
+    getItem(key, defaultValue) {
         let result;
 
         if (window.localStorage) {
             try {
-                result = localStorage.getItem(key);
+                result = JSON.parse(window.localStorage.getItem(key));
             } catch (e) {
                 console.log(e);
             }
+        } else {
+            console.warn('LocalStorage is unsupported.');
         }
 
-        return result;
+        return typeof result === 'undefined' ? defaultValue : result;
     },
     setItem(key, value) {
         if (window.localStorage) {
             try {
-                localStorage.setItem(key, value);
+                window.localStorage.setItem(key, JSON.stringify(value));
             } catch (e) {
                 console.log(e);
             }
+        } else {
+            console.warn('LocalStorage is unsupported.');
         }
 
         return this;
     }
 };
+
+
+export default myLocalStorage;

@@ -25,7 +25,7 @@ class LangUI {
             item.index = i;
         }, this);
 
-        this.val(localStorage.getItem('settings.langUI') || this.defaultLang);
+        this.val(localStorage.getItem('settings.langUI', this.defaultLang));
     }
 
     val(value) {

@@ -28,12 +28,7 @@ export default class Prefs {
         this._typograf = typograf;
         this._wasRebuilt = false;
 
-        let rules;
-        try {
-            rules = JSON.parse(localStorage.getItem('settings.rules'));
-        } catch (e) {
-            console.log(e);
-        }
+        const rules = localStorage.getItem('settings.rules');
 
         this.locale = localStorage.getItem('settings.locale');
         this.mode = localStorage.getItem('settings.mode');
@@ -98,7 +93,7 @@ export default class Prefs {
         }, this);
 
         localStorage
-            .setItem('settings.rules', JSON.stringify({ enabled, disabled }))
+            .setItem('settings.rules', { enabled, disabled })
             .setItem('settings.locale', this.locale)
             .setItem('settings.mode', this.mode)
             .setItem('settings.onlyInvisible', this.onlyInvisible);

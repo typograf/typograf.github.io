@@ -92,10 +92,7 @@ export default class App {
     execute() {
         const
             value = this._getValue(),
-            result = typograf.execute(value, {
-                locale: prepareLocale(this._prefs.locale),
-                htmlEntity: {type: this._prefs.mode}
-            });
+            result = typograf.execute(value, this.getTypografSettings());
 
         this.last = { value, result };
 
@@ -104,6 +101,16 @@ export default class App {
         } else {
             this.updateResult();
         }
+    }
+
+    getTypografSettings() {
+        return {
+            locale: prepareLocale(this._prefs.locale),
+            htmlEntity: {
+                type: this._prefs.mode,
+                onlyInvisible: this._prefs.onlyInvisible
+            }
+        };
     }
 
     updateResult() {
@@ -159,10 +166,7 @@ export default class App {
                 e.source.postMessage(JSON.stringify({
                     service: 'typograf',
                     command: 'return',
-                    text: typograf.execute(data.text, {
-                        locale: prepareLocale(this._prefs.locale),
-                        htmlEntity: {type: this._prefs.mode}
-                    })
+                    text: typograf.execute(data.text, this.getTypografSettings())
                 }), '*');
             }
         }, false);
