@@ -12,7 +12,7 @@ const myLocalStorage = {
             console.warn('LocalStorage is unsupported.');
         }
 
-        return typeof result === 'undefined' ? defaultValue : result;
+        return typeof result === 'undefined' || result === null ? defaultValue : result;
     },
     setItem(key, value) {
         if (window.localStorage) {
