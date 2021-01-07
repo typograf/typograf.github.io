@@ -36,6 +36,11 @@ metrikaHit();
 
 import './app.less';
 
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+    deferredPrompt = e;
+}); 
+
 const typograf = new Typograf();
 
 export default class App {
