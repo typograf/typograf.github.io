@@ -3,6 +3,7 @@ import '../../services/show-js-error';
 import $ from 'jquery';
 import '../../helpers/jquery.checked';
 
+import copy from 'copy-text-to-clipboard';
 import { debounce } from 'throttle-debounce';
 import Typograf from 'typograf/dist/typograf.all';
 
@@ -22,7 +23,6 @@ i18n.texts = texts;
 
 import { getHashParam } from '../../helpers/hash';
 import { truncate } from '../../helpers/string';
-import { copyText } from '../../helpers/copy-text';
 
 import '../input/input';
 import '../header/header';
@@ -38,8 +38,9 @@ import './app.less';
 
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', e => {
+    // eslint-disable-next-line no-unused-vars
     deferredPrompt = e;
-}); 
+});
 
 const typograf = new Typograf();
 
@@ -87,7 +88,7 @@ export default class App {
     }
 
     copyText(text) {
-        if (copyText(text)) {
+        if (copy(text)) {
             this._tooltip.show(i18n('copied'), 'ok', true);
         } else {
             this._tooltip.show(i18n('notSupportCopy'), 'error', true);
