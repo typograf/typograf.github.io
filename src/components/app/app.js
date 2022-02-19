@@ -36,6 +36,7 @@ metrikaHit();
 
 import './app.less';
 
+// eslint-disable-next-line no-unused-vars
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', e => {
     // eslint-disable-next-line no-unused-vars
