@@ -65,7 +65,7 @@ export default {
     },
     save: {
         'en-US': 'Save',
-        ru: 'Сохранить'
+        ru: 'Сохранить как файл'
     },
     notSupportCopy: {
         'en-US': 'Your browser does not support copy text.',
