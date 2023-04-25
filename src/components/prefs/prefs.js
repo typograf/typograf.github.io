@@ -14,6 +14,7 @@ import '../button/button';
 
 const
     typografPrefs = new Typograf({
+        locale: ['ru', 'en-US'],
         disableRule: '*',
         enableRule: ['common/nbsp/*', 'ru/nbsp/*']
     }),
@@ -84,11 +85,11 @@ export default class Prefs {
             enabled = [],
             disabled = [];
 
-        Object.keys(this._typograf._enabledRules).forEach(function(name) {
-            if (this._typograf._enabledRules[name]) {
-                enabled.push(name);
+        Typograf.getRules().forEach(function(rule) {
+            if (this._typograf.isEnabledRule(rule.name)) {
+                enabled.push(rule.name);
             } else {
-                disabled.push(name);
+                disabled.push(rule.name);
             }
         }, this);
 
@@ -104,7 +105,7 @@ export default class Prefs {
             el = $(el);
             const id = el.data('id');
 
-            Typograf.prototype._rules.some(rule => {
+            Typograf.getRules().some(rule => {
                 if (id === rule.name) {
                     const checked = rule.disabled !== true;
                     el.checked(checked);
@@ -197,7 +198,7 @@ export default class Prefs {
     onChange() {}
 
     rebuild() {
-        const groups = this._getSortedGroups(Typograf.prototype._rules, i18n.lang);
+        const groups = this._getSortedGroups(Typograf.getRules(), i18n.lang);
 
         $('.prefs__rules').html(this._buildHTML(groups));
     }
@@ -209,8 +210,8 @@ export default class Prefs {
             }
 
             const
-                indexA = Typograf.getGroupIndex(a._group),
-                indexB = Typograf.getGroupIndex(b._group);
+                indexA = Typograf.getGroupIndex(a.group),
+                indexB = Typograf.getGroupIndex(b.group);
 
             if (indexA > indexB) {
                 return 1;
@@ -230,7 +231,7 @@ export default class Prefs {
         const groups = [];
 
         rules.forEach(function(rule) {
-            const groupName = rule._group;
+            const groupName = rule.group;
 
             if (groupName !== currentGroupName) {
                 currentGroupName = groupName;
@@ -282,7 +283,7 @@ export default class Prefs {
 
         groups.forEach(function(group) {
             const
-                groupName = group[0]._group,
+                groupName = group[0].group,
                 groupTitle = typografPrefs.execute(
                     Typograf.getGroupTitle(groupName, langUI),
                     {locale: prepareLocale(langUI)}

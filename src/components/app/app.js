@@ -43,8 +43,6 @@ window.addEventListener('beforeinstallprompt', e => {
     deferredPrompt = e;
 });
 
-const typograf = new Typograf();
-
 export default class App {
     constructor() {
         this.last = {value: '', result: ''};
@@ -66,7 +64,9 @@ export default class App {
 
         this._tooltip = new Tooltip();
 
-        this._prefs = new Prefs(typograf);
+        this.typograf = new Typograf({ locale: [ 'ru' ] });
+
+        this._prefs = new Prefs(this.typograf);
         this._prefs.onChange = this.execute.bind(this);
 
         langUI.onChange = () => {
@@ -76,9 +76,8 @@ export default class App {
         };
 
         if (this._prefs.rules) {
-            typograf
-                .enableRule(this._prefs.rules.enabled)
-                .disableRule(this._prefs.rules.disabled);
+            this.typograf.enableRule(this._prefs.rules.enabled);
+            this.typograf.disableRule(this._prefs.rules.disabled);
         }
 
         this.updateResult = debounce(250, this.updateResult);
@@ -99,7 +98,7 @@ export default class App {
     execute() {
         const
             value = this._getValue(),
-            result = typograf.execute(value, this.getTypografSettings());
+            result = this.typograf.execute(value, this.getTypografSettings());
 
         this.last = { value, result };
 
@@ -173,7 +172,7 @@ export default class App {
                 e.source.postMessage(JSON.stringify({
                     service: 'typograf',
                     command: 'return',
-                    text: typograf.execute(data.text, this.getTypografSettings())
+                    text: this.typograf.execute(data.text, this.getTypografSettings())
                 }), '*');
             }
         }, false);
