@@ -1,5 +1,9 @@
 module.exports = {
     plugins: [
-        require('autoprefixer')
+        require('postcss-import'),
+        require('postcss-nested'),
+        require('postcss-inline-svg'),
+        require('autoprefixer'),
+        require('cssnano'),
     ]
 };

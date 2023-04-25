@@ -11,8 +11,11 @@
     <link rel="canonical" href="https://typograf.github.io/mobile.html" />
     <link rel="preconnect" href="https://mc.yandex.ru" />
     <link rel="manifest" href="./manifest.json" />
+<style>
+{{CSS}}
+</style>
 </head>
-<body class="page_is-mobile transition_no">
+<body class="page_mobile transition_no">
     <header class="header">
         <h1 class="header__title"><span data-text-id="typograf">Типограф</span><span class="header__icon"></span></h1>
         <a href="#prefs" class="header__prefs">Настройки</a>
@@ -32,7 +35,7 @@
                     <div class="prefs__html-entities">
                         <span data-text-id="html-entities">HTML-сущности</span>:<br/>
                         <select class="prefs__set-mode" data-title-id="html-entities">
-                            <option value="">UTF-8</option>
+                            <option value="default">UTF-8</option>
                             <option value="name" data-text-id="names">Имена</option>
                             <option value="digit" data-text-id="digits">Цифры</option>
                         </select><span class="prefs__invisible-symbols-container"><input type="checkbox" class="prefs__only-invisible" id="invisible-symbols" /> <label for="invisible-symbols" data-text-id="invisible-symbols">Для невидимых символов</label></span><br/>
@@ -59,6 +62,11 @@
             <div class="input__container">
                 <textarea class="textarea input__text" autofocus="autofocus" data-placeholder-id="input-text"></textarea>
                 <div class="input__clear" data-title-id="clear" title="Очистить">&times;</div>
+                <div class="input__actions">
+                    <span class="action-icon copy-icon" title="" data-title-id="copy"></span>
+                    <span class="action-icon share-icon" title="" data-title-id="share"></span>
+                    <span class="action-icon save-file-icon" title="" data-title-id="save"></span>
+                </div>
             </div>
             <div class="button button_width_max button_type_action input__execute" data-text-id="to-typograf">Сделать красиво</div>
         </div>
@@ -72,12 +80,18 @@
         </div>
         <div class="footer__right">
             <div class="footer__item">
-                <span data-text-id="powered-by">На основе</span> <a rel="noopener" href="https://github.com/typograf/typograf/releases/" target="_blank">Typograf<span id="version"></span></a>
+                <span data-text-id="powered-by">На основе</span> <a rel="noopener" href="https://github.com/typograf/typograf/releases/" target="_blank">Typograf <span id="version">{{VERSION}}</span></a>
             </div>
             <div class="footer__item">
-                <span class="lang-ui"></span>
+                <span class="language-selector"></span>
             </div>
         </div>
     </footer>
+<script>
+{{TYPOGRAF_SCRIPT}}
+</script>
+<script>
+{{JS}}
+</script>
 </body>
 </html>

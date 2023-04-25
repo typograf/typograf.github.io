@@ -1,0 +1,36 @@
+﻿.page_desktop .input
+{
+    &__text
+    {
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 45px 8px 8px 18px;
+    }
+
+    &__head
+    {
+		position: absolute;
+		left: 20px;
+		top: 10px;
+
+        z-index: 3;
+
+        min-height: 30px;
+    }
+
+    &__clear
+    {
+        top: 40px;
+        right: 30px;
+
+        transition: transform .1s ease;
+
+        &:hover
+        {
+            color: #000;
+            transform: scale(1.2);
+        }
+    }
+}
