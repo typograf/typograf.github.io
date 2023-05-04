@@ -13,7 +13,7 @@ function getExtensionBrowser() {
         return 'yabro';
     }
 
-    return'chrome';
+    return 'chrome';
 }
 
 const browser = getExtensionBrowser() || 'chrome';

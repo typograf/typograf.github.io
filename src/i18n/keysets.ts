@@ -273,5 +273,17 @@ export const keysets: I18nKeysets = {
     yabro: {
         'en-US': 'Yandex.Browser',
         ru: 'Яндекс.Браузера'
-    }
+    },
+    chrome: {
+        'en-US': 'Google Chrome',
+        ru: 'Google Chrome'
+    },
+    opera: {
+        'en-US': 'Opera',
+        ru: 'Opera'
+    },
+    firefox: {
+        'en-US': 'Mozilla Firefox',
+        ru: 'Mozilla Firefox'
+    },
 };
