@@ -23,8 +23,11 @@
         ) { window.location = url; }
     })(navigator.userAgent || navigator.vendor || window.opera, './mobile.html');
     </script>
+<style>
+{{CSS}}
+</style>
 </head>
-<body class="page_is-desktop transition_no">
+<body class="page_desktop transition_no">
     <!--noindex-->
     <header class="header">
         <h1 class="header__title"><span data-text-id="typograf">Типограф</span><span class="header__icon"></span></h1>
@@ -40,7 +43,7 @@
                     <div class="prefs__html-entities">
                         <span data-text-id="html-entities">HTML-сущности</span>:<br/>
                         <select class="prefs__set-mode" data-title-id="html-entities">
-                            <option value="">UTF-8</option>
+                            <option value="default">UTF-8</option>
                             <option value="name" data-text-id="names">Имена</option>
                             <option value="digit" data-text-id="digits">Цифры</option>
                         </select><span class="prefs__invisible-symbols-container"><input type="checkbox" class="prefs__only-invisible" id="invisible-symbols" /> <label for="invisible-symbols" data-text-id="invisible-symbols">Для невидимых символов</label></span><br/>
@@ -80,9 +83,10 @@
                             <input type="radio" class="result__as-diff" id="result__as-diff" name="view" autocomplete="off" value="diff" /><label for="result__as-diff"><span style="border-bottom: 1px solid rgba(255, 0, 0, .5);" data-text-id="diff-1">Измен</span><span style="border-bottom: 1px solid rgba(0, 255, 0, .5);" data-text-id="diff-2">ения</span></label>
                         </span>
                     </div>
-                    <div class="input__bottom">
-						<span class="input__copy" title="" data-title-id="copy"></span>
-						<span class="input__save" title="" data-title-id="save"></span>
+                    <div class="input__actions">
+						<span class="action-icon copy-icon" title="" data-title-id="copy"></span>
+						<span class="action-icon share-icon" title="" data-title-id="share"></span>
+						<span class="action-icon save-file-icon" title="" data-title-id="save"></span>
                     </div>
                     <textarea class="textarea result__text" spellcheck="true" data-placeholder-id="result"></textarea>
                     <div class="result__html"></div>
@@ -108,20 +112,23 @@
 
             <div class="footer__item">
                 <span class="extension" data-text-id="extension">Дополнение для</span>
-                <a rel="noopener" class="extension_firefox" href="https://addons.mozilla.org/ru/firefox/addon/typografy/" target="_blank">Mozilla Firefox</a>
-                <a rel="noopener" class="extension_chrome" href="https://chrome.google.com/webstore/detail/red-typography/dgmmkhdeghobfcedlnmgbncknnfjhnmo" target="_blank">Google Chrome</a>
-                <a rel="noopener" class="extension_opera" href="https://addons.opera.com/ru/extensions/details/red-typography/" target="_blank">Opera</a>
-                <a rel="noopener" class="extension_yabro" href="https://addons.opera.com/ru/extensions/details/red-typography/" data-text-id="yabro" target="_blank">Яндекс.Браузер</a>
+                <a rel="noopener" class="extension__link" href="" target="_blank"></a>
             </div>
         </div>
         <div class="footer__right">
             <div class="footer__item">
-                <span data-text-id="powered-by">На основе</span> <a rel="noopener" href="https://github.com/typograf/typograf/releases/" target="_blank">Typograf<span id="version"></span></a>
+                <span data-text-id="powered-by">На основе</span> <a rel="noopener" href="https://github.com/typograf/typograf/releases/" target="_blank">Typograf <span id="version">{{VERSION}}</span></a>
             </div>
             <div class="footer__item">
-                <span class="lang-ui"></span>
+                <span class="language-selector"></span>
             </div>
         </div>
     </footer>
+<script>
+{{TYPOGRAF_SCRIPT}}
+</script>
+<script>
+{{JS}}
+</script>
 </body>
 </html>

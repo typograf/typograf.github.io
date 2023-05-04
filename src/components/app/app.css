@@ -1,0 +1,45 @@
+@import 'typograf/dist/typograf.css';
+@import './app@desktop.css';
+
+html,
+body
+{
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #222;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    margin: 0;
+    padding: 0;
+}
+
+input,
+textarea,
+button,
+select,
+option
+{
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+}
+
+label
+{
+    user-select: none;
+}
+
+a
+{
+    color: #007c97;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.se {
+    display: none;
+}

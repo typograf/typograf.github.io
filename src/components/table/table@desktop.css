@@ -1,0 +1,31 @@
+﻿.page_desktop .table
+{
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 10px 10px;
+
+    &__left,
+    &__right
+    {
+        position: relative;
+
+        box-sizing: border-box;
+        width: 50%;
+        height: 100%;
+    }
+
+    &__left
+    {
+        float: left;
+
+        padding-right: 10px;
+    }
+
+    &__right
+    {
+        float: right;
+
+        box-sizing: border-box;
+    }
+}

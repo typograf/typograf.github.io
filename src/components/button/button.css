@@ -1,0 +1,43 @@
+.button
+{
+    display: inline-block;
+
+    padding: 8px 18px;
+
+    cursor: pointer;
+    user-select: none;
+    transition: background-color .15s linear, transform .1s ease-out;
+
+    border-radius: 4px;
+    background: #e6e6e6;
+
+    color: #222;
+
+    text-align: center;
+    white-space: nowrap;
+
+    &:hover
+    {
+        background: #dbdbdb;
+    }
+
+    &:active
+    {
+        transform: scale(0.9658);
+    }
+
+    &_type_action
+    {
+        background: #00acc7;
+        color: #fff;
+
+        &:hover
+        {
+            background: #009cb7;
+        }
+    }
+
+    &_width_max {
+        width: 100%;
+    }
+}

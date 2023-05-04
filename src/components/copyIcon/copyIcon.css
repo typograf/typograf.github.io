@@ -1,0 +1,4 @@
+.copy-icon
+{
+    background-image: svg-load('./copyIcon.svg');
+}

@@ -1,0 +1,11 @@
+﻿.page_mobile .container
+{
+    position: absolute;
+    top: 40px;
+    bottom: 40px;
+    left: 0;
+
+    box-sizing: border-box;
+    width: 100%;
+    padding: 5px 0;
+}
