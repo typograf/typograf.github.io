@@ -6,11 +6,6 @@
 
 ## Разработка
 ```
-npm run build:dev
+npm run build
 open index.html
-```
-
-## Выкладка
-```
-npm run build:prod
 ```
