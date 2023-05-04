@@ -55,7 +55,7 @@
     "throttle-debounce": "^5.0.0",
     "tslib": "^2.5.0",
     "typescript": "^5.0.4",
-    "typograf": "^7.0.0"
+    "typograf": "^7.1.0"
   },
   "scripts": {
     "test": "npm run-script eslint",

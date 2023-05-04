@@ -1,6 +1,6 @@
 import TypografBase from 'typograf';
-import { TypografHtmlEntityType } from 'typograf/dist/htmlEntities';
-import { TypografRuleInternal } from 'typograf/dist/main';
+import { TypografHtmlEntity } from 'typograf';
+import { TypografRuleInternal } from 'typograf';
 
 import { i18n } from '../../i18n/i18n';
 import { escapeHTML } from '../../helpers/string';
@@ -30,7 +30,7 @@ const typografEntities = new Typograf({
 interface PrefsOnChangeData {
     rules: { enabled: string[], disabled: string[]};
     locale: string;
-    mode: TypografHtmlEntityType;
+    mode: TypografHtmlEntity['type'];
     onlyInvisible: boolean;
 }
 
@@ -38,7 +38,7 @@ interface PrefsParams {
     typograf: TypografBase;
     getLanguage: () => string;
     getLocale: () => string;
-    getMode: () => TypografHtmlEntityType;
+    getMode: () => TypografHtmlEntity['type'];
     getOnlyInvisible: () => boolean;
     onChange(data: PrefsOnChangeData): void;
 }
@@ -47,7 +47,7 @@ export class Prefs {
     private paranja: Paranja;
 
     private locale: string;
-    private mode: TypografHtmlEntityType;
+    private mode: TypografHtmlEntity['type'];
     private onlyInvisible: boolean;
 
     private dom = document.querySelector('.prefs') as HTMLDivElement;
@@ -182,7 +182,7 @@ export class Prefs {
     }
 
     private handleModeChange = () => {
-        this.mode = this.domSetMode.value as TypografHtmlEntityType;
+        this.mode = this.domSetMode.value as TypografHtmlEntity['type'];
         this.onlyInvisible = this.domOnlyInvisible.checked;
         this.updateInvisibleSymbols();
 

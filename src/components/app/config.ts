@@ -1,4 +1,4 @@
-import { TypografHtmlEntityType } from 'typograf/dist/htmlEntities';
+import { TypografHtmlEntity } from 'typograf';
 import { myLocalStorage } from '../../helpers/myLocalStorage';
 
 const defaultRules = { disabled: [], enabled: []};
@@ -12,7 +12,7 @@ export class Config {
     private languageInner = '';
     private localeInner = '';
     private rulesInner: ConfigRules = defaultRules;
-    private modeInner: TypografHtmlEntityType;
+    private modeInner: TypografHtmlEntity['type'];
     private onlyInvisibleInner = false;
 
     constructor() {
@@ -28,7 +28,7 @@ export class Config {
             this.rulesInner = rules;
         }
 
-        this.modeInner = myLocalStorage.getItem<TypografHtmlEntityType>('settings.mode', 'default');
+        this.modeInner = myLocalStorage.getItem<TypografHtmlEntity['type']>('settings.mode', 'default');
         this.onlyInvisibleInner = myLocalStorage.getItem('settings.onlyInvisible', false);
     }
 
@@ -45,9 +45,9 @@ export class Config {
         return this.modeInner;
     }
 
-    set mode(value: TypografHtmlEntityType) {
+    set mode(value: TypografHtmlEntity['type']) {
         this.modeInner = value;
-        myLocalStorage.setItem<TypografHtmlEntityType>('settings.mode', value);
+        myLocalStorage.setItem<TypografHtmlEntity['type']>('settings.mode', value);
     }
 
     get onlyInvisible() {
