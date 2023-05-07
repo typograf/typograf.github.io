@@ -38,6 +38,7 @@ export class ShareIcon {
     private shareText(text: string) {
         navigator.share({
             text,
+            title: 'Typograf'
         });
     }
 }
