@@ -179,9 +179,8 @@ export class App {
         if (this.prefs.opened()) {
             setPrefsHash();
         } else {
-            resetHash();
-
             setTimeout(() => {
+                resetHash();
                 this.execute();
             }, 0);
         }
