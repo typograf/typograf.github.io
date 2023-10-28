@@ -19,6 +19,7 @@ export class Input {
 
     setValue(value: string) {
         this.domText.value = value;
+        this.updateClear();
     }
 
     getValue() {
