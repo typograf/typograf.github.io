@@ -9,6 +9,7 @@ import { Paranja } from '../paranja/paranja';
 import { Typograf, getTypografGroupIndex, getTypografGroupTitle } from '../../helpers/typograf';
 import { metrikaReachGoal } from '../../services/metrika';
 import { closest, hideElement, showElement, toggleElement } from '../../helpers/dom';
+import { emojiFlags } from '../../i18n/emojiFlags';
 
 import '../button/button';
 
@@ -476,7 +477,7 @@ export class Prefs {
             const option = document.createElement('option');
             option.value = item;
             option.dataset.textId = `locale-${item}`;
-            option.innerText = i18n('locale-' + item);
+            option.innerText = (emojiFlags[item] || '') + ' ' + i18n('locale-' + item);
 
             this.domSetLocale.appendChild(option);
         });
