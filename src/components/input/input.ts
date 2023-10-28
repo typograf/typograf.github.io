@@ -29,7 +29,7 @@ export class Input {
     private bindEvents() {
         if (this.domClear) {
             this.domClear.addEventListener('click', () => {
-                this.domText.value = '';
+                this.setValue('');
                 this.domText.focus();
                 this.params.onChange();
             });
