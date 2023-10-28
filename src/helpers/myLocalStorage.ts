@@ -1,5 +1,5 @@
 export const myLocalStorage = {
-    getItem<T = any>(key: string, defaultValue: T) {
+    getItem<T = unknown>(key: string, defaultValue: T) {
         let result: T | null = null;
 
         if (window.localStorage) {
@@ -17,7 +17,7 @@ export const myLocalStorage = {
 
         return result === null ? defaultValue : result;
     },
-    setItem<T = any>(key: string, value: T) {
+    setItem<T = unknown>(key: string, value: T) {
         if (window.localStorage) {
             try {
                 window.localStorage.setItem(key, JSON.stringify(value));
