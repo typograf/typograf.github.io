@@ -1,7 +1,7 @@
-Интерфейс для [Типографа](https://github.com/typograf/typograf)
+[Интерфейс для Типографа](https://typograf.github.io)
 =======
 
-[Обычная](https://typograf.github.io) и [мобильная](https://typograf.github.io/mobile.html) версия.
+[Десктопная](https://typograf.github.io) и [мобильная](https://typograf.github.io/mobile.html) версия.
 
 
 ## Разработка
