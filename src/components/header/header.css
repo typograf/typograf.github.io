@@ -12,6 +12,16 @@
     background: #00acc7;
     box-shadow: 0 5px 10px rgba(0,0,0,.15);
 
+    &__snow {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
     &__title
     {
         font-family: Georgia, serif;
@@ -50,5 +60,7 @@
         cursor: pointer;
 
         user-select: none;
+
+        z-index: 1000;
     }
 }
