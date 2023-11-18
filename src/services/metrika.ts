@@ -12,12 +12,12 @@ export type MetrikaGoal =
     'save-text' |
     'copy-text' |
     'share-text' |
+    'select-locale' |
     'switch-lang' |
     'settings-click-rule' |
     'settings-click-group-rule' |
     'settings-select-all-rules' |
     'settings-select-html-entity' |
-    'settings-select-locale' |
     'settings-default' |
     'settings-open' |
     'settings-close';
