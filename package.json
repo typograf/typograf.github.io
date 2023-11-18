@@ -38,16 +38,15 @@
     "@rollup/plugin-typescript": "^11.1.5",
     "@types/diff": "^5.0.7",
     "@types/throttle-debounce": "^5.0.1",
-    "@typescript-eslint/eslint-plugin": "^6.9.0",
+    "@typescript-eslint/eslint-plugin": "^6.9.1",
     "autoprefixer": "^10.4.16",
     "copy-text-to-clipboard": "^3.2.0",
     "diff": "^5.1.0",
-    "eslint": "^8.52.0",
+    "eslint": "^8.53.0",
     "lyam": "^3.0.1",
     "postcss": "^8.4.31",
     "postcss-import": "^15.1.0",
     "postcss-inline-svg": "^6.0.0",
-    "postcss-loader": "^7.3.3",
     "postcss-nested": "^6.0.1",
     "rollup": "^3.29.4",
     "rollup-plugin-css-only": "^4.3.0",
@@ -59,7 +58,7 @@
     "cssnano": "^6.0.1"
   },
   "scripts": {
-    "test": "npm run-script eslint",
+    "test": "npm run eslint && npm run typecheck",
     "eslint": "eslint .",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "build": "rollup -c && node tools/index.mjs"
