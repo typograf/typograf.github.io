@@ -45,7 +45,6 @@
     "diff": "^5.1.0",
     "eslint": "^8.53.0",
     "lyam": "^3.0.1",
-    "magic-snowflakes": "6.1.0",
     "postcss": "^8.4.31",
     "postcss-import": "^15.1.0",
     "postcss-inline-svg": "^6.0.0",
