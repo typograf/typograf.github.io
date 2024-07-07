@@ -1,0 +1,4 @@
+User-agent: *
+
+Host: https://typograf.github.io
+Sitemap: https://typograf.github.io/sitemap.xml
