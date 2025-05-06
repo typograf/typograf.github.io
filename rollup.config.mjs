@@ -24,7 +24,11 @@ export default [
                 output: 'index.css',
                 extract: true,
             }),
-            terser()
+            terser({
+                output: {
+                    ascii_only: false,
+                },
+            })
         ],
     }
 ];
