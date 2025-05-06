@@ -9,7 +9,7 @@ export function getHashParams() {
         if (value !== undefined) {
             try {
                 params[name] = window.decodeURIComponent(value);
-            } catch (e) {
+            } catch {
                 params[name] = value;
             }
         }
