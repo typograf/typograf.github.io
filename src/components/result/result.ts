@@ -45,7 +45,7 @@ export class Result {
             }
         }
 
-        this.lastResult = value;
+        this.lastResult = result;
     }
 
     updateWithDebounce = debounce(250, this.update)
