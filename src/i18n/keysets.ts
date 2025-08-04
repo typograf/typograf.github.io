@@ -286,4 +286,12 @@ export const keysets: I18nKeysets = {
         'en-US': 'Mozilla Firefox',
         ru: 'Mozilla Firefox'
     },
+    'Check': {
+        'en-US': 'Check',
+        ru: 'Проверь'
+    },
+    'device-online': {
+        'en-US': 'device online!',
+        ru: 'устройство онлайн!'
+    },    
 };

@@ -11,14 +11,17 @@
 
     border-top: 1px solid #e0e0e0;
 
+    &__line {
+        display: flex;
+        margin-bottom: 5px;
+    }    
+
     &__left
     {
-        float: left;
+       float: left;
 
         .footer__item
-        {
-            float: left;
-
+        {            
             margin-right: 20px;
         }
     }
