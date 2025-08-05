@@ -44,6 +44,10 @@
         padding: 0;
     }
 
+    &__rule-checkbox {
+        margin-right: 8px;
+    }
+
 	&__item
     {
 		clear: both;
