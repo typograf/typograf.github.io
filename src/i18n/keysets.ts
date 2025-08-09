@@ -59,7 +59,7 @@ export const keysets: I18nKeysets = {
     },
     copy: {
         'en-US': 'Copy',
-        ru: 'Копировать'
+        ru: 'Скопировать'
     },
     share: {
         'en-US': 'Share',
@@ -71,7 +71,7 @@ export const keysets: I18nKeysets = {
     },
     save: {
         'en-US': 'Save',
-        ru: 'Сохранить как файл'
+        ru: 'Сохранить'
     },
     notSupportCopy: {
         'en-US': 'Your browser does not support copy text.',

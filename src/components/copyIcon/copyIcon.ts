@@ -12,7 +12,7 @@ interface CopyIconParams {
 }
 
 export class CopyIcon {
-    private dom = document.querySelector<HTMLSpanElement>('.copy-icon');
+    private dom = document.querySelector<HTMLSpanElement>('.copy-button') || document.querySelector<HTMLSpanElement>('.copy-icon');
 
     private tooltip = new Tooltip();
 

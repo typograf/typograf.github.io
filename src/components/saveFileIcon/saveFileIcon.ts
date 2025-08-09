@@ -10,7 +10,7 @@ interface SaveFileIconParams {
 }
 
 export class SaveFileIcon {
-    private dom = document.querySelector<HTMLSpanElement>('.save-file-icon');
+    private dom = document.querySelector<HTMLSpanElement>('.save-file-icon') || document.querySelector<HTMLSpanElement>('.save-file-button');
 
     constructor(private params: SaveFileIconParams) {
         if (this.dom) {
