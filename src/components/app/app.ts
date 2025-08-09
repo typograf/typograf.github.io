@@ -19,6 +19,7 @@ import '../footer/footer';
 
 import './app.css';
 import { ShareIcon } from '../shareIcon/shareIcon';
+import { isJSON, typografyJSON } from '../../helpers/json';
 
 export class App {
     private lastText: { value: string, result: string; } = { value: '', result: ''};
@@ -130,9 +131,19 @@ export class App {
         this.typograf.disableRule(rules.disabled);
     }
 
+    private typografy(value: string) {
+        if (isJSON(value)) {
+            return typografyJSON(value, text => {
+                return this.typograf.execute(text, this.getTypografSettings())
+            });
+        } else {
+            return this.typograf.execute(value, this.getTypografSettings())
+        }
+    }
+
     execute() {
         const value = this.input.getValue();
-        const result = this.typograf.execute(value, this.getTypografSettings());
+        const result = this.typografy(value);
 
         this.lastText = { value, result };
 
