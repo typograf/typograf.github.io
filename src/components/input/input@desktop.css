@@ -12,7 +12,7 @@
     &__head
     {
 		position: absolute;
-		left: 10px;
+		left: 0;
 		top: -35px;
 
         z-index: 3;

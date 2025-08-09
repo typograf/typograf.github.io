@@ -1,7 +1,7 @@
 ﻿.page_mobile .input
 {
 	box-sizing: border-box;
-	margin: 0 10px;
+	margin: 0 20px;
 	position: relative;
 
 	&__clear
