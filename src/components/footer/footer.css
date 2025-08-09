@@ -14,7 +14,20 @@
     &__line {
         display: flex;
         margin-bottom: 5px;
-    }    
+    }
+
+    &__tg-icon {
+        position: absolute;
+        margin-left: -16px;
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background-position: center center;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-image: svg-load('./telegram.svg');
+    }
+        
 
     &__left
     {
@@ -22,8 +35,17 @@
 
         .footer__item
         {            
-            margin-right: 20px;
+            margin-left: 20px;
         }
+
+        .footer__item:first-child {
+            margin-left: 0;
+        }
+
+        .footer__item_icon
+        {            
+            margin-left: 40px;
+        }        
     }
 
     &__right
