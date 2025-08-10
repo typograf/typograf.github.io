@@ -40,12 +40,14 @@
     {
         display: inline-block;
 
-        width: 16px;
-        height: 16px;
-
-        margin-left: 7px;
+        position: relative;
+        left: 7px;
+        top: 3px;
+        width: 23px;
+        height: 23px;
 
         background: svg-load('./prefs.svg') 0 0 no-repeat;
+        background-size: 100% 100%;
     }
 
     &__prefs {
