@@ -114,8 +114,8 @@ export const keysets: I18nKeysets = {
         ru: 'ения'
     },
     'input-text': {
-        'en-US': 'Input text',
-        ru: 'Введите текст'
+        'en-US': 'Input text, HTML or JSON',
+        ru: 'Введите текст, HTML или JSON'
     },
     result: {
         'en-US': 'Result',
