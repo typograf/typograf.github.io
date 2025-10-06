@@ -119,7 +119,7 @@ export const keysets: I18nKeysets = {
     },
     result: {
         'en-US': 'Result',
-        ru: 'Результат'
+        ru: 'Оттипографированный текст'
     },
     locale: {
         'en-US': 'Locale',
