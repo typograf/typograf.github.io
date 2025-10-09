@@ -1,5 +1,6 @@
 npm-debug.log
 node_modules/
 build/
-dist/
+dist/index.css
+dist/index.js
 .DS_Store
