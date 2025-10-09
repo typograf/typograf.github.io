@@ -1,9 +1,14 @@
-import { LyamParams, hit, reachGoal } from 'lyam';
+import { LyamParams, hit, notBounce, reachGoal } from 'lyam';
 
-const counterId = '28700106';
+const COUNTER_ID = '28700106';
+const NOT_BOUNCE_TIMEOUT = 15000; // 15 сек.
 
-export function metrikaHit() {
-    hit(counterId);
+export function startMetrika() {
+    hit(COUNTER_ID);
+
+    setTimeout(() => {
+        notBounce(COUNTER_ID);
+    }, NOT_BOUNCE_TIMEOUT);
 
     console.info('metrika: hit');
 }
@@ -23,7 +28,7 @@ export type MetrikaGoal =
     'settings-close';
 
 export function metrikaReachGoal(name: MetrikaGoal, params?: LyamParams) {
-    reachGoal(counterId, name, params);
+    reachGoal(COUNTER_ID, name, params);
 
     console.info('metrika: reachGoal', name, params);
 }
