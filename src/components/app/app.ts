@@ -12,14 +12,14 @@ import { Input } from '../input/input';
 import { Result } from '../result/result';
 import { CopyIcon } from '../copyIcon/copyIcon';
 import { SaveFileIcon } from '../saveFileIcon/saveFileIcon';
+import { ShareIcon } from '../shareIcon/shareIcon';
+import { isJSON, typografyJSON } from '../../helpers/json';
 
 import '../container/container';
 import '../table/table';
 import '../footer/footer';
 
 import './app.css';
-import { ShareIcon } from '../shareIcon/shareIcon';
-import { isJSON, typografyJSON } from '../../helpers/json';
 
 export class App {
     private lastText: { value: string, result: string; } = { value: '', result: ''};
