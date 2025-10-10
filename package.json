@@ -44,6 +44,9 @@
     "cssnano": "^7.1.1",
     "diff": "^5.2.0",
     "eslint": "^9.37.0",
+    "eyo-kernel": "^3.0.2",
+    "globals": "^16.4.0",
+    "js-beautify": "^1.15.4",
     "lyam": "^3.2.1",
     "postcss": "^8.5.6",
     "postcss-import": "^16.1.1",
@@ -52,19 +55,19 @@
     "rollup": "^4.52.4",
     "rollup-plugin-css-only": "^4.5.5",
     "rollup-plugin-postcss": "^4.0.2",
+    "terser": "^5.44.0",
     "throttle-debounce": "^5.0.2",
     "tslib": "^2.8.1",
     "typescript": "^5.9.3",
-    "typograf": "^7.5.0",
     "typescript-eslint": "^8.45.0",
-    "globals": "^16.4.0",
-    "eyo-kernel": "^3.0.2"
+    "typograf": "^7.5.0"
   },
   "scripts": {
     "copy:dict": "cp ./node_modules/eyo-kernel/dictionary/safe.txt ./dist/eyo.txt",
+    "copy:html-beautify": "terser ./node_modules/js-beautify/js/lib/beautify-html.js > ./dist/html-beautify.1.15.4.js",
     "test": "npm run eslint && npm run typecheck",
     "eslint": "eslint .",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "build": "npm run copy:dict && rollup -c && node tools/index.mjs"
+    "build": "npm run copy:dict && npm run copy:html-beautify && rollup -c && node tools/index.mjs"
   }
 }

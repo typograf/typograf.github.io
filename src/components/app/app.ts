@@ -14,12 +14,19 @@ import { CopyIcon } from '../copyIcon/copyIcon';
 import { SaveFileIcon } from '../saveFileIcon/saveFileIcon';
 import { ShareIcon } from '../shareIcon/shareIcon';
 import { isJSON, typografyJSON } from '../../helpers/json';
+import { isHTML } from '../../helpers/string';
 
 import '../container/container';
 import '../table/table';
 import '../footer/footer';
 
 import './app.css';
+
+declare global {
+    interface Window {
+        html_beautify: (text: string) => string;
+    }
+}
 
 export class App {
     private lastText: { value: string, result: string; } = { value: '', result: ''};
@@ -137,7 +144,13 @@ export class App {
                 return this.typograf.execute(text, this.getTypografSettings())
             });
         } else {
-            return this.typograf.execute(value, this.getTypografSettings())
+            let result = this.typograf.execute(value, this.getTypografSettings());
+
+            if (isHTML(result) && window.html_beautify) {
+                result = window.html_beautify(result);
+            }
+
+            return result;
         }
     }
 
