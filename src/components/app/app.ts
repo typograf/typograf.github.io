@@ -1,6 +1,6 @@
 import { prepareLocale } from '../../helpers/prepareLocale';
 import { I18NLanguage, i18n, i18nUpdatePage, setI18nLang } from '../../i18n/i18n';
-import { getHashParam, isPrefsHash, resetHash, setPrefsHash, setTextHashParam } from '../../helpers/hash';
+import { getHashParam, isPrefsHash, resetHash, setPrefsHash } from '../../helpers/hash';
 import { metrikaReachGoal } from '../../services/metrika';
 import { config } from './config';
 import { Typograf } from '../../helpers/typograf';
@@ -41,8 +41,10 @@ export class App {
         document.body.classList.remove('transition_no');
 
         this.input = new Input({
+            value: config.text,
             isMobile: this.isMobile,
             onChange: () => {
+                config.text = this.input.getValue();
                 this.execute();
             },
         });
@@ -97,7 +99,10 @@ export class App {
         this.prepareRules();
 
         if (!this.isMobile) {
-            this.setValue(getHashParam('text') || '');
+            const hash = getHashParam('text');
+            if (hash) {
+                this.setValue(hash);
+            }
         }
 
         this.execute();
@@ -193,8 +198,6 @@ export class App {
         if (this.isMobile || this.prefs.opened()) {
             return;
         }
-
-        setTextHashParam(value);
     }
 
     private handlePrefsClick = () => {

@@ -179,7 +179,7 @@ export class Prefs {
 
         this.save();
 
-        metrikaReachGoal('select-locale');
+        metrikaReachGoal('select-locale', { changeLocale: value });
     }
 
     private handleModeChange = () => {

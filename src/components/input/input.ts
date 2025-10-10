@@ -5,6 +5,7 @@ import './input.css';
 
 interface InputParams {
     isMobile: boolean;
+    value?: string;
     onChange: () => void;
 }
 
@@ -15,6 +16,12 @@ export class Input {
 
     constructor(private params: InputParams) {
         this.bindEvents();
+
+        const { value } = params;
+        if (value) {
+            this.setValue(value);
+            setTimeout(() => { this.handleInput() }, 0);
+        }
     }
 
     setValue(value: string) {

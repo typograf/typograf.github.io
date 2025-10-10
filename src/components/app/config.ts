@@ -14,6 +14,7 @@ export class Config {
     private rulesInner: ConfigRules = defaultRules;
     private modeInner: TypografHtmlEntity['type'];
     private onlyInvisibleInner = false;
+    private textInner = '';
 
     constructor() {
         this.languageInner = myLocalStorage.getItem('settings.langUI', 'ru');
@@ -30,6 +31,7 @@ export class Config {
 
         this.modeInner = myLocalStorage.getItem<TypografHtmlEntity['type']>('settings.mode', 'default');
         this.onlyInvisibleInner = myLocalStorage.getItem('settings.onlyInvisible', false);
+        this.textInner = myLocalStorage.getItem('text', '');
     }
 
     get locale() {
@@ -67,6 +69,15 @@ export class Config {
         this.languageInner = value;
         myLocalStorage.setItem('settings.langUI', value);
     }
+
+    get text() {
+        return this.textInner;
+    }
+
+    set text(value: string) {
+        this.textInner = value;
+        myLocalStorage.setItem('text', value);
+    }    
 
     get rules() {
         return this.rulesInner;
