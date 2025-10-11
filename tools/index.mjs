@@ -2,7 +2,6 @@ import fs from 'fs';
 import Typograf from 'typograf';
 
 const indexHtml = fs.readFileSync('./src/html/index.html', { encoding: 'utf8'});
-const mobileHtml = fs.readFileSync('./src/html/mobile.html', { encoding: 'utf8'});
 const typografScript = fs.readFileSync('./node_modules/typograf/dist/typograf.all.min.js', { encoding: 'utf8'});
 const js = fs.readFileSync('./dist/index.js', { encoding: 'utf8'});
 const css = fs.readFileSync('./dist/index.css', { encoding: 'utf8'});
@@ -16,4 +15,3 @@ function changeVars(text) {
 }
 
 fs.writeFileSync('./index.html', changeVars(indexHtml));
-fs.writeFileSync('./mobile.html', changeVars(mobileHtml));
