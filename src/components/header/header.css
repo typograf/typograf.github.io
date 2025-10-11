@@ -63,7 +63,31 @@
         background: white;
         color: black;
         cursor: default;
-    }    
+    }
+
+    &__menu-item_tab_prefs {
+        background-image: svg-load('./prefs_light.svg');
+        background-position: 15px center;
+        background-repeat: no-repeat;
+        background-size: 16px 16px;
+        padding-left: 38px;
+    }
+
+    &__menu-item_tab_prefs&__menu-item_selected {
+        background-image: svg-load('./prefs_dark.svg');
+    }
+
+    &__menu-item_tab_editor {
+        background-image: svg-load('./editor_light.svg');
+        background-position: 15px center;
+        background-repeat: no-repeat;
+        background-size: 16px 16px;
+        padding-left: 38px;
+    }
+
+    &__menu-item_tab_editor&__menu-item_selected {
+        background-image: svg-load('./editor_dark.svg');
+    }
 
     &__icon
     {

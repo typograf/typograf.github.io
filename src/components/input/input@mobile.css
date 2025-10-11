@@ -19,12 +19,9 @@
 
     &__execute
     {
-        position: absolute;
-        bottom: 2px;
-        left: 0;
 		width: 100%;
+        margin-right: 20px;
 		box-sizing: border-box;
-		padding: 10px;
     }
 
     &__text
@@ -53,8 +50,9 @@
     }
 
     &__actions
-    {
-		right: 10px;
-		bottom: 10px;
+    {        
+        display: flex;
+        width: 100%;
+		bottom: 5px;
     }
 }

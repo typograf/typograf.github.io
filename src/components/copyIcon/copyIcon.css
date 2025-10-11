@@ -1,4 +1,14 @@
 .copy-icon
 {
+    position: relative;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
     background-image: svg-load('./copyIcon.svg');
+    background-size: 100% 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    top: -2px;
 }
