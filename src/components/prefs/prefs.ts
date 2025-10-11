@@ -201,11 +201,11 @@ export class Prefs {
         });
 
         html = escapeHTML(html)
-            .replace(/(&amp;#?[\da-z_-]+;)/gi, '<span style="color: green;">$1</span>');
+            .replace(/(&amp;#?[\da-z_-]+;|\\u[\da-f]{4})/gi, '<span style="color: green;">$1</span>');
 
         this.domHtmlEntitiesExample.innerHTML = html;
 
-        if (this.mode === 'digit' || this.mode === 'name') {
+        if (this.mode === 'digit' || this.mode === 'name' || this.mode === 'js') {
             showElement(this.domInvisibleSymbolsContainer);
         } else {
             hideElement(this.domInvisibleSymbolsContainer);
