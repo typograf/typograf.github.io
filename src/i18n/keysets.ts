@@ -25,6 +25,10 @@ export const keysets: I18nKeysets = {
         'en-US': 'Settings',
         ru: 'Настройки'
     },
+    editor: {
+        'en-US': 'Editor',
+        ru: 'Редактор'
+    },
     'lang-rule': {
         'en-US': 'Language rules',
         ru: 'Язык правил'

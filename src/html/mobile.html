@@ -18,8 +18,11 @@
 </head>
 <body class="page_mobile transition_no">
     <header class="header">
-        <h1 class="header__title"><span data-text-id="typograf">Типограф</span><span class="header__icon"></span></h1>
-        <a href="#prefs" class="header__prefs">Настройки</a>
+        <h1 class="header__title"><span data-text-id="typograf">Типограф</span></h1>
+        <ul class="header__menu">
+            <li class="header__menu-item header__menu-item_selected header__menu-item_tab_editor" data-text-id="editor">Редактор</li>
+            <li class="header__menu-item header__menu-item_tab_prefs" data-text-id="prefs">Настройки</li>
+        </ul>
     </header>
     <div class="container">
         <div class="prefs">
@@ -56,7 +59,6 @@
 
             <div class="prefs__actions">
                 <span class="prefs__default button button" data-text-id="default">По умолчанию</span>
-                <span class="prefs__close button button_type_action" data-text-id="close">Закрыть</span>
             </div>
         </div>
         <div class="paranja"></div>

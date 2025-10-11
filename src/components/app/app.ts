@@ -109,7 +109,7 @@ export class App {
 
         if (isPrefsHash()) {
             setTimeout(() => {
-                this.handlePrefsClick();
+                this.handlePrefsClick('prefs');
             }, 0);
         }
     }
@@ -200,13 +200,13 @@ export class App {
         }
     }
 
-    private handlePrefsClick = () => {
-        this.prefs.toggle();
-
-        if (this.prefs.opened()) {
+    private handlePrefsClick = (tab: 'editor' | 'prefs') => {
+        if (tab === 'prefs') {
+            this.prefs.show();
             setPrefsHash();
         } else {
             setTimeout(() => {
+                this.prefs.hide();
                 resetHash();
                 this.execute();
             }, 0);

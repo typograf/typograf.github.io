@@ -5,7 +5,6 @@ import { TypografRuleInternal } from 'typograf';
 import { i18n } from '../../i18n/i18n';
 import { escapeHTML } from '../../helpers/string';
 import { prepareLocale } from '../../helpers/prepareLocale';
-import { Paranja } from '../paranja/paranja';
 import { Typograf, getTypografGroupIndex, getTypografGroupTitle } from '../../helpers/typograf';
 import { metrikaReachGoal } from '../../services/metrika';
 import { closest, hideElement, showElement, toggleElement } from '../../helpers/dom';
@@ -45,8 +44,6 @@ interface PrefsParams {
 }
 
 export class Prefs {
-    private paranja: Paranja;
-
     private locale: string;
     private mode: TypografHtmlEntity['type'];
     private onlyInvisible: boolean;
@@ -54,7 +51,6 @@ export class Prefs {
     private dom = document.querySelector('.prefs') as HTMLDivElement;
     private domSetLocale = document.querySelector('.prefs__set-locale') as HTMLSelectElement;
     private domAllRules = document.querySelector('.prefs__all-rules') as HTMLInputElement;
-    private domClose = document.querySelector('.prefs__close') as HTMLDivElement;
     private domDefault = document.querySelector('.prefs__default') as HTMLDivElement;
     private domRules = document.querySelector('.prefs__rules') as HTMLDivElement;
     private domSetMode = document.querySelector('.prefs__set-mode') as HTMLInputElement;
@@ -63,12 +59,6 @@ export class Prefs {
     private domInvisibleSymbolsContainer = document.querySelector('.prefs__invisible-symbols-container') as HTMLDivElement;
 
     constructor(private params: PrefsParams) {
-        this.paranja = new Paranja({
-            onClick: () => {
-                this.hide();
-            },
-        });
-
         this.locale = this.params.getLocale();
         this.mode = this.params.getMode();
 
@@ -84,7 +74,6 @@ export class Prefs {
 
     show() {
         this.dom.classList.add('prefs_opened');
-        this.paranja.show();
 
         this.synchronizeMainCheckbox();
 
@@ -93,7 +82,6 @@ export class Prefs {
 
     hide() {
         this.dom.classList.remove('prefs_opened');
-        this.paranja.hide();
 
         metrikaReachGoal('settings-close');
     }
@@ -495,10 +483,6 @@ export class Prefs {
 
         this.domDefault.addEventListener('click', () => {
             this.handleDefaultClick();
-        });
-
-        this.domClose.addEventListener('click', () => {
-            this.hide();
         });
 
         this.domRules.addEventListener('click', e => {
