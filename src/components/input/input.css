@@ -45,4 +45,8 @@
         z-index: 3;
         min-height: 30px;
     }
+
+    &__actions .save-file-button{
+        margin-left: 5px;        
+    }
 }
