@@ -456,7 +456,7 @@ export class Prefs {
     }
 
     private createLocaleContent() {
-        const locales = Typograf.getLocales()
+        const locales = Typograf.getLocales()        
             .sort((a, b) => i18n('locale-' + a) > i18n('locale-' + b) ? 1 : -1);
 
         this.domSetLocale.innerHTML = '';
@@ -465,7 +465,9 @@ export class Prefs {
             const option = document.createElement('option');
             option.value = item;
             option.dataset.textId = `locale-${item}`;
-            option.innerText = (emojiFlags[item] || '') + ' ' + i18n('locale-' + item);
+            const quotesData = Typograf.getData(`${item}/quote`) as { left: string; right: string };
+            const quotes = quotesData.left + quotesData.right.split('').reverse().join('');
+            option.innerText = (emojiFlags[item] || '') + ' ' + i18n('locale-' + item) + ' ' + quotes;
 
             this.domSetLocale.appendChild(option);
         });
