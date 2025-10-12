@@ -1,0 +1,49 @@
+.description {
+    margin: 0 20px;
+    max-width: 800px;
+}
+
+.description p {
+    margin: 1em 0 1em 0;
+}
+
+.description h1 + p,
+.description h2 + p,
+.description h3 + p {
+    margin-top: 0;
+}
+
+.description h1 {
+    margin: 1em 0 5px 0;
+    padding: 0;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.description h2 {
+    margin: 1em 0 5px 0;
+    padding: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.description h3 {
+    margin: 1em 0 5px 0;
+    padding: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.description h2 + h3 {
+    margin-top: 10px;
+}
+
+.description ul,
+.description ol {
+    margin: .5em 0 1em 20px;
+    padding: 0;
+}
+
+.description ul {
+    list-style-type: disc;
+}

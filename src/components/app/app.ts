@@ -17,6 +17,7 @@ import { isJSON, typografyJSON } from '../../helpers/json';
 import { isHTML } from '../../helpers/string';
 
 import '../container/container';
+import '../description/description';
 import '../table/table';
 import '../footer/footer';
 

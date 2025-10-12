@@ -1,9 +1,7 @@
 ﻿.footer
 {
+    margin-top: 30px;
     font-size: 13px;
-
-    position: absolute;
-    bottom: 0;
 
     box-sizing: border-box;
     width: 100%;
@@ -13,7 +11,7 @@
 
     &__line {
         display: flex;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
     }
 
     &__tg-icon {
@@ -28,7 +26,6 @@
         background-image: svg-load('./telegram.svg');
     }
         
-
     &__left
     {
        float: left;
