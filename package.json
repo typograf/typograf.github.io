@@ -68,6 +68,7 @@
     "test": "npm run eslint && npm run typecheck",
     "eslint": "eslint .",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "build": "npm run copy:dict && npm run copy:html-beautify && rollup -c && node tools/index.mjs"
+    "build": "npm run copy:dict && npm run copy:html-beautify && rollup -c && node tools/index.mjs",
+    "start": "lsof -ti:8000 | xargs kill -9; python3 -m http.server 8000 & open http://localhost:8000"
   }
 }
