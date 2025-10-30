@@ -43,3 +43,10 @@ export function closest(dom: HTMLElement | null, className: string): Element | n
     return parent || null;
 }
 
+export function disablePageScroll() {
+    document.body.style.overflowY = 'hidden';
+}
+
+export function enablePageScroll() {
+    document.body.style.overflowY = 'visible';
+}

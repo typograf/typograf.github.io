@@ -1,3 +1,4 @@
+import { disablePageScroll, enablePageScroll } from '../../helpers/dom';
 import { isPrefsHash } from '../../helpers/hash';
 
 import './header.css';
@@ -33,6 +34,8 @@ export class Header {
 
         this.editor.classList.add('header__menu-item_selected');
         this.prefs.classList.remove('header__menu-item_selected');
+
+        enablePageScroll();
     }
 
     private handleTabPrefs = () => {
@@ -40,5 +43,7 @@ export class Header {
 
         this.prefs.classList.add('header__menu-item_selected');
         this.editor.classList.remove('header__menu-item_selected');
+
+        disablePageScroll();
     }
 }
