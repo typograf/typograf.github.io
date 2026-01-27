@@ -44,7 +44,7 @@
     "cssnano": "^7.1.2",
     "diff": "^5.2.0",
     "eslint": "^9.39.2",
-    "eyo-kernel": "^3.0.2",
+    "eyo-kernel": "^4.0.1",
     "globals": "^17.1.0",
     "js-beautify": "^1.15.4",
     "lyam": "^3.2.1",
