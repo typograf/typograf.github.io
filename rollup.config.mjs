@@ -19,6 +19,7 @@ export default [
             babel({
                 babelHelpers: 'bundled',
                 presets: ['@babel/preset-env'],
+                compact: false,
             }),
             css({
                 output: 'index.css',
