@@ -1,21 +1,17 @@
-import { Eyo } from 'eyo-kernel';
 import { I18NKeys } from '../i18n/i18n';
-import { noop } from '../helpers/noop';
 
-const eyo = new Eyo();
-let isReadyDict = false;
-
-fetch('./dist/eyo.txt')
-    .then(response => response.text())
-    .then(dict => {
-        eyo.dictionary.set(dict);
-        isReadyDict = true;
-    }).catch(noop);
+declare global {
+    interface Window {
+        safeEyo: {
+            restore: (text: string) => string;
+        };
+    }
+}
 
 export const eyoRule = {
     name: 'ru/other/eyo',
     handler: (text: string) => {
-        return isReadyDict ? eyo.restore(text) : text;
+        return window.safeEyo ? window.safeEyo.restore(text) : text;
     },
 };
 

@@ -10,6 +10,7 @@ function changeVars(text) {
     return text
         .replace(/\{\{VERSION\}\}/, Typograf.version)
         .replace(/\{\{TYPOGRAF_SCRIPT\}\}/, typografScript)
+        .replace(/\{\{NOW\}\}/g, Date.now())
         .replace(/\{\{CSS\}\}/, css)
         .replace(/\{\{JS\}\}/, js);
 }
