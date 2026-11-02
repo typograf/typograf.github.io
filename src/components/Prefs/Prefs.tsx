@@ -1,4 +1,5 @@
 import { useMemo } from 'preact/hooks';
+import { memo } from 'preact/compat';
 import TypografBase from 'typograf';
 import { i18n, I18NLanguage } from '../../i18n/i18n';
 import { metrikaReachGoal } from '../../services/metrika';
@@ -17,7 +18,7 @@ interface PrefsProps {
     onChange: (value: PrefsData) => void;
 }
 
-export function Prefs({ opened, language, typograf, value, onChange }: PrefsProps) {
+export const Prefs = memo(function Prefs({ opened, language, typograf, value, onChange }: PrefsProps) {
     const groups = useMemo(() => getRuleGroups(language), [language]);
 
     function save(nextValue: Omit<PrefsData, 'rules'>) {
@@ -41,4 +42,4 @@ export function Prefs({ opened, language, typograf, value, onChange }: PrefsProp
         </div>
         <div class="prefs__actions"><button type="button" class="prefs__default button" onClick={reset}>{i18n('default')}</button></div>
     </div>;
-}
+});

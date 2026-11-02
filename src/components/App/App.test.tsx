@@ -106,6 +106,8 @@ test('selects all rules and restores their defaults', async () => {
     const selectAll = root.querySelector<HTMLInputElement>('.prefs__all-rules')!;
     await act(async () => selectAll.click());
     expect(rules().every(rule => rule.checked === selectAll.checked)).toBe(true);
+    await act(async () => rules()[0].click());
+    expect(selectAll.indeterminate).toBe(true);
     await act(async () => root.querySelector<HTMLElement>('.prefs__default')!.click());
     expect(rules().map(rule => rule.checked)).toEqual(initial);
 });

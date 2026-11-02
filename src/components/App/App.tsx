@@ -67,6 +67,13 @@ export function App({ language }: AppProps) {
     const [resultType, setResultType] = useState<ResultType>('text');
     const [toast, setToast] = useState<TooltipMessage | null>(null);
     const closeToast = useCallback(() => setToast(null), []);
+    const changeSettings = useCallback((value: PrefsData) => {
+        config.locale = value.locale;
+        config.mode = value.mode;
+        config.onlyInvisible = value.onlyInvisible;
+        config.rules = value.rules;
+        setSettings(value);
+    }, []);
     const formatted = useMemo(() => formatText(text, typograf, settings), [text, settings, typograf]);
 
     useEffect(() => {
@@ -92,14 +99,6 @@ export function App({ language }: AppProps) {
     function changeText(value: string) {
         config.text = value;
         setText(value);
-    }
-
-    function changeSettings(value: PrefsData) {
-        config.locale = value.locale;
-        config.mode = value.mode;
-        config.onlyInvisible = value.onlyInvisible;
-        config.rules = value.rules;
-        setSettings(value);
     }
 
     function selectTab(next: 'editor' | 'prefs') {

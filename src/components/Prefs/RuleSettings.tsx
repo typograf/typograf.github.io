@@ -1,5 +1,6 @@
 import type { TypografRuleInternal } from 'typograf';
 import TypografBase from 'typograf';
+import { useCallback } from 'preact/hooks';
 import { i18n, I18NLanguage } from '../../i18n/i18n';
 import { metrikaReachGoal } from '../../services/metrika';
 import { RuleGroup } from './RuleGroup';
@@ -17,6 +18,9 @@ export function RuleSettings({ groups, language, typograf, onChange }: RuleSetti
     const checkedCount = visibleRules.filter(rule => typograf.isEnabledRule(rule.name)).length;
     const allChecked = checkedCount === visibleRules.length;
     const allIndeterminate = checkedCount > 0 && !allChecked;
+    const setAllRulesRef = useCallback((element: HTMLInputElement | null) => {
+        if (element) element.indeterminate = allIndeterminate;
+    }, [allIndeterminate]);
 
     function toggleRule(name: string, checked: boolean) {
         if (checked) typograf.enableRule(name);
@@ -37,7 +41,7 @@ export function RuleSettings({ groups, language, typograf, onChange }: RuleSetti
     return <div class="prefs__item prefs__item_last">
         <div class="prefs__rules-title">{i18n('rules')}</div>
         <div class="prefs__top">
-            <input type="checkbox" class="prefs__all-rules" id="prefs__all-rules" checked={allChecked} ref={element => { if (element) element.indeterminate = allIndeterminate; }} onChange={event => selectAll(event.currentTarget.checked)} /> <label for="prefs__all-rules">{i18n('select-all')}</label>
+            <input type="checkbox" class="prefs__all-rules" id="prefs__all-rules" checked={allChecked} ref={setAllRulesRef} onChange={event => selectAll(event.currentTarget.checked)} /> <label for="prefs__all-rules">{i18n('select-all')}</label>
         </div>
         <div class="prefs__rules">
             {groups.map(group => <RuleGroup key={group[0].group} rules={group} language={language} typograf={typograf} onToggle={toggleRule} />)}
