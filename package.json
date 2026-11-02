@@ -27,7 +27,7 @@
     "typography"
   ],
   "engines": {
-    "node": "^20.19.0 || ^22.13.0 || >=24"
+    "node": ">=24"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.29.2",
