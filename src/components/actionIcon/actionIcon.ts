@@ -1,1 +1,0 @@
-import './actionIcon.css';

@@ -31,72 +31,7 @@
 </head>
 <body class="page_desktop transition_no">
     <!--noindex-->
-    <header class="header">
-        <div class="header__title" data-text-id="typograf">Типограф</div>
-        <ul class="header__menu">
-            <li class="header__menu-item header__menu-item_selected header__menu-item_tab_editor" data-text-id="editor">Редактор</li>
-            <li class="header__menu-item header__menu-item_tab_prefs" data-text-id="prefs">Настройки</li>
-        </ul>
-    </header>
-    <div class="container">
-        <div class="prefs" data-nosnippet>
-            <div class="prefs__items">
-                <div class="prefs__item prefs__item_first">
-                    <div class="prefs__title" data-text-id="prefs">Настройки</div>
-                </div>
-                <div class="prefs__mode prefs__item">
-                    <div class="prefs__html-entities">
-                        <span data-text-id="html-entities">HTML-сущности</span>:<br>
-                        <select class="prefs__set-mode" data-title-id="html-entities">
-                            <option value="default">UTF-8</option>
-                            <option value="name" data-text-id="names">Имена</option>
-                            <option value="digit" data-text-id="digits">Цифры</option>
-                            <option value="js">JS</option>
-                        </select><span class="prefs__invisible-symbols-container"><input type="checkbox" class="prefs__only-invisible" id="invisible-symbols"> <label for="invisible-symbols" data-text-id="invisible-symbols">Для невидимых символов</label></span><br>
-                        <div class="prefs__html-entities-example-container"><span data-text-id="example"></span>: <span class="prefs__html-entities-example"></span></div>
-                    </div>
-                </div>
-                <div class="prefs__item prefs__item_last">
-                    <div class="prefs__rules-title" data-text-id="rules">Правила</div>
-                    <div class="prefs__top">
-                        <input type="checkbox" class="prefs__all-rules" id="prefs__all-rules"> <label for="prefs__all-rules" data-text-id="select-all">Выбрать все</label>
-                    </div>
-                    <div class="prefs__rules"></div>
-                </div>
-            </div>
-            <div class="prefs__actions">
-                <span class="prefs__default button button" data-text-id="default">По умолчанию</span>
-            </div>
-        </div>
-
-        <div class="input">
-            <div class="table">
-                <div class="table__left">
-                    <div class="input__clear" data-title-id="clear" title="Очистить"></div>
-                    <div class="input__head">
-                        <span class="prefs__locale"><span data-text-id="locale">Локаль</span>: <select class="prefs__set-locale" data-title-id="locale"></select></span>
-                    </div>
-                    <textarea autocomplete="off" class="textarea input__text" autofocus="autofocus" spellcheck="true" data-placeholder-id="input-text"></textarea>
-                </div>
-                <div class="table__right result">
-                    <div class="input__head">
-                        <span class="result__as">
-                            <input type="radio" class="result__as-text" id="result__as-text" name="view" checked="checked" value="text"><label for="result__as-text" data-text-id="text">Текст</label>
-                            <input type="radio" class="result__as-html" id="result__as-html" name="view" value="html"><label for="result__as-html" style="color: #bf4b15; font-size: 0.9em;">&lt;HTML&gt;</label>
-                            <input type="radio" class="result__as-diff" id="result__as-diff" name="view" value="diff"><label for="result__as-diff"><span style="border-bottom: 1px solid rgba(255, 0, 0, .5);" data-text-id="diff-1">Измен</span><span style="border-bottom: 1px solid rgba(0, 255, 0, .5);" data-text-id="diff-2">ения</span></label>
-                        </span>
-                    </div>
-                    <div class="input__actions">
-                        <span class="copy-button button"><span class="copy-icon"></span><span data-text-id="copy">Скопировать</span></span>
-                        <span class="save-file-button button" data-text-id="save">Сохранить</span>
-                    </div>
-                    <textarea autocomplete="off" class="textarea result__text" spellcheck="true" data-placeholder-id="result"></textarea>
-                    <div class="result__html"></div>
-                    <div class="result__diff"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div id="app"></div>
     <!--/noindex-->
 
     <main>
@@ -190,7 +125,7 @@
                 <span data-text-id="powered-by">На основе</span> <a rel="noopener" href="https://github.com/typograf/typograf/releases/" target="_blank">Typograf <span id="version">{{VERSION}}</span></a>
             </div>
             <div class="footer__item">
-                <span class="language-selector"></span>
+                <span id="language-selector"></span>
             </div>
         </div>
     </footer>

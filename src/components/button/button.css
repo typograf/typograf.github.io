@@ -41,3 +41,11 @@
         width: 100%;
     }
 }
+
+button.button
+{
+    border: 0;
+    font: inherit;
+    line-height: inherit;
+    appearance: none;
+}
