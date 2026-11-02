@@ -81,6 +81,35 @@ test('persists locale and rule changes', async () => {
     expect(window.localStorage.getItem('settings.rules')).toContain('enabled');
 });
 
+test('keeps entity settings and preview in sync, then resets them', async () => {
+    const root = await mountApp();
+    const mode = root.querySelector<HTMLSelectElement>('.prefs__set-mode')!;
+    await act(async () => {
+        mode.value = 'name';
+        mode.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+    expect(mode.value).toBe('name');
+    expect(root.querySelector<HTMLElement>('.prefs__invisible-symbols-container')?.style.display).toBe('inline-block');
+    expect(root.querySelector('.prefs__html-entities-example')?.textContent).toContain('&');
+
+    await act(async () => root.querySelector<HTMLElement>('.prefs__only-invisible')!.click());
+    expect(window.localStorage.getItem('settings.onlyInvisible')).toBe('true');
+    await act(async () => root.querySelector<HTMLElement>('.prefs__default')!.click());
+    expect(mode.value).toBe('default');
+    expect(root.querySelector<HTMLInputElement>('.prefs__only-invisible')?.checked).toBe(true);
+});
+
+test('selects all rules and restores their defaults', async () => {
+    const root = await mountApp();
+    const rules = () => [...root.querySelectorAll<HTMLInputElement>('.prefs__rule-checkbox')];
+    const initial = rules().map(rule => rule.checked);
+    const selectAll = root.querySelector<HTMLInputElement>('.prefs__all-rules')!;
+    await act(async () => selectAll.click());
+    expect(rules().every(rule => rule.checked === selectAll.checked)).toBe(true);
+    await act(async () => root.querySelector<HTMLElement>('.prefs__default')!.click());
+    expect(rules().map(rule => rule.checked)).toEqual(initial);
+});
+
 test('loads saved text unless a hash supplies another text', async () => {
     window.localStorage.setItem('text', JSON.stringify('Сохранённый текст'));
     window.location.hash = '#!text=Новый%20текст';
