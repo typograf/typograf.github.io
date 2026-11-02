@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { renderToString } from 'preact-render-to-string';
-import { App } from './components/app/app';
-import { LanguageSelector } from './components/languageSelector/languageSelector';
+import { App } from './components/App/App';
+import { LanguageSelector } from './components/LanguageSelector/LanguageSelector';
 import { initI18n } from './i18n/init';
 
 export function renderInitialPage() {

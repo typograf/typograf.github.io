@@ -1,6 +1,6 @@
 import { setI18nLang, addI18nKeysets, i18nUpdatePage, I18NLanguage } from './i18n';
 import { keysets } from './keysets';
-import { config } from '../components/app/config';
+import { config } from '../components/App/config';
 import { addTypografKeysets } from './typograf';
 import { addTypografRules } from '../rules';
 

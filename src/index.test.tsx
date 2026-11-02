@@ -38,8 +38,8 @@ test('mounts Preact roots and changes language without losing text', async () =>
 test('hydrates prerendered editor markup instead of replacing it', async () => {
     const { initI18n } = await import('./i18n/init');
     initI18n();
-    const { App } = await import('./components/app/app');
-    const { LanguageSelector } = await import('./components/languageSelector/languageSelector');
+    const { App } = await import('./components/App/App');
+    const { LanguageSelector } = await import('./components/LanguageSelector/LanguageSelector');
     const root = document.getElementById('app')!;
     root.innerHTML = renderToString(h(App, { language: 'ru' }));
     const languageRoot = document.getElementById('language-selector')!;
@@ -64,7 +64,7 @@ test('hydrates prerendered editor markup instead of replacing it', async () => {
 test('uses stored text and language when the prerendered defaults differ', async () => {
     const { initI18n } = await import('./i18n/init');
     initI18n();
-    const { App } = await import('./components/app/app');
+    const { App } = await import('./components/App/App');
     const root = document.getElementById('app')!;
     root.innerHTML = renderToString(h(App, { language: 'ru' }));
 

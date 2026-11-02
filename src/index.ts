@@ -1,10 +1,10 @@
 import { startMetrika } from './services/metrika';
 import { withInstallApp } from './helpers/withInstallApp';
-import { App } from './components/app/app';
+import { App } from './components/App/App';
 import { initI18n } from './i18n/init';
-import { config } from './components/app/config';
+import { config } from './components/App/config';
 import { i18nUpdatePage, I18NLanguage, setI18nLang } from './i18n/i18n';
-import { LanguageSelector } from './components/languageSelector/languageSelector';
+import { LanguageSelector } from './components/LanguageSelector/LanguageSelector';
 import { metrikaReachGoal } from './services/metrika';
 import { h, hydrate, render } from 'preact';
 
