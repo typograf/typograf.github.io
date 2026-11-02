@@ -1,11 +1,11 @@
-import type { JSX } from 'preact';
+import type { MouseEventHandler } from 'preact';
 import './ActionIcon.css';
 
 interface ActionIconProps {
     buttonClass: string;
     iconClass: string;
     label: string;
-    onClick: JSX.MouseEventHandler<HTMLButtonElement>;
+    onClick: MouseEventHandler<HTMLButtonElement>;
 }
 
 export function ActionIcon({ buttonClass, iconClass, label, onClick }: ActionIconProps) {

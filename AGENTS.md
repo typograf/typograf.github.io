@@ -2,7 +2,7 @@
 
 ## Проект и команды
 
-- Это статический сайт Typograf с интерфейсом на Preact и TypeScript 6. Используйте Node.js 24 или новее и npm с `package-lock.json`.
+- Это статический сайт Typograf с интерфейсом на Preact и TypeScript 6. Используйте Node.js 24.22.1 или новее (версия для nvm — в `.nvmrc`) и npm с `package-lock.json`.
 - Установка зависимостей: `npm ci`. Проверки: `npm test` (ESLint, TypeScript и Vitest). Сборка: `npm run build`.
 - После изменений интерфейса или сборки проверяйте `npm test` и `npm run build`. Для ручной проверки откройте собранный сайт через локальный HTTP-сервер, например `python3 -m http.server 8000`.
 
