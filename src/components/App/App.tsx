@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'preact/hooks';
+import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
 import { prepareLocale } from '../../helpers/prepareLocale';
 import { getHashParam, isPrefsHash, resetHash, setPrefsHash } from '../../helpers/hash';
 import { isJSON, typografyJSON } from '../../helpers/json';
@@ -16,11 +16,11 @@ import type { PrefsData } from '../Prefs/prefsTypes';
 import { CopyIcon } from '../CopyIcon/CopyIcon';
 import { SaveFileIcon } from '../SaveFileIcon/SaveFileIcon';
 import { ShareIcon } from '../ShareIcon/ShareIcon';
+import { Tooltip, TooltipMessage } from '../Tooltip/Tooltip';
 import '../Container/Container';
 import '../Table/Table';
 import '../Description/Description';
 import '../Footer/Footer';
-import '../Tooltip/Tooltip.css';
 import './App.css';
 
 declare global {
@@ -65,7 +65,8 @@ export function App({ language }: AppProps) {
     const [pair, setPair] = useState(() => ({ before: text, result: formatText(text, typograf, settings) }));
     const [tab, setTab] = useState<'editor' | 'prefs'>(() => isPrefsHash() ? 'prefs' : 'editor');
     const [resultType, setResultType] = useState<ResultType>('text');
-    const [toast, setToast] = useState<{ text: string, type: 'ok' | 'error' } | null>(null);
+    const [toast, setToast] = useState<TooltipMessage | null>(null);
+    const closeToast = useCallback(() => setToast(null), []);
     const formatted = useMemo(() => formatText(text, typograf, settings), [text, settings, typograf]);
 
     useEffect(() => {
@@ -87,12 +88,6 @@ export function App({ language }: AppProps) {
         window.addEventListener('hashchange', onHashChange);
         return () => window.removeEventListener('hashchange', onHashChange);
     }, []);
-
-    useEffect(() => {
-        if (!toast) return;
-        const timer = window.setTimeout(() => setToast(null), 3000);
-        return () => window.clearTimeout(timer);
-    }, [toast]);
 
     function changeText(value: string) {
         config.text = value;
@@ -140,6 +135,6 @@ export function App({ language }: AppProps) {
                 </div>
             </div>
         </div>
-        {toast && <div class={`tooltip tooltip_visible tooltip_type_${toast.type}`} role="status">{toast.text}</div>}
+        <Tooltip message={toast} onClose={closeToast} />
     </>;
 }
