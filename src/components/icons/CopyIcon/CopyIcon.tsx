@@ -1,6 +1,6 @@
 import copyTextToClipboard from 'copy-text-to-clipboard';
-import { i18n } from '../../i18n/i18n';
-import { metrikaReachGoal } from '../../services/metrika';
+import { i18n } from '../../../i18n/i18n';
+import { metrikaReachGoal } from '../../../services/metrika';
 import { ActionIcon } from '../ActionIcon/ActionIcon';
 import './CopyIcon.css';
 

@@ -1,6 +1,6 @@
-import { saveFile } from '../../helpers/saveFile';
-import { i18n } from '../../i18n/i18n';
-import { metrikaReachGoal } from '../../services/metrika';
+import { saveFile } from '../../../helpers/saveFile';
+import { i18n } from '../../../i18n/i18n';
+import { metrikaReachGoal } from '../../../services/metrika';
 import { ActionIcon } from '../ActionIcon/ActionIcon';
 import './SaveFileIcon.css';
 
