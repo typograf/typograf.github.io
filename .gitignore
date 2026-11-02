@@ -3,4 +3,5 @@ node_modules/
 build/
 dist/index.css
 dist/index.js
+dist/ssr.mjs
 .DS_Store
