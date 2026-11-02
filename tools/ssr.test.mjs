@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { expect, test } from 'vitest';
+import { JSDOM } from 'jsdom';
 
 test('published HTML contains rendered interface and crawlable article before JavaScript', () => {
     const html = readFileSync('index.html', 'utf8');
@@ -10,4 +11,7 @@ test('published HTML contains rendered interface and crawlable article before Ja
     expect(html.indexOf('<!--/noindex-->')).toBeLessThan(html.indexOf('<main>'));
     expect(html).toContain('<article class="description">');
     expect(html).toContain('<h1>Типограф</h1>');
+    const link = new JSDOM(html).window.document.querySelector('#extension .extension__link');
+    expect(link?.getAttribute('href')).toBe('https://chrome.google.com/webstore/detail/red-typography/dgmmkhdeghobfcedlnmgbncknnfjhnmo');
+    expect(link?.textContent).toBe('Google Chrome');
 });

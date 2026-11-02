@@ -22,6 +22,7 @@ function changeVars(text) {
         .replace(/\{\{CSS\}\}/, css)
         .replace(/\{\{APP_HTML\}\}/, rendered.app)
         .replace(/\{\{LANGUAGE_SELECTOR_HTML\}\}/, rendered.languageSelector)
+        .replace(/\{\{EXTENSION_HTML\}\}/, rendered.extension)
         .replace(/\{\{JS\}\}/, js);
 }
 

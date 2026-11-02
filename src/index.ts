@@ -5,6 +5,7 @@ import { initI18n } from './i18n/init';
 import { config } from './components/App/config';
 import { i18nUpdatePage, I18NLanguage, setI18nLang } from './i18n/i18n';
 import { LanguageSelector } from './components/LanguageSelector/LanguageSelector';
+import { Extension } from './components/Extension/Extension';
 import { metrikaReachGoal } from './services/metrika';
 import { h, hydrate, render } from 'preact';
 
@@ -16,6 +17,7 @@ withInstallApp();
 
 const appRoot = document.getElementById('app');
 const languageRoot = document.getElementById('language-selector');
+const extensionRoot = document.getElementById('extension');
 let mounted = false;
 
 function updateLanguage(language: I18NLanguage) {
@@ -30,6 +32,7 @@ function renderUI() {
     const language = config.language as I18NLanguage;
     const app = h(App, { language });
     const selector = h(LanguageSelector, { language, onChange: updateLanguage });
+    const extension = h(Extension, {});
     if (!mounted) {
         const canHydrate = language === 'ru' && config.locale === 'ru' && config.mode === 'default' &&
             !config.onlyInvisible && !config.text && !config.rules.enabled.length &&
@@ -48,11 +51,16 @@ function renderUI() {
                 render(selector, languageRoot);
             }
         }
+        if (extensionRoot) {
+            if (extensionRoot.firstElementChild) hydrate(extension, extensionRoot);
+            else render(extension, extensionRoot);
+        }
         mounted = true;
         return;
     }
     if (appRoot) render(app, appRoot);
     if (languageRoot) render(selector, languageRoot);
+    if (extensionRoot) render(extension, extensionRoot);
 }
 
 renderUI();
