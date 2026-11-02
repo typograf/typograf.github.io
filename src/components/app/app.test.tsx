@@ -157,3 +157,25 @@ test('saves the latest long result before the delayed display updates', async ()
         vi.useRealTimers();
     }
 });
+
+test('renders action icons and shares the current result when supported', async () => {
+    const canShare = vi.fn(() => true);
+    const share = vi.fn(async () => undefined);
+    Object.defineProperty(window.navigator, 'canShare', { configurable: true, value: canShare });
+    Object.defineProperty(window.navigator, 'share', { configurable: true, value: share });
+    try {
+        const root = await mountApp();
+        expect(root.querySelector('.copy-button .copy-icon')).toBeTruthy();
+        expect(root.querySelector('.save-file-button .save-file-icon')).toBeTruthy();
+        const input = root.querySelector<HTMLTextAreaElement>('.input__text')!;
+        await act(async () => {
+            input.value = 'Привет "мир"';
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+        await act(async () => root.querySelector<HTMLButtonElement>('.share-button')!.click());
+        expect(share).toHaveBeenCalledWith({ text: 'Привет «мир»', title: 'Typograf' });
+    } finally {
+        Reflect.deleteProperty(window.navigator, 'canShare');
+        Reflect.deleteProperty(window.navigator, 'share');
+    }
+});

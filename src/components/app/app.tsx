@@ -1,23 +1,23 @@
 import { useEffect, useMemo, useState } from 'preact/hooks';
-import copyTextToClipboard from 'copy-text-to-clipboard';
 import { prepareLocale } from '../../helpers/prepareLocale';
 import { getHashParam, isPrefsHash, resetHash, setPrefsHash } from '../../helpers/hash';
-import { saveFile } from '../../helpers/saveFile';
 import { isJSON, typografyJSON } from '../../helpers/json';
 import { isHTML } from '../../helpers/string';
 import { Typograf } from '../../helpers/typograf';
-import { i18n, I18NLanguage } from '../../i18n/i18n';
+import { I18NLanguage } from '../../i18n/i18n';
 import { metrikaReachGoal } from '../../services/metrika';
 import { config } from './config';
 import { Header } from '../header/header';
 import { Input } from '../input/input';
 import { Result, ResultType } from '../result/result';
 import { LocaleSelect, Prefs, PrefsData } from '../prefs/prefs';
+import { CopyIcon } from '../copyIcon/copyIcon';
+import { SaveFileIcon } from '../saveFileIcon/saveFileIcon';
+import { ShareIcon } from '../shareIcon/shareIcon';
 import '../container/container';
 import '../table/table';
 import '../description/description';
 import '../footer/footer';
-import '../copyIcon/copyIcon.css';
 import '../tooltip/tooltip.css';
 import './app.css';
 
@@ -117,23 +117,6 @@ export function App({ language }: AppProps) {
         }
     }
 
-    function copyResult() {
-        if (copyTextToClipboard(formatted)) {
-            setToast({ text: i18n('copied'), type: 'ok' });
-        } else {
-            setToast({ text: i18n('notSupportCopy'), type: 'error' });
-        }
-        metrikaReachGoal('copy-text');
-    }
-
-    function saveResult() {
-        if (saveFile(formatted)) {
-            metrikaReachGoal('save-text');
-        } else {
-            setToast({ text: i18n('notSupportSave'), type: 'error' });
-        }
-    }
-
     return <>
         <Header tab={tab} onSelect={selectTab} />
         <div class="container">
@@ -148,8 +131,9 @@ export function App({ language }: AppProps) {
                         <Input value={text} onChange={changeText} />
                     </div>
                     <Result before={pair.before} result={pair.result} type={resultType} onTypeChange={setResultType} actions={<>
-                        <button type="button" class="copy-button button" onClick={copyResult}><span class="copy-icon" />{i18n('copy')}</button>
-                        <button type="button" class="save-file-button button" onClick={saveResult}>{i18n('save')}</button>
+                        <CopyIcon getText={() => formatted} onFeedback={(message, type) => setToast({ text: message, type })} />
+                        <SaveFileIcon getText={() => formatted} onError={message => setToast({ text: message, type: 'error' })} />
+                        <ShareIcon getText={() => formatted} />
                     </>} />
                 </div>
             </div>

@@ -16,3 +16,12 @@
     background-repeat: no-repeat;
     background-size: 100%;
 }
+
+.button .action-icon
+{
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    vertical-align: middle;
+    opacity: 1;
+}
