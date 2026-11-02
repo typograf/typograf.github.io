@@ -15,3 +15,15 @@ test('published HTML contains rendered interface and crawlable article before Ja
     expect(link?.getAttribute('href')).toBe('https://chrome.google.com/webstore/detail/red-typography/dgmmkhdeghobfcedlnmgbncknnfjhnmo');
     expect(link?.textContent).toBe('Google Chrome');
 });
+
+test('published settings show descriptions for every rule before JavaScript', () => {
+    const html = readFileSync('index.html', 'utf8');
+    const document = new JSDOM(html).window.document;
+    const rules = [...document.querySelectorAll('.prefs__rule')];
+    const missing = rules
+        .filter(rule => !rule.querySelector('label > span')?.textContent?.trim())
+        .map(rule => rule.getAttribute('title'));
+
+    expect(rules.length).toBeGreaterThan(0);
+    expect(missing).toEqual([]);
+});
