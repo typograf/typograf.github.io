@@ -17,7 +17,59 @@ beforeEach(() => {
     window.Typograf = Typograf;
     window.localStorage.clear();
     window.location.hash = '';
-    document.body.innerHTML = '<div id="app"></div>';
+    document.documentElement.removeAttribute('data-theme');
+    document.documentElement.removeAttribute('data-tab');
+    document.body.innerHTML = '<div id="app"></div><main id="seo"><article class="seo-article">О сервисе</article></main>';
+});
+
+test('changes the theme from the header and saves the choice', async () => {
+    const root = await mountApp();
+    const select = root.querySelector<HTMLSelectElement>('.header__theme-select')!;
+    expect(select.value).toBe('system');
+
+    await act(async () => {
+        select.value = 'dark';
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+    expect(document.documentElement.dataset.theme).toBe('dark');
+    expect(window.localStorage.getItem('settings.theme')).toBe('"dark"');
+
+    await act(async () => {
+        select.value = 'light';
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+    expect(document.documentElement.dataset.theme).toBe('light');
+});
+
+test('restores a saved theme and follows system changes', async () => {
+    window.localStorage.setItem('settings.theme', '"dark"');
+    const root = await mountApp();
+    const select = root.querySelector<HTMLSelectElement>('.header__theme-select')!;
+    expect(select.value).toBe('dark');
+    expect(document.documentElement.dataset.theme).toBe('dark');
+
+    let notify = () => {};
+    const media = {
+        matches: true,
+        addEventListener: vi.fn((_event: string, listener: () => void) => { notify = listener; }),
+        removeEventListener: vi.fn(),
+    };
+    Object.defineProperty(window, 'matchMedia', { configurable: true, value: () => media });
+    try {
+        await act(async () => {
+            select.value = 'system';
+            select.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+        expect(document.documentElement.dataset.theme).toBe('dark');
+        media.matches = false;
+        await act(async () => notify());
+        expect(document.documentElement.dataset.theme).toBe('light');
+        expect(window.localStorage.getItem('settings.theme')).toBe('"system"');
+        await act(async () => render(null, root));
+        expect(media.removeEventListener).toHaveBeenCalled();
+    } finally {
+        Reflect.deleteProperty(window, 'matchMedia');
+    }
 });
 
 async function mountApp() {
@@ -43,11 +95,73 @@ test('renders the editor and typographs entered text', async () => {
     expect(window.localStorage.getItem('text')).toContain('Привет');
 });
 
+test('reformats text when the eyo script finishes loading', async () => {
+    Reflect.deleteProperty(window, 'safeEyo');
+    const script = document.createElement('script');
+    script.src = '/dist/eyo.js';
+    document.head.append(script);
+    try {
+        const root = await mountApp();
+        const input = root.querySelector<HTMLTextAreaElement>('.source-text-input__text')!;
+        await act(async () => {
+            input.value = 'Ежик шел';
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+        expect(root.querySelector<HTMLTextAreaElement>('.result-panel__text')?.value).toBe('Ежик шел');
+
+        window.safeEyo = { restore: text => text.replace('Ежик шел', 'Ёжик шёл') };
+        await act(async () => { script.dispatchEvent(new Event('load')); });
+        expect(root.querySelector<HTMLTextAreaElement>('.result-panel__text')?.value).toBe('Ёжик шёл');
+    } finally {
+        script.remove();
+        Reflect.deleteProperty(window, 'safeEyo');
+    }
+});
+
 test('opens settings from the URL hash', async () => {
     window.location.hash = '#!prefs';
     const root = await mountApp();
 
     expect(root.querySelector('.settings-panel')?.classList.contains('settings-panel_opened')).toBe(true);
+});
+
+test('opens the About tab from its URL and returns to the editor', async () => {
+    window.location.hash = '#!about';
+    const root = await mountApp();
+
+    expect(root.querySelector('.header__menu-item_tab_about')?.textContent).toBe('О сервисе');
+    expect(root.querySelector('.header__menu-item_tab_about')?.classList.contains('header__menu-item_selected')).toBe(true);
+    expect(document.documentElement.dataset.tab).toBe('about');
+    expect(document.querySelector('#seo .seo-article')?.textContent).toBe('О сервисе');
+    expect(document.body.style.overflowY).toBe('visible');
+
+    await act(async () => root.querySelector<HTMLElement>('.header__menu-item_tab_editor')!.click());
+    expect(window.location.hash).toBe('');
+    expect(document.documentElement.dataset.tab).toBe('editor');
+    expect(root.querySelector('.header__menu-item_tab_editor')?.classList.contains('header__menu-item_selected')).toBe(true);
+    expect(root.querySelector('.header__menu-item_tab_editor .ripple')).toBeTruthy();
+});
+
+test('keeps the editor text while visiting About and handles browser hash navigation', async () => {
+    const root = await mountApp();
+    const input = root.querySelector<HTMLTextAreaElement>('.source-text-input__text')!;
+    await act(async () => {
+        input.value = 'Текст для проверки';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        root.querySelector<HTMLElement>('.header__menu-item_tab_about')!.click();
+    });
+    expect(window.location.hash).toBe('#!about');
+    expect(document.documentElement.dataset.tab).toBe('about');
+
+    await act(async () => {
+        window.history.replaceState(null, '', '#!prefs');
+        window.dispatchEvent(new Event('hashchange'));
+    });
+    expect(document.documentElement.dataset.tab).toBe('prefs');
+    expect(document.body.style.overflowY).toBe('hidden');
+
+    await act(async () => root.querySelector<HTMLElement>('.header__menu-item_tab_editor')!.click());
+    expect(root.querySelector<HTMLTextAreaElement>('.source-text-input__text')?.value).toBe('Текст для проверки');
 });
 
 test('syncs settings with hash changes and restores page scrolling after unmount', async () => {
@@ -130,6 +244,114 @@ test('selects all rules and restores their defaults', async () => {
     expect(selectAll.indeterminate).toBe(true);
     await act(async () => root.querySelector<HTMLElement>('.settings-panel__default')!.click());
     expect(rules().map(rule => rule.checked)).toEqual(initial);
+});
+
+test('expands and collapses a rule group while keeping its rules available', async () => {
+    const root = await mountApp();
+    const group = root.querySelector<HTMLElement>('.rule-group')!;
+    const legend = group.querySelector<HTMLElement>('.rule-group__legend')!;
+    const content = group.querySelector<HTMLElement>('.rule-group__group-rules')!;
+    const count = content.querySelectorAll('.rule-group__rule-checkbox').length;
+
+    expect(legend.getAttribute('aria-expanded')).toBe('false');
+    expect(content.getAttribute('aria-hidden')).toBe('true');
+    await act(async () => legend.click());
+    expect(group.classList.contains('rule-group_visible')).toBe(true);
+    expect(legend.getAttribute('aria-expanded')).toBe('true');
+    expect(legend.querySelector('.ripple')).toBeTruthy();
+    expect(content.getAttribute('aria-hidden')).toBe('false');
+    await act(async () => legend.click());
+    expect(legend.getAttribute('aria-expanded')).toBe('false');
+    expect(content.querySelectorAll('.rule-group__rule-checkbox')).toHaveLength(count);
+});
+
+test('shows the enabled and total rules in each group title', async () => {
+    const root = await mountApp();
+    for (const item of root.querySelectorAll<HTMLElement>('.rule-group')) {
+        const itemRules = [...item.querySelectorAll<HTMLInputElement>('.rule-group__rule-checkbox')];
+        const enabled = itemRules.filter(rule => rule.checked).length;
+        const itemCounter = item.querySelector<HTMLElement>('.rule-group__count');
+        expect(itemCounter?.textContent).toBe(`${enabled}/${itemRules.length}`);
+        expect(itemCounter?.classList.contains('rule-group__count_empty')).toBe(enabled === 0);
+        expect(itemCounter?.classList.contains('rule-group__count_complete')).toBe(enabled === itemRules.length);
+    }
+    const group = root.querySelector<HTMLElement>('.rule-group')!;
+    const rules = [...group.querySelectorAll<HTMLInputElement>('.rule-group__rule-checkbox')];
+    const counter = group.querySelector<HTMLElement>('.rule-group__count');
+    const selected = () => rules.filter(rule => rule.checked).length;
+
+    expect(counter?.textContent).toBe(`${selected()}/${rules.length}`);
+    await act(async () => rules[0].click());
+    expect(counter?.textContent).toBe(`${selected()}/${rules.length}`);
+    expect(counter?.classList.contains('rule-group__count_complete')).toBe(selected() === rules.length);
+
+    await act(async () => root.querySelector<HTMLInputElement>('.rule-settings__all-rules')!.click());
+    expect(counter?.textContent).toBe(`${rules.length}/${rules.length}`);
+    expect(counter?.classList.contains('rule-group__count_complete')).toBe(true);
+
+    await act(async () => root.querySelector<HTMLButtonElement>('.settings-panel__default')!.click());
+    expect(counter?.textContent).toBe(`${selected()}/${rules.length}`);
+});
+
+test('filters rules by their displayed name and opens matching groups', async () => {
+    const root = await mountApp();
+    const search = root.querySelector<HTMLInputElement>('.rule-settings__search')!;
+    expect(search).toBeTruthy();
+    const target = [...root.querySelectorAll<HTMLElement>('.rule-group__rule')]
+        .find(rule => rule.textContent?.toLowerCase().includes('буквы'))!;
+    const originalCount = target.closest('.rule-group')!.querySelector('.rule-group__count')!.textContent;
+    const initialGroups = root.querySelectorAll('.rule-group').length;
+
+    await act(async () => {
+        search.value = '  БУКВЫ  ';
+        search.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    const matches = [...root.querySelectorAll<HTMLElement>('.rule-group__rule')];
+    expect(matches.length).toBeGreaterThan(0);
+    expect(matches.every(rule => rule.textContent?.toLowerCase().includes('буквы'))).toBe(true);
+    expect(root.querySelectorAll('.rule-group').length).toBeLessThan(initialGroups);
+    expect(root.querySelector('.rule-group__legend')?.getAttribute('aria-expanded')).toBe('true');
+    expect(root.querySelector('.rule-group__count')?.textContent).toBe(originalCount);
+
+    await act(async () => {
+        search.value = 'правило-которого-нет';
+        search.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    expect(root.querySelectorAll('.rule-group')).toHaveLength(0);
+    expect(root.querySelector('.rule-settings__no-results')?.textContent).toBe('Правила не найдены');
+    expect(root.querySelector<HTMLInputElement>('.rule-settings__all-rules')?.disabled).toBe(true);
+
+    await act(async () => {
+        search.value = '';
+        search.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    expect(root.querySelectorAll('.rule-group')).toHaveLength(initialGroups);
+});
+
+test('select all changes only the rules matched by the search', async () => {
+    const root = await mountApp();
+    const allBefore = new Map([...root.querySelectorAll<HTMLInputElement>('.rule-group__rule-checkbox')]
+        .map(rule => [rule.name, rule.checked]));
+    const search = root.querySelector<HTMLInputElement>('.rule-settings__search')!;
+    expect(search).toBeTruthy();
+    await act(async () => {
+        search.value = 'буквы';
+        search.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    const matched = new Set([...root.querySelectorAll<HTMLInputElement>('.rule-group__rule-checkbox')]
+        .map(rule => rule.name));
+    expect(matched.size).toBeGreaterThan(0);
+    const selectAll = root.querySelector<HTMLInputElement>('.rule-settings__all-rules')!;
+    await act(async () => selectAll.click());
+    const checked = selectAll.checked;
+
+    await act(async () => {
+        search.value = '';
+        search.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    for (const rule of root.querySelectorAll<HTMLInputElement>('.rule-group__rule-checkbox')) {
+        expect(rule.checked).toBe(matched.has(rule.name) ? checked : allBefore.get(rule.name));
+    }
 });
 
 test('loads saved text unless a hash supplies another text', async () => {

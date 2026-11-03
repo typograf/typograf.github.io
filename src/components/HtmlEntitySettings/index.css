@@ -2,7 +2,7 @@
 {
     clear: both;
     padding: 1em 20px;
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid var(--border-color);
 
     &__html-entities
     {
@@ -17,8 +17,12 @@
         .html-entity-settings__html-entities-example-container
         {
             padding-top: .3em;
-            color: #999;
+            color: var(--muted-text);
             font-size: 13px;
         }
     }
+}
+
+.html-entity-settings__example-entity {
+    color: var(--entity-example-text);
 }

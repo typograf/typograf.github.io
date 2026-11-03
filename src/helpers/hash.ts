@@ -28,6 +28,14 @@ export function isPrefsHash() {
     return window.location.hash === '#!prefs';
 }
 
+export function setAboutHash() {
+    window.location.hash = '#!about';
+}
+
+export function isAboutHash() {
+    return window.location.hash === '#!about';
+}
+
 export function resetHash() {
     window.location.hash = '';
 }

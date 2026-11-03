@@ -25,6 +25,20 @@ export function getVisibleRules(groups: TypografRuleInternal[][]) {
     return ([] as TypografRuleInternal[]).concat(...groups);
 }
 
+export function normalizeRuleSearch(value: string) {
+    return value.toLocaleLowerCase().replace(/ё/g, 'е').replace(/\s+/g, ' ').trim();
+}
+
+export function filterRuleGroups(groups: TypografRuleInternal[][], language: I18NLanguage, query: string) {
+    return groups.map(group => ({
+        group,
+        matchingRules: query ? group.filter(rule => {
+            const title = Typograf.titles[rule.name];
+            return normalizeRuleSearch(title?.[language] || title?.common || '').includes(query);
+        }) : group,
+    })).filter(({ matchingRules }) => matchingRules.length > 0);
+}
+
 export function getRuleOverrides(typograf: TypografBase) {
     const enabled: string[] = [];
     const disabled: string[] = [];

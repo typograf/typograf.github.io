@@ -25,6 +25,26 @@ export const keysets: I18nKeysets = {
         'en-US': 'Settings',
         ru: 'Настройки'
     },
+    about: {
+        'en-US': 'About the service',
+        ru: 'О сервисе'
+    },
+    theme: {
+        'en-US': 'Theme',
+        ru: 'Тема'
+    },
+    'theme-system': {
+        'en-US': 'System',
+        ru: 'Системная'
+    },
+    'theme-light': {
+        'en-US': 'Light',
+        ru: 'Светлая'
+    },
+    'theme-dark': {
+        'en-US': 'Dark',
+        ru: 'Тёмная'
+    },
     editor: {
         'en-US': 'Editor',
         ru: 'Редактор'
@@ -273,6 +293,14 @@ export const keysets: I18nKeysets = {
     rules: {
         'en-US': 'Rules',
         ru: 'Правила'
+    },
+    'search-rules': {
+        'en-US': 'Search rules',
+        ru: 'Поиск правил'
+    },
+    'no-rules-found': {
+        'en-US': 'No rules found',
+        ru: 'Правила не найдены'
     },
     yabro: {
         'en-US': 'Yandex.Browser',

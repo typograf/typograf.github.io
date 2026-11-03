@@ -20,6 +20,19 @@
 
     <meta name="google-site-verification" content="I5YVKm7Eoot8FEVveJAgHs2TCfeU7z2zxa8tSpbC3l0">
     <meta name="yandex-verification" content="ad40505e6c8ee874">
+<script>
+    (() => {
+        let themePreference = 'system';
+        try {
+            themePreference = JSON.parse(localStorage.getItem('settings.theme') || '"system"');
+        } catch {}
+        const systemDark = typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: dark)').matches;
+        const darkTheme = themePreference === 'dark' || (themePreference !== 'light' && systemDark);
+        document.documentElement.dataset.theme = darkTheme ? 'dark' : 'light';
+        document.documentElement.dataset.tab = location.hash === '#!about' ? 'about' : location.hash === '#!prefs' ? 'prefs' : 'editor';
+        document.querySelector('meta[name="theme-color"]').content = darkTheme ? '#1d5e70' : '#00acc7';
+    })();
+</script>
 <style>
 {{CSS}}
 </style>

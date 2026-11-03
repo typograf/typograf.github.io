@@ -9,5 +9,5 @@ export function getEntityExample(mode: EntityMode, onlyInvisible: boolean) {
     const raw = entitiesTypograf.execute(i18n('html-entities-example'), {
         htmlEntity: { type: mode, onlyInvisible },
     });
-    return escapeHTML(raw).replace(/(&amp;#?[\da-z_-]+;|\\u[\da-f]{4})/gi, '<span style="color: green;">$1</span>');
+    return escapeHTML(raw).replace(/(&amp;#?[\da-z_-]+;|\\u[\da-f]{4})/gi, '<span class="html-entity-settings__example-entity">$1</span>');
 }

@@ -34,7 +34,7 @@ function renderUI() {
     if (!mounted) {
         const canHydrate = language === 'ru' && config.locale === 'ru' && config.mode === 'default' &&
             !config.onlyInvisible && !config.text && !config.rules.enabled.length &&
-            !config.rules.disabled.length && !window.location.hash;
+            !config.rules.disabled.length && config.theme === 'system' && !window.location.hash;
         if (appRoot) {
             if (canHydrate && appRoot.firstElementChild) hydrate(app, appRoot);
             else {

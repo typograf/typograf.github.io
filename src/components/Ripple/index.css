@@ -1,0 +1,20 @@
+.ripple {
+    position: absolute;
+    z-index: 1;
+    border-radius: 50%;
+    pointer-events: none;
+    background: currentColor;
+    animation: ripple-expand 550ms ease-out forwards;
+}
+
+@keyframes ripple-expand {
+    from {
+        opacity: .28;
+        transform: translate(-50%, -50%) scale(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}

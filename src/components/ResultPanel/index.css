@@ -4,8 +4,8 @@
 
     &__html
     {
-        border: 1px solid #a0a0a0;
-        background: #fefefe;
+        border: 1px solid var(--preview-border);
+        background: var(--preview-bg);
     }
 
     &__diff
@@ -14,8 +14,8 @@
 
         white-space: pre-wrap;
 
-        border: 1px solid #a0a0a0;
-        background: #fefefe;
+        border: 1px solid var(--preview-border);
+        background: var(--preview-bg);
     }
 
     &__as
@@ -43,7 +43,7 @@
         position: relative;
 
         &:hover:before {
-            border-left-color: #f66;
+            border-left-color: var(--preview-rule-hover);
         }
 
         &:before {
@@ -54,7 +54,7 @@
             top: 8px;
             bottom: 8px;
             width: 0;
-            border-left: 1px solid #faa;
+            border-left: 1px solid var(--preview-rule);
             transition: border-left-color .4s ease;
         }
 

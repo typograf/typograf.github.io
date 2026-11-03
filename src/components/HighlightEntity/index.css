@@ -1,5 +1,5 @@
 ﻿.highlight-entity
 {
     opacity: .4;
-    background: green;
+    background: var(--entity-highlight-bg);
 }

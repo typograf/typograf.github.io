@@ -1,4 +1,5 @@
 .save-file-button__icon
 {
-    background-image: svg-load('./assets/SaveFileIcon.svg');
+    -webkit-mask-image: svg-load('./assets/SaveFileIcon.svg');
+    mask-image: svg-load('./assets/SaveFileIcon.svg');
 }

@@ -9,7 +9,7 @@
 
     &_visible
     {
-        border: 1px solid #e0e0e0;
+        border: 1px solid var(--border-color);
     }
 
     & &__legend
@@ -19,9 +19,22 @@
         margin-left: 10px;
     }
 
-    & &__group-rules
-    {
-        display: none;
+    &__count {
+        margin-left: 5px;
+        font-size: .65em;
+        font-weight: normal;
+        line-height: 0;
+        vertical-align: super;
+        opacity: .8;
+    }
+
+    &__count_empty {
+        color: var(--muted-text);
+    }
+
+    &__count_complete {
+        color: var(--success-color);
+        opacity: 1;
     }
 
     &__rule
@@ -47,10 +60,36 @@
 
     &__rule-lang
     {
-        color: #00acc7;
+        color: var(--accent-color);
         text-transform: uppercase;
         font-size: 12px;
         margin-left: 7px;
+    }
+}
+
+.rule-group__group-rules {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    visibility: hidden;
+    transition: grid-template-rows .22s ease, opacity .18s ease, visibility 0s linear .22s;
+}
+
+.rule-group_visible .rule-group__group-rules {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    visibility: visible;
+    transition: grid-template-rows .22s ease, opacity .18s ease, visibility 0s;
+}
+
+.rule-group__group-rules-inner {
+    min-height: 0;
+    overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rule-group__group-rules {
+        transition: none;
     }
 }
 

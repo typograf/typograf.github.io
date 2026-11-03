@@ -30,7 +30,7 @@ export function ResultPanel({ before, result, type, onTypeChange, actions }: Res
         <div class={b('head')}>
             <span class={b('as')}>
                 <input type="radio" class={b('as-text')} id="result-panel__as-text" name="view" value="text" checked={type === 'text'} onChange={changeType} /><label for="result-panel__as-text">{i18n('text')}</label>
-                <input type="radio" class={b('as-html')} id="result-panel__as-html" name="view" value="html" checked={type === 'html'} onChange={changeType} /><label for="result-panel__as-html" style={{ color: '#bf4b15', fontSize: '0.9em' }}>&lt;HTML&gt;</label>
+                <input type="radio" class={b('as-html')} id="result-panel__as-html" name="view" value="html" checked={type === 'html'} onChange={changeType} /><label for="result-panel__as-html" style={{ color: 'var(--html-accent)', fontSize: '0.9em' }}>&lt;HTML&gt;</label>
                 <input type="radio" class={b('as-diff')} id="result-panel__as-diff" name="view" value="diff" checked={type === 'diff'} onChange={changeType} /><label for="result-panel__as-diff"><span style={{ borderBottom: '1px solid rgba(255, 0, 0, .5)' }}>{i18n('diff-1')}</span><span style={{ borderBottom: '1px solid rgba(0, 255, 0, .5)' }}>{i18n('diff-2')}</span></label>
             </span>
         </div>

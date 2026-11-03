@@ -8,6 +8,8 @@ export type ConfigRules = {
     enabled: string[];
 };
 
+export type ThemePreference = 'system' | 'light' | 'dark';
+
 export class Config {
     private languageInner = '';
     private localeInner = '';
@@ -15,6 +17,7 @@ export class Config {
     private modeInner: TypografHtmlEntity['type'];
     private onlyInvisibleInner = false;
     private textInner = '';
+    private themeInner: ThemePreference = 'system';
 
     constructor() {
         this.languageInner = myLocalStorage.getItem('settings.langUI', 'ru');
@@ -32,6 +35,9 @@ export class Config {
         this.modeInner = myLocalStorage.getItem<TypografHtmlEntity['type']>('settings.mode', 'default');
         this.onlyInvisibleInner = myLocalStorage.getItem('settings.onlyInvisible', false);
         this.textInner = myLocalStorage.getItem('text', '');
+
+        const theme = myLocalStorage.getItem<ThemePreference>('settings.theme', 'system');
+        this.themeInner = theme === 'light' || theme === 'dark' ? theme : 'system';
     }
 
     get locale() {
@@ -78,6 +84,15 @@ export class Config {
         this.textInner = value;
         myLocalStorage.setItem('text', value);
     }    
+
+    get theme() {
+        return this.themeInner;
+    }
+
+    set theme(value: ThemePreference) {
+        this.themeInner = value;
+        myLocalStorage.setItem('settings.theme', value);
+    }
 
     get rules() {
         return this.rulesInner;

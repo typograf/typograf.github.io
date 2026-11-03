@@ -15,9 +15,13 @@
 
     opacity: .7;
 
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: 100%;
+    background-color: currentColor;
+    -webkit-mask-position: center center;
+    mask-position: center center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
 }
 
 .button .icon-button__icon

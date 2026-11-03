@@ -35,7 +35,7 @@
 
     box-sizing: border-box;
 
-    background: white;
+    background: var(--surface-bg);
 
     &__hidden
     {
@@ -63,7 +63,7 @@
 
         padding: 1em 20px 1em 20px;
 
-        border-top: 1px solid #e0e0e0;
+        border-top: 1px solid var(--border-color);
 
 		&_first
 		{
@@ -93,10 +93,10 @@
         bottom: 0;
         text-align: center;
         padding: 1em 20px;
-        border-top: 1px solid #e0e0e0;
+        border-top: 1px solid var(--border-color);
         z-index: 10;
         box-sizing: border-box;
-        background-color: rgba(255, 255, 255, .8);
+        background-color: var(--panel-actions-bg);
     }
 
     &__default

@@ -1,4 +1,82 @@
 @import 'typograf/dist/typograf.css';
+
+:root[data-tab]:not([data-tab='about']) #seo,
+:root[data-tab='about'] .container {
+    display: none;
+}
+
+:root {
+    color-scheme: light;
+    --page-bg: #fff;
+    --text-color: #222;
+    --link-color: #007c97;
+    --surface-bg: #fff;
+    --preview-bg: #fefefe;
+    --border-color: #e0e0e0;
+    --field-border: rgba(0, 0, 0, .2);
+    --field-border-hover: rgba(0, 0, 0, .3);
+    --field-text: #000;
+    --muted-text: #999;
+    --success-color: #187a43;
+    --accent-color: #00acc7;
+    --header-bg: #00acc7;
+    --header-border: #008cb7;
+    --header-tab-bg: #008ca7;
+    --header-tab-hover-bg: #00758e;
+    --header-selected-bg: #fff;
+    --header-selected-text: #000;
+    --button-bg: #e6e6e6;
+    --button-hover-bg: #dbdbdb;
+    --button-action-hover-bg: #009cb7;
+    --panel-actions-bg: rgba(255, 255, 255, .8);
+    --preview-border: #a0a0a0;
+    --preview-rule: #faa;
+    --preview-rule-hover: #f66;
+    --diff-delete-text: #b30000;
+    --diff-delete-bg: #fadad7;
+    --diff-insert-text: #406619;
+    --diff-insert-bg: #eaf2c2;
+    --entity-highlight-bg: green;
+    --entity-example-text: green;
+    --html-accent: #bf4b15;
+}
+
+:root[data-theme='dark'] {
+    color-scheme: dark;
+    --page-bg: #171b20;
+    --text-color: #edf1f5;
+    --link-color: #78d3e8;
+    --surface-bg: #20262d;
+    --preview-bg: #1d232a;
+    --border-color: #414b55;
+    --field-border: #52606c;
+    --field-border-hover: #8795a1;
+    --field-text: #f2f5f7;
+    --muted-text: #aeb8c2;
+    --success-color: #87d8a3;
+    --accent-color: #55c9df;
+    --header-bg: #1d5e70;
+    --header-border: #174958;
+    --header-tab-bg: #267286;
+    --header-tab-hover-bg: #2c7b91;
+    --header-selected-bg: #20262d;
+    --header-selected-text: #edf1f5;
+    --button-bg: #343e48;
+    --button-hover-bg: #46515c;
+    --button-action-hover-bg: #247f96;
+    --panel-actions-bg: rgba(32, 38, 45, .9);
+    --preview-border: #52606c;
+    --preview-rule: #915054;
+    --preview-rule-hover: #d16a71;
+    --diff-delete-text: #ffb1aa;
+    --diff-delete-bg: #552b2b;
+    --diff-insert-text: #c9eba2;
+    --diff-insert-bg: #354625;
+    --entity-highlight-bg: #2d6e3f;
+    --entity-example-text: #9bd897;
+    --html-accent: #f2a374;
+}
+
 body.page_desktop {
     min-width: 800px;
 }
@@ -8,7 +86,8 @@ body
 {
     font-family: Arial, sans-serif;
     font-size: 16px;
-    color: #222;
+    color: var(--text-color);
+    background: var(--page-bg);
 
     position: absolute;
     top: 0;
@@ -37,7 +116,7 @@ label
 
 a
 {
-    color: #007c97;
+    color: var(--link-color);
     text-decoration: none;
     white-space: nowrap;
 }

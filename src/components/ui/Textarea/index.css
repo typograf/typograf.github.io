@@ -1,9 +1,9 @@
 .textarea {
     box-sizing: border-box;
-    color: #000;
+    color: var(--field-text);
 
-    border: 2px solid rgba(0, 0, 0, .2);
-    background-color: #fff;
+    border: 2px solid var(--field-border);
+    background-color: var(--surface-bg);
     outline: none;
 
     border-radius: 4px;
@@ -11,14 +11,14 @@
     transition: border-color .15s ease;
 
     &::placeholder {
-        color: #999;
+        color: var(--muted-text);
     }
 
     &:hover {
-        border-color: rgba(0, 0, 0, .3);
+        border-color: var(--field-border-hover);
     }
 
     &:focus {
-        border-color: #00acc7;
+        border-color: var(--accent-color);
     }
 }

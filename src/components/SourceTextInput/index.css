@@ -18,7 +18,7 @@
 
         &:hover
         {
-            color: #000;
+            color: var(--field-text);
             transform: scale(1.2);
         }
     }
@@ -99,7 +99,7 @@
                 user-select: none;
         transition: color .3s ease;
 
-        color: black;
+        color: var(--field-text);
         background-size: 100% 100%;
         background-position: center center;
         background-repeat: no-repeat;
@@ -107,4 +107,8 @@
         opacity: .8;
     }
 
+}
+
+:root[data-theme='dark'] .source-text-input__clear {
+    filter: invert(1);
 }

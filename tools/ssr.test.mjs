@@ -15,6 +15,10 @@ test('published HTML contains rendered interface and crawlable article before Ja
     expect(document.querySelector('#app .result-panel__text')).toBeTruthy();
     expect(document.querySelector('#app .result-panel__html')).toBeNull();
     expect(document.querySelector('#app .result-panel__diff')).toBeNull();
+    expect(document.querySelector('#app .header__theme-select')?.value).toBe('system');
+    expect(document.querySelector('#app .header__menu-item_tab_about')?.textContent).toBe('О сервисе');
+    expect(document.documentElement.hasAttribute('data-tab')).toBe(false);
+    expect(html.indexOf('settings.theme')).toBeLessThan(html.indexOf('<style>'));
     expect(document.querySelector('#footer .interface-language-toggle')?.textContent).toBe('Русский');
     expect(document.getElementById('interface-language-toggle')).toBeNull();
     expect(document.title).toBe('Онлайн Типограф: исправьте и улучшите ваш текст бесплатно');

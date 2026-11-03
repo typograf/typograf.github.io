@@ -1,15 +1,21 @@
 import { useCallback, useEffect, useState } from 'preact/hooks';
-import { isPrefsHash, resetHash, setPrefsHash } from '../../../helpers/hash';
+import { resetHash, setAboutHash, setPrefsHash } from '../../../helpers/hash';
 import { metrikaReachGoal } from '../../../services/metrika';
+import { getTabFromHash } from '../utils';
 import type { Tab } from '../types';
 
 export function useTab() {
-    const [tab, setTab] = useState<Tab>(() => isPrefsHash() ? 'prefs' : 'editor');
-    const onHashChange = useCallback(() => setTab(isPrefsHash() ? 'prefs' : 'editor'), []);
+    const [tab, setTab] = useState<Tab>(getTabFromHash);
+    const onHashChange = useCallback(() => setTab(getTabFromHash()), []);
 
     useEffect(() => {
         document.body.style.overflowY = tab === 'prefs' ? 'hidden' : 'visible';
         return () => { document.body.style.overflowY = ''; };
+    }, [tab]);
+
+    useEffect(() => {
+        document.documentElement.dataset.tab = tab;
+        return () => { delete document.documentElement.dataset.tab; };
     }, [tab]);
 
     useEffect(() => {
@@ -23,10 +29,12 @@ export function useTab() {
         if (next === 'prefs') {
             setPrefsHash();
             metrikaReachGoal('settings-open');
+        } else if (next === 'about') {
+            setAboutHash();
         } else {
             resetHash();
-            metrikaReachGoal('settings-close');
         }
+        if (tab === 'prefs') metrikaReachGoal('settings-close');
     }, [tab]);
 
     return { tab, selectTab };

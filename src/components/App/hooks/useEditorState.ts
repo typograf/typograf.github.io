@@ -26,6 +26,7 @@ function formatText(text: string, typograf: InstanceType<typeof Typograf>, setti
 }
 
 export function useEditorState() {
+    const [eyoLoaded, setEyoLoaded] = useState(() => Boolean(window.safeEyo));
     const typograf = useMemo(() => {
         const instance = new Typograf({ locale: ['ru'] });
         instance.enableRule(config.rules.enabled);
@@ -50,7 +51,17 @@ export function useEditorState() {
         config.rules = value.rules;
         setSettings(value);
     }, []);
-    const formatted = useMemo(() => formatText(text, typograf, settings), [text, settings, typograf]);
+    const formatted = useMemo(() => formatText(text, typograf, settings), [text, settings, typograf, eyoLoaded]);
+
+    useEffect(() => {
+        const script = document.querySelector<HTMLScriptElement>('script[src*="/dist/eyo.js"]');
+        const onLoad = () => {
+            if (window.safeEyo) setEyoLoaded(true);
+        };
+        script?.addEventListener('load', onLoad);
+        onLoad();
+        return () => script?.removeEventListener('load', onLoad);
+    }, []);
 
     useEffect(() => {
         if (text.length < 10000) {

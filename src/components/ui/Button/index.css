@@ -1,6 +1,8 @@
 .button
 {
     display: inline-block;
+    position: relative;
+    overflow: hidden;
 
     padding: 8px 18px;
 
@@ -9,16 +11,16 @@
     transition: background-color .15s linear, transform .1s ease-out;
 
     border-radius: 4px;
-    background: #e6e6e6;
+    background: var(--button-bg);
 
-    color: #222;
+    color: var(--text-color);
 
     text-align: center;
     white-space: nowrap;
 
     &:hover
     {
-        background: #dbdbdb;
+        background: var(--button-hover-bg);
     }
 
     &:active
@@ -28,12 +30,12 @@
 
     &_type_action
     {
-        background: #00acc7;
+        background: var(--header-bg);
         color: #fff;
 
         &:hover
         {
-            background: #009cb7;
+            background: var(--button-action-hover-bg);
         }
     }
 
