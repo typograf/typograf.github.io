@@ -1,0 +1,4 @@
+.save-file-button__icon
+{
+    background-image: svg-load('./assets/SaveFileIcon.svg');
+}

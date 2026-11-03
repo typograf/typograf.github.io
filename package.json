@@ -71,5 +71,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "build": "rollup -c && node tools/build-ssr.mjs && node tools/index.mjs && npm run copy:html-beautify && npm run copy:eyo",
     "start": "lsof -ti:8000 | xargs kill -9; python3 -m http.server 8000 & open http://localhost:8000"
+  },
+  "dependencies": {
+    "classnames": "^2.5.1"
   }
 }

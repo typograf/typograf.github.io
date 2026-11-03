@@ -7,7 +7,6 @@ const js = fs.readFileSync('./dist/index.js', { encoding: 'utf8'});
 const css = fs.readFileSync('./dist/index.css', { encoding: 'utf8'});
 const dom = new JSDOM('', { url: 'https://typograf.github.io/', runScripts: 'outside-only' });
 dom.window.eval(typografScript);
-const Typograf = dom.window.Typograf;
 globalThis.window = dom.window;
 globalThis.document = dom.window.document;
 Object.defineProperty(globalThis, 'navigator', { configurable: true, value: dom.window.navigator });
@@ -16,13 +15,13 @@ const rendered = renderInitialPage();
 
 function changeVars(text) {
     return text
-        .replace(/\{\{VERSION\}\}/, Typograf.version)
         .replace(/\{\{TYPOGRAF_SCRIPT\}\}/, typografScript)
         .replace(/\{\{NOW\}\}/g, Date.now())
         .replace(/\{\{CSS\}\}/, css)
+        .replace(/\{\{SEO_HEAD_HTML\}\}/, rendered.seoHead)
         .replace(/\{\{APP_HTML\}\}/, rendered.app)
-        .replace(/\{\{LANGUAGE_SELECTOR_HTML\}\}/, rendered.languageSelector)
-        .replace(/\{\{EXTENSION_HTML\}\}/, rendered.extension)
+        .replace(/\{\{SEO_HTML\}\}/, rendered.seo)
+        .replace(/\{\{FOOTER_HTML\}\}/, rendered.footer)
         .replace(/\{\{JS\}\}/, js);
 }
 

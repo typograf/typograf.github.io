@@ -1,0 +1,26 @@
+.editor-panel
+{
+    height: 100%;
+
+    &__head
+    {
+        margin-bottom: 3px;
+        white-space: nowrap;
+    }
+}
+
+.page_desktop .editor-panel__head
+{
+    position: absolute;
+    left: 0;
+    top: -35px;
+    z-index: 3;
+    min-height: 30px;
+}
+
+.page_mobile .editor-panel
+{
+    box-sizing: border-box;
+    margin: 0 20px;
+    position: relative;
+}

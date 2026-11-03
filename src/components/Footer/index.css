@@ -1,0 +1,72 @@
+.footer
+{
+    margin-top: 30px;
+    font-size: 13px;
+
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 20px;
+
+    border-top: 1px solid #e0e0e0;
+
+    &__line {
+        display: flex;
+        margin-bottom: 10px;
+    }
+
+    &__tg-icon {
+        position: absolute;
+        margin-left: -16px;
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background-position: center center;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-image: svg-load('./assets/telegram.svg');
+    }
+        
+    &__left
+    {
+       float: left;
+
+        .footer__item
+        {            
+            margin-left: 20px;
+        }
+
+        .footer__item:first-child {
+            margin-left: 0;
+        }
+
+        .footer__item_icon
+        {            
+            margin-left: 40px;
+        }        
+    }
+
+    &__right
+    {
+        float: right;
+
+        .footer__item
+        {
+            float: right;
+
+            margin-left: 20px;
+        }
+    }
+}
+
+.footer__version
+{
+    font-size: 10px;
+
+    position: relative;
+    top: -5px;
+
+    display: inline-block;
+
+    min-width: 2em;
+    margin-left: 3px;
+}

@@ -15,12 +15,12 @@ beforeEach(() => {
     window.Typograf = Typograf;
     window.localStorage.clear();
     window.location.hash = '';
-    document.body.innerHTML = '<div id="app"></div><footer><span id="extension"></span><span id="language-selector"></span></footer>';
+    document.body.innerHTML = '<div id="app"></div><div id="footer"></div>';
 });
 
 test('mounts Preact roots and changes language without losing text', async () => {
     await act(async () => { await import('./index'); });
-    const input = document.querySelector<HTMLTextAreaElement>('.input__text')!;
+    const input = document.querySelector<HTMLTextAreaElement>('.source-text-input__text')!;
     expect(input).toBeTruthy();
     await act(async () => {
         input.value = 'Привет "мир"';
@@ -28,19 +28,19 @@ test('mounts Preact roots and changes language without losing text', async () =>
     });
 
     await act(async () => {
-        document.querySelector<HTMLElement>('.language-selector')!.click();
+        document.querySelector<HTMLElement>('.interface-language-toggle')!.click();
     });
 
     expect(document.querySelector('.header__menu-item_tab_editor')?.textContent).toBe('Editor');
-    expect(document.querySelector<HTMLTextAreaElement>('.input__text')?.value).toBe('Привет "мир"');
-    expect(document.querySelector('#extension .extension')?.textContent).toBe('Extension for');
+    expect(document.querySelector<HTMLTextAreaElement>('.source-text-input__text')?.value).toBe('Привет "мир"');
+    expect(document.querySelector('#footer .browser-extension-link')?.textContent).toBe('Extension for');
 });
 
 test('selects the Firefox extension link in the browser', async () => {
     Object.defineProperty(window, 'InstallTrigger', { configurable: true, value: {} });
     try {
         await act(async () => { await import('./index'); });
-        const link = document.querySelector<HTMLAnchorElement>('#extension .extension__link');
+        const link = document.querySelector<HTMLAnchorElement>('#footer .browser-extension-link__link');
         expect(link?.getAttribute('href')).toBe('https://addons.mozilla.org/ru/firefox/addon/typografy/');
         expect(link?.textContent).toBe('Mozilla Firefox');
     } finally {
@@ -48,41 +48,50 @@ test('selects the Firefox extension link in the browser', async () => {
     }
 });
 
+test('renders the footer links and version in the Preact root', async () => {
+    await act(async () => { await import('./index'); });
+    const footer = document.querySelector<HTMLElement>('#footer .footer');
+    expect(footer?.querySelector('a[href="https://t.me/webtypograf"]')?.textContent).toBe('@webtypograf');
+    expect(footer?.querySelector('a[href="https://checkdevice.online/?from=typograf.github.io"]')?.textContent)
+        .toContain('Проверь');
+    expect(footer?.querySelector('.footer__version')?.textContent).toBe(Typograf.version);
+    expect(document.getElementById('extension')).toBeNull();
+});
+
 test('hydrates prerendered editor markup instead of replacing it', async () => {
     const { initI18n } = await import('./i18n/init');
     initI18n();
-    const { App } = await import('./components/App/App');
-    const { LanguageSelector } = await import('./components/LanguageSelector/LanguageSelector');
-    const { Extension } = await import('./components/Extension/Extension');
+    const { App } = await import('./components/App');
+    const { Footer } = await import('./components/Footer');
     const root = document.getElementById('app')!;
     root.innerHTML = renderToString(h(App, { language: 'ru' }));
-    const languageRoot = document.getElementById('language-selector')!;
-    languageRoot.innerHTML = renderToString(h(LanguageSelector, { language: 'ru', onChange: () => {} }));
-    const extensionRoot = document.getElementById('extension')!;
-    extensionRoot.innerHTML = renderToString(h(Extension, {}));
-    const extensionLink = extensionRoot.querySelector('.extension__link');
+    const footerRoot = document.getElementById('footer')!;
+    footerRoot.innerHTML = renderToString(h(Footer, { language: 'ru', onLanguageChange: () => {} }));
+    const footer = footerRoot.querySelector('.footer');
+    const extensionLink = footerRoot.querySelector('.browser-extension-link__link');
     const header = root.querySelector('.header');
 
     await act(async () => { await import('./index'); });
     expect(root.querySelector('.header')).toBe(header);
     expect(root.querySelectorAll('.header').length).toBe(1);
-    expect(extensionRoot.querySelector('.extension__link')).toBe(extensionLink);
+    expect(footerRoot.querySelector('.footer')).toBe(footer);
+    expect(footerRoot.querySelector('.browser-extension-link__link')).toBe(extensionLink);
 
-    const input = root.querySelector<HTMLTextAreaElement>('.input__text')!;
+    const input = root.querySelector<HTMLTextAreaElement>('.source-text-input__text')!;
     await act(async () => {
         input.value = 'Привет "мир"';
         input.dispatchEvent(new Event('input', { bubbles: true }));
     });
-    expect(root.querySelector<HTMLTextAreaElement>('.result__text')?.value).toBe('Привет «мир»');
-    await act(async () => languageRoot.querySelector<HTMLElement>('.language-selector')!.click());
+    expect(root.querySelector<HTMLTextAreaElement>('.result-panel__text')?.value).toBe('Привет «мир»');
+    await act(async () => footerRoot.querySelector<HTMLElement>('.interface-language-toggle')!.click());
     expect(root.querySelector('.header__menu-item_tab_editor')?.textContent).toBe('Editor');
-    expect(root.querySelector<HTMLTextAreaElement>('.input__text')?.value).toBe('Привет "мир"');
+    expect(root.querySelector<HTMLTextAreaElement>('.source-text-input__text')?.value).toBe('Привет "мир"');
 });
 
 test('uses stored text and language when the prerendered defaults differ', async () => {
     const { initI18n } = await import('./i18n/init');
     initI18n();
-    const { App } = await import('./components/App/App');
+    const { App } = await import('./components/App');
     const root = document.getElementById('app')!;
     root.innerHTML = renderToString(h(App, { language: 'ru' }));
 
@@ -91,6 +100,8 @@ test('uses stored text and language when the prerendered defaults differ', async
     window.localStorage.setItem('settings.langUI', JSON.stringify('en-US'));
     await act(async () => { await import('./index'); });
 
-    expect(root.querySelector<HTMLTextAreaElement>('.input__text')?.value).toBe('Сохранённый текст');
+    expect(root.querySelector<HTMLTextAreaElement>('.source-text-input__text')?.value).toBe('Сохранённый текст');
     expect(root.querySelector('.header__menu-item_tab_editor')?.textContent).toBe('Editor');
+    expect(document.querySelector('#footer .interface-language-toggle')?.textContent).toBe('English');
+    expect(document.querySelector('#footer .footer__right')?.textContent).toContain('Powered by');
 });

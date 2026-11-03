@@ -1,0 +1,111 @@
+.page_desktop .settings-panel
+{
+    z-index: 100;
+    width: 100%;
+}
+.page_mobile .settings-panel
+{
+    width: 100%;
+
+    &__controls
+    {
+        text-align: center;
+    }
+
+    &__close
+    {
+        top: 28px;
+    }
+
+    &__actions
+    {
+        width: 100%;
+    }
+}
+
+.settings-panel
+{
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 90px;
+    bottom: 0;
+
+    visibility: hidden;
+
+    box-sizing: border-box;
+
+    background: white;
+
+    &__hidden
+    {
+        visibility: hidden;
+    }
+
+    &_opened
+    {
+        visibility: visible;
+    }
+
+    &__title
+    {
+        font-size: 1.4em;
+
+        float: left;
+
+        margin: 0 0 .5em 0;
+        padding: 0;
+    }
+
+	&__item
+    {
+		clear: both;
+
+        padding: 1em 20px 1em 20px;
+
+        border-top: 1px solid #e0e0e0;
+
+		&_first
+		{
+			padding-top: 0;
+			border-top: 0;
+		}
+    }
+
+    &__items
+    {
+        clear: both;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        padding: 20px 0;
+        box-sizing: border-box;
+        bottom: 64px;
+        overflow-y: auto;
+    }
+
+    &__actions
+    {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        text-align: center;
+        padding: 1em 20px;
+        border-top: 1px solid #e0e0e0;
+        z-index: 10;
+        box-sizing: border-box;
+        background-color: rgba(255, 255, 255, .8);
+    }
+
+    &__default
+    {
+        margin-right: 10px;
+    }
+}
+
+body.transition_no .settings-panel
+{
+    transition: none;
+}

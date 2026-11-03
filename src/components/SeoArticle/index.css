@@ -1,0 +1,49 @@
+.seo-article {
+    margin: 0 20px;
+    max-width: 800px;
+}
+
+.seo-article p {
+    margin: 1em 0 1em 0;
+}
+
+.seo-article h1 + p,
+.seo-article h2 + p,
+.seo-article h3 + p {
+    margin-top: 0;
+}
+
+.seo-article h1 {
+    margin: 1em 0 5px 0;
+    padding: 0;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.seo-article h2 {
+    margin: 1em 0 5px 0;
+    padding: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.seo-article h3 {
+    margin: 1em 0 5px 0;
+    padding: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.seo-article h2 + h3 {
+    margin-top: 10px;
+}
+
+.seo-article ul,
+.seo-article ol {
+    margin: .5em 0 1em 20px;
+    padding: 0;
+}
+
+.seo-article ul {
+    list-style-type: disc;
+}

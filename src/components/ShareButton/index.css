@@ -1,0 +1,4 @@
+.share-button__icon
+{
+    background-image: svg-load('./assets/ShareIcon.svg');
+}

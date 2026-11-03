@@ -1,0 +1,20 @@
+.page_desktop .container
+{
+    margin: 50px 0 50px 0;
+    height: calc(100vh - 250px);
+
+    box-sizing: border-box;
+    width: 100%;
+    padding: 5px 0;
+}
+.page_mobile .container
+{
+    position: absolute;
+    top: 80px;
+    bottom: 40px;
+    left: 0;
+
+    box-sizing: border-box;
+    width: 100%;
+    padding: 5px 0;
+}

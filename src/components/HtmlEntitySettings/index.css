@@ -1,0 +1,24 @@
+.html-entity-settings
+{
+    clear: both;
+    padding: 1em 20px;
+    border-top: 1px solid #e0e0e0;
+
+    &__html-entities
+    {
+        white-space: nowrap;
+        line-height: 1.7;
+
+        .html-entity-settings__only-invisible
+        {
+            margin-left: .8em;
+        }
+
+        .html-entity-settings__html-entities-example-container
+        {
+            padding-top: .3em;
+            color: #999;
+            font-size: 13px;
+        }
+    }
+}

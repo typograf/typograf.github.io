@@ -1,0 +1,27 @@
+.rule-settings
+{
+    clear: both;
+    padding: 1em 10px;
+    border-top: 1px solid #e0e0e0;
+
+    &__rules-title
+    {
+        margin-left: 10px;
+        font-size: 20px;
+    }
+
+    &__top
+    {
+        padding: 1em 0 0 10px;
+    }
+
+    &__all-rules
+    {
+        margin: 0;
+    }
+
+    &__rules
+    {
+        padding-bottom: 30px;
+    }
+}

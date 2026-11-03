@@ -1,0 +1,30 @@
+.icon-button__icon:hover
+{
+    opacity: 1;
+}
+
+.icon-button__icon
+{
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+
+    cursor: pointer;
+
+    margin-right: 12px;
+
+    opacity: .7;
+
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.button .icon-button__icon
+{
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    vertical-align: middle;
+    opacity: 1;
+}

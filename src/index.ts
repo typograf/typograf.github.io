@@ -1,13 +1,13 @@
 import { startMetrika } from './services/metrika';
 import { withInstallApp } from './helpers/withInstallApp';
-import { App } from './components/App/App';
+import { App } from './components/App';
 import { initI18n } from './i18n/init';
-import { config } from './components/App/config';
+import { config } from './lib/Config';
 import { i18nUpdatePage, I18NLanguage, setI18nLang } from './i18n/i18n';
-import { LanguageSelector } from './components/LanguageSelector/LanguageSelector';
-import { Extension } from './components/Extension/Extension';
+import { Footer } from './components/Footer';
 import { metrikaReachGoal } from './services/metrika';
 import { h, hydrate, render } from 'preact';
+import './components/SeoArticle/index.css';
 
 startMetrika();
 
@@ -16,8 +16,7 @@ initI18n();
 withInstallApp();
 
 const appRoot = document.getElementById('app');
-const languageRoot = document.getElementById('language-selector');
-const extensionRoot = document.getElementById('extension');
+const footerRoot = document.getElementById('footer');
 let mounted = false;
 
 function updateLanguage(language: I18NLanguage) {
@@ -31,8 +30,7 @@ function updateLanguage(language: I18NLanguage) {
 function renderUI() {
     const language = config.language as I18NLanguage;
     const app = h(App, { language });
-    const selector = h(LanguageSelector, { language, onChange: updateLanguage });
-    const extension = h(Extension, {});
+    const footer = h(Footer, { language, onLanguageChange: updateLanguage });
     if (!mounted) {
         const canHydrate = language === 'ru' && config.locale === 'ru' && config.mode === 'default' &&
             !config.onlyInvisible && !config.text && !config.rules.enabled.length &&
@@ -44,23 +42,18 @@ function renderUI() {
                 render(app, appRoot);
             }
         }
-        if (languageRoot) {
-            if (canHydrate && languageRoot.firstElementChild) hydrate(selector, languageRoot);
+        if (footerRoot) {
+            if (canHydrate && footerRoot.firstElementChild) hydrate(footer, footerRoot);
             else {
-                languageRoot.replaceChildren();
-                render(selector, languageRoot);
+                footerRoot.replaceChildren();
+                render(footer, footerRoot);
             }
-        }
-        if (extensionRoot) {
-            if (extensionRoot.firstElementChild) hydrate(extension, extensionRoot);
-            else render(extension, extensionRoot);
         }
         mounted = true;
         return;
     }
     if (appRoot) render(app, appRoot);
-    if (languageRoot) render(selector, languageRoot);
-    if (extensionRoot) render(extension, extensionRoot);
+    if (footerRoot) render(footer, footerRoot);
 }
 
 renderUI();
