@@ -4,6 +4,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { babel } from '@rollup/plugin-babel';
 import terser from '@rollup/plugin-terser';
 import commonjs from '@rollup/plugin-commonjs';
+import postcssConfig from './postcss.config.mjs';
 
 export default [
     {
@@ -24,6 +25,8 @@ export default [
             css({
                 output: 'index.css',
                 extract: true,
+                config: false,
+                plugins: postcssConfig.plugins,
             }),
             terser({
                 output: {
