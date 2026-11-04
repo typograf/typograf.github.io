@@ -19,7 +19,7 @@ beforeEach(() => {
     window.location.hash = '';
     document.documentElement.removeAttribute('data-theme');
     document.documentElement.removeAttribute('data-tab');
-    document.body.innerHTML = '<div id="app"></div><main id="seo"><article class="seo-article">О сервисе</article></main>';
+    document.body.innerHTML = '<div id="app"></div><main id="about-content"><article class="about-article">О сервисе</article></main>';
 });
 
 test('changes the theme from the header and saves the choice', async () => {
@@ -132,7 +132,7 @@ test('opens the About tab from its URL and returns to the editor', async () => {
     expect(root.querySelector('.header__menu-item_tab_about')?.textContent).toBe('О сервисе');
     expect(root.querySelector('.header__menu-item_tab_about')?.classList.contains('header__menu-item_selected')).toBe(true);
     expect(document.documentElement.dataset.tab).toBe('about');
-    expect(document.querySelector('#seo .seo-article')?.textContent).toBe('О сервисе');
+    expect(document.querySelector('#about-content .about-article')?.textContent).toBe('О сервисе');
     expect(document.body.style.overflowY).toBe('visible');
 
     await act(async () => root.querySelector<HTMLElement>('.header__menu-item_tab_editor')!.click());

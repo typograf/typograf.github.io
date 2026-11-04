@@ -1,29 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
 import { getHashParam } from '../../../helpers/hash';
-import { isJSON, typografyJSON } from '../../../helpers/json';
-import { prepareLocale } from '../../../helpers/prepareLocale';
-import { isHTML } from '../../../helpers/string';
 import { Typograf } from '../../../helpers/typograf';
 import { metrikaReachGoal } from '../../../services/metrika';
 import type { SettingsData } from '../../SettingsPanel/types';
 import type { ResultType } from '../../ResultPanel/types';
 import type { TooltipMessage } from '../../ui/Tooltip/types';
 import { config } from '../../../lib/Config';
-
-function formatText(text: string, typograf: InstanceType<typeof Typograf>, settings: SettingsData) {
-    const options = {
-        locale: prepareLocale(settings.locale),
-        htmlEntity: { type: settings.mode, onlyInvisible: settings.onlyInvisible },
-    };
-    if (isJSON(text)) {
-        return typografyJSON(text, value => typograf.execute(value, options));
-    }
-    let result = typograf.execute(text, options);
-    if (isHTML(result) && window.html_beautify) {
-        result = window.html_beautify(result);
-    }
-    return result;
-}
+import { formatHtml } from '../utils';
 
 export function useEditorState() {
     const [eyoLoaded, setEyoLoaded] = useState(() => Boolean(window.safeEyo));
@@ -40,7 +23,7 @@ export function useEditorState() {
         onlyInvisible: config.onlyInvisible,
         rules: config.rules,
     }));
-    const [pair, setPair] = useState(() => ({ before: text, result: formatText(text, typograf, settings) }));
+    const [pair, setPair] = useState(() => ({ before: text, result: formatHtml(text, typograf, settings) }));
     const [resultType, setResultType] = useState<ResultType>('text');
     const [toast, setToast] = useState<TooltipMessage | null>(null);
     const closeToast = useCallback(() => setToast(null), []);
@@ -51,7 +34,7 @@ export function useEditorState() {
         config.rules = value.rules;
         setSettings(value);
     }, []);
-    const formatted = useMemo(() => formatText(text, typograf, settings), [text, settings, typograf, eyoLoaded]);
+    const formatted = useMemo(() => formatHtml(text, typograf, settings), [text, settings, typograf, eyoLoaded]);
 
     useEffect(() => {
         const script = document.querySelector<HTMLScriptElement>('script[src*="/dist/eyo.js"]');

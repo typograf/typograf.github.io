@@ -7,7 +7,7 @@ import { i18nUpdatePage, I18NLanguage, setI18nLang } from './i18n/i18n';
 import { Footer } from './components/Footer';
 import { metrikaReachGoal } from './services/metrika';
 import { h, hydrate, render } from 'preact';
-import './components/SeoArticle/index.css';
+import './components/AboutArticle/index.css';
 
 startMetrika();
 

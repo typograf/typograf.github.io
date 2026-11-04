@@ -2,9 +2,9 @@
 import { block } from '../../helpers/bem';
 import './index.css';
 
-const b = block('seo-article');
+const b = block('about-article');
 
-export function SeoArticle() {
+export function AboutArticle() {
     return <article class={b()}>
         <h1>Типограф</h1>
         <p>Ваш текст почти готов, но выглядит неидеально? Лишние пробелы, прямые кавычки "вот такие", дефисы вместо тире и другие мелкие ошибки могут испортить впечатление от статьи, письма или поста в соцсетях. <strong>Онлайн Типограф</strong> — это ваш цифровой корректор, который за доли секунды приведёт текст в порядок по правилам русской и английской типографики.</p>

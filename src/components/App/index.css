@@ -1,6 +1,6 @@
 @import 'typograf/dist/typograf.css';
 
-:root[data-tab]:not([data-tab='about']) #seo,
+:root[data-tab]:not([data-tab='about']) #about-content,
 :root[data-tab='about'] .container {
     display: none;
 }

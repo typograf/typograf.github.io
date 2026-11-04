@@ -7,9 +7,9 @@ test('published HTML contains rendered interface and crawlable article before Ja
     expect(/<div id="app">\s*<header class="header">/.test(html)).toBe(true);
     expect(html).toContain('<meta name="description"');
     expect(html).toContain('<link rel="canonical" href="https://typograf.github.io">');
-    expect(html.indexOf('<!--/noindex-->')).toBeLessThan(html.indexOf('<main id="seo">'));
-    expect(html).toContain('<main id="seo">');
-    expect(html).toContain('<article class="seo-article">');
+    expect(html.indexOf('<!--/noindex-->')).toBeLessThan(html.indexOf('<main id="about-content">'));
+    expect(html).toContain('<main id="about-content">');
+    expect(html).toContain('<article class="about-article">');
     expect(html).toContain('<h1>Типограф</h1>');
     const document = new JSDOM(html).window.document;
     expect(document.querySelector('#app .result-panel__text')).toBeTruthy();
@@ -26,7 +26,7 @@ test('published HTML contains rendered interface and crawlable article before Ja
         .toContain('умный онлайн-инструмент для автоматического исправления типографики');
     expect(document.querySelector('meta[property="og:title"]')?.getAttribute('content'))
         .toBe('Типограф — помощь с монотонной вёрсткой текстов');
-    const article = document.querySelector('#seo > article.seo-article');
+    const article = document.querySelector('#about-content > article.about-article');
     expect(article?.querySelectorAll('h2').length).toBe(6);
     expect(article?.querySelector('a[href="https://github.com/typograf/typograf/blob/dev/docs/RULES.ru.md"]')?.textContent).toBe('список правил');
     const footer = document.querySelector('#footer > footer.footer');
