@@ -66,7 +66,7 @@
   "scripts": {
     "copy:html-beautify": "terser ./node_modules/js-beautify/js/lib/beautify-html.js > ./dist/html-beautify.js",
     "copy:eyo": "terser ./node_modules/eyo-kernel/dist/bundle.safe.js > ./dist/eyo.js",
-    "test": "npm run eslint && npm run typecheck && vitest run",
+    "test": "npm run eslint && npm run typecheck && npm run build && vitest run",
     "eslint": "eslint .",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "build": "rollup -c && node tools/build-ssr.mjs && node tools/index.mjs && npm run copy:html-beautify && npm run copy:eyo",

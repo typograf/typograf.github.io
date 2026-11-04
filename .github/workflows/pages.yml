@@ -27,9 +27,7 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Build site
-        run: npm run build
-      - name: Lint, typecheck, and test
+      - name: Build, lint, typecheck, and test
         run: npm test
       - name: Prepare Pages files
         if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
