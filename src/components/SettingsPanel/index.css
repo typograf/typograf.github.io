@@ -31,7 +31,7 @@
     top: 90px;
     bottom: 0;
 
-    visibility: hidden;
+    display: none;
 
     box-sizing: border-box;
 
@@ -44,7 +44,7 @@
 
     &_opened
     {
-        visibility: visible;
+        display: block;
     }
 
     &__title
