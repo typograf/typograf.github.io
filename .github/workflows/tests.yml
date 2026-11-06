@@ -6,10 +6,6 @@ on:
   push:
     branches-ignore: [master]
   workflow_call:
-    inputs:
-      package_pages:
-        type: boolean
-        default: false
 
 permissions:
   contents: read
@@ -33,15 +29,3 @@ jobs:
         run: npm ci
       - name: Build, lint, typecheck, and test
         run: npm test
-      - name: Prepare Pages files
-        if: inputs.package_pages
-        run: |
-          mkdir -p build/pages/dist
-          cp index.html favicon.ico manifest.json robots.txt sitemap.xml build/pages/
-          cp -R icons build/pages/
-          cp dist/html-beautify.js dist/eyo.js build/pages/dist/
-      - name: Upload Pages artifact
-        if: inputs.package_pages
-        uses: actions/upload-pages-artifact@v5
-        with:
-          path: build/pages
