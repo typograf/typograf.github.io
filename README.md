@@ -18,6 +18,6 @@ python3 -m http.server 8000
 
 ## CI и публикация
 
-Workflow `.github/workflows/pages.yml` запускается для pull request в `master` и при push в `master`. Он устанавливает зависимости и выполняет `npm test`, который включает ESLint, проверку типов, сборку и Vitest. После успешных проверок push в `master` публикует свежую сборку в GitHub Pages. Публикуются только `index.html`, нужные файлы из `dist/`, иконки, манифест, `robots.txt`, `sitemap.xml` и favicon.
+Workflow `.github/workflows/pages.yml` запускается при push в любую ветку и для pull request в `master`. Он устанавливает зависимости и выполняет `npm test`, который включает ESLint, проверку типов, сборку и Vitest. После успешных проверок push в `master` публикует свежую сборку в GitHub Pages. Публикуются только `index.html`, нужные файлы из `dist/`, иконки, манифест, `robots.txt`, `sitemap.xml` и favicon.
 
 В настройках репозитория **Settings → Pages → Build and deployment → Source** один раз выберите **GitHub Actions**. Pull request проверяется без публикации.
