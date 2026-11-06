@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'preact/hooks';
 import { resetHash, setAboutHash, setPrefsHash } from '../../../helpers/hash';
-import { metrikaReachGoal } from '../../../services/metrika';
+import { trackMetrikaAction } from '../../../services/metrika';
 import { getTabFromHash } from '../utils';
 import type { Tab } from '../types';
 
@@ -28,13 +28,13 @@ export function useTab() {
         setTab(next);
         if (next === 'prefs') {
             setPrefsHash();
-            metrikaReachGoal('settings-open');
+            trackMetrikaAction('settings-open');
         } else if (next === 'about') {
             setAboutHash();
         } else {
             resetHash();
         }
-        if (tab === 'prefs') metrikaReachGoal('settings-close');
+        if (tab === 'prefs') trackMetrikaAction('settings-close');
     }, [tab]);
 
     return { tab, selectTab };

@@ -2,7 +2,7 @@ import type { TargetedEvent } from 'preact';
 import { useCallback } from 'preact/hooks';
 import { i18n } from '../../i18n/i18n';
 import { block } from '../../helpers/bem';
-import { metrikaReachGoal } from '../../services/metrika';
+import { trackMetrikaAction } from '../../services/metrika';
 import { getEntityExample } from './utils';
 import type { EntityMode, HtmlEntitySettingsProps } from './types';
 import './index.css';
@@ -12,11 +12,11 @@ const b = block('html-entity-settings');
 export function HtmlEntitySettings({ mode, onlyInvisible, onChange }: HtmlEntitySettingsProps) {
     const changeMode = useCallback((event: TargetedEvent<HTMLSelectElement>) => {
         onChange({ mode: event.currentTarget.value as EntityMode, onlyInvisible });
-        metrikaReachGoal('settings-select-html-entity');
+        trackMetrikaAction('settings-select-html-entity');
     }, [onChange, onlyInvisible]);
     const changeOnlyInvisible = useCallback((event: TargetedEvent<HTMLInputElement>) => {
         onChange({ mode, onlyInvisible: event.currentTarget.checked });
-        metrikaReachGoal('settings-select-html-entity');
+        trackMetrikaAction('settings-select-html-entity');
     }, [mode, onChange]);
 
     return <div class={b()}>

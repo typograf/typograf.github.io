@@ -1,11 +1,10 @@
-import { startMetrika } from './services/metrika';
+import { startMetrika, trackMetrikaAction } from './services/metrika';
 import { withInstallApp } from './helpers/withInstallApp';
 import { App } from './components/App';
 import { initI18n } from './i18n/init';
 import { config } from './lib/Config';
 import { i18nUpdatePage, I18NLanguage, setI18nLang } from './i18n/i18n';
 import { Footer } from './components/Footer';
-import { metrikaReachGoal } from './services/metrika';
 import { h, hydrate, render } from 'preact';
 import './components/AboutArticle/index.css';
 
@@ -23,7 +22,7 @@ function updateLanguage(language: I18NLanguage) {
     setI18nLang(language);
     config.language = language;
     i18nUpdatePage();
-    metrikaReachGoal('switch-lang');
+    trackMetrikaAction('switch-lang');
     renderUI();
 }
 

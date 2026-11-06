@@ -2,7 +2,7 @@ import { useCallback } from 'preact/hooks';
 import { block } from '../../helpers/bem';
 import { saveFile } from '../../helpers/saveFile';
 import { i18n } from '../../i18n/i18n';
-import { metrikaReachGoal } from '../../services/metrika';
+import { trackMetrikaAction } from '../../services/metrika';
 import { IconButton } from '../IconButton';
 import type { SaveFileButtonProps } from './types';
 import './index.css';
@@ -12,7 +12,7 @@ const b = block('save-file-button');
 export function SaveFileButton({ getText, onError }: SaveFileButtonProps) {
     const save = useCallback(() => {
         if (saveFile(getText())) {
-            metrikaReachGoal('save-text');
+            trackMetrikaAction('save-text');
         } else {
             onError(i18n('notSupportSave'));
         }

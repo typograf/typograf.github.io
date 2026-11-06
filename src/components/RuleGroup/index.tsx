@@ -1,7 +1,7 @@
 import type { TargetedEvent, TargetedMouseEvent } from 'preact';
 import { useCallback, useEffect, useState } from 'preact/hooks';
 import classNames from 'classnames';
-import { metrikaReachGoal } from '../../services/metrika';
+import { trackMetrikaAction } from '../../services/metrika';
 import { block } from '../../helpers/bem';
 import { Ripple } from '../Ripple';
 import { useRipple } from '../Ripple/hooks/useRipple';
@@ -25,7 +25,7 @@ export function RuleGroup({ rules, matchingRules, searchQuery, language, typogra
         startRipple(event);
         if (searchQuery) setSearchExpanded(current => !current);
         else setExpanded(current => !current);
-        metrikaReachGoal('settings-click-group-rule');
+        trackMetrikaAction('settings-click-group-rule');
     }, [searchQuery, startRipple]);
     const changeRule = useCallback((event: TargetedEvent<HTMLInputElement>) => {
         onToggle(event.currentTarget.name, event.currentTarget.checked);

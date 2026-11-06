@@ -7,7 +7,7 @@ import Typograf from 'typograf';
 
 vi.mock('./services/metrika', () => ({
     startMetrika: vi.fn(),
-    metrikaReachGoal: vi.fn(),
+    trackMetrikaAction: vi.fn(),
 }));
 
 beforeEach(() => {

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'preact/hooks';
 import { block } from '../../helpers/bem';
 import { i18n } from '../../i18n/i18n';
-import { metrikaReachGoal } from '../../services/metrika';
+import { trackMetrikaAction } from '../../services/metrika';
 import { IconButton } from '../IconButton';
 import type { ShareButtonProps } from './types';
 import './index.css';
@@ -19,7 +19,7 @@ export function ShareButton({ getText }: ShareButtonProps) {
     const share = useCallback(async () => {
         try {
             await navigator.share({ text: getText(), title: 'Typograf' });
-            metrikaReachGoal('share-text');
+            trackMetrikaAction('share-text');
         } catch {
             // The user can dismiss the native share dialog.
         }

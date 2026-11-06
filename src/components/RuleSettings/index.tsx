@@ -2,7 +2,7 @@ import type { TargetedEvent } from 'preact';
 import { useCallback, useMemo, useState } from 'preact/hooks';
 import { i18n } from '../../i18n/i18n';
 import { block } from '../../helpers/bem';
-import { metrikaReachGoal } from '../../services/metrika';
+import { trackMetrikaAction } from '../../services/metrika';
 import { RuleGroup } from '../RuleGroup';
 import { filterRuleGroups, getVisibleRules, normalizeRuleSearch } from './utils';
 import type { RuleSettingsProps } from './types';
@@ -30,7 +30,7 @@ export function RuleSettings({ groups, language, typograf, onChange }: RuleSetti
         if (checked) typograf.enableRule(name);
         else typograf.disableRule(name);
         onChange();
-        metrikaReachGoal('settings-click-rule');
+        trackMetrikaAction('settings-click-rule');
     }, [onChange, typograf]);
 
     const selectAll = useCallback((event: TargetedEvent<HTMLInputElement>) => {
@@ -40,7 +40,7 @@ export function RuleSettings({ groups, language, typograf, onChange }: RuleSetti
             else typograf.disableRule(rule.name);
         }
         onChange();
-        metrikaReachGoal('settings-select-all-rules');
+        trackMetrikaAction('settings-select-all-rules');
     }, [onChange, typograf, visibleRules]);
 
     return <div class={b()}>

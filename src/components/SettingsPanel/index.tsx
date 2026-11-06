@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'preact/hooks';
 import { memo } from 'preact/compat';
 import { i18n } from '../../i18n/i18n';
 import { block } from '../../helpers/bem';
-import { metrikaReachGoal } from '../../services/metrika';
+import { trackMetrikaAction } from '../../services/metrika';
 import { Button } from '../ui/Button';
 import { HtmlEntitySettings } from '../HtmlEntitySettings';
 import { RuleSettings } from '../RuleSettings';
@@ -25,7 +25,7 @@ export const SettingsPanel = memo(function SettingsPanel({ opened, language, typ
             else typograf.disableRule(rule.name);
         }
         save({ locale: value.locale, mode: 'default', onlyInvisible: true });
-        metrikaReachGoal('settings-default');
+        trackMetrikaAction('settings-default');
     }, [groups, save, typograf, value.locale]);
     const changeEntities = useCallback((changes: Pick<SettingsData, 'mode' | 'onlyInvisible'>) => {
         save({ ...value, ...changes });

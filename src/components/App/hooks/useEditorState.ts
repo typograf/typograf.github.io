@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
 import { getHashParam } from '../../../helpers/hash';
 import { Typograf } from '../../../helpers/typograf';
-import { metrikaReachGoal } from '../../../services/metrika';
+import { trackMetrikaAction } from '../../../services/metrika';
 import type { SettingsData } from '../../SettingsPanel/types';
 import type { ResultType } from '../../ResultPanel/types';
 import type { TooltipMessage } from '../../ui/Tooltip/types';
@@ -62,7 +62,7 @@ export function useEditorState() {
 
     const changeLocale = useCallback((value: string) => {
         changeSettings({ ...settings, locale: value });
-        metrikaReachGoal('select-locale', { changeLocale: value });
+        trackMetrikaAction('select-locale', value);
     }, [changeSettings, settings]);
 
     const showToast = useCallback((message: string, type: TooltipMessage['type']) => {

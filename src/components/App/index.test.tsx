@@ -3,11 +3,13 @@ import { beforeEach, expect, test, vi } from 'vitest';
 import { h, render } from 'preact';
 import { act } from 'preact/test-utils';
 import Typograf from 'typograf';
+import { params } from 'lyam';
 import { saveFile } from '../../helpers/saveFile';
 
-vi.mock('../../services/metrika', () => ({
-    startMetrika: vi.fn(),
-    metrikaReachGoal: vi.fn(),
+vi.mock('lyam', () => ({
+    hit: vi.fn(),
+    notBounce: vi.fn(),
+    params: vi.fn(),
 }));
 vi.mock('../../helpers/saveFile', () => ({ saveFile: vi.fn(() => true) }));
 
@@ -199,7 +201,7 @@ test('switches result views and returns from settings to the editor', async () =
     expect(root.querySelector('.settings-panel')?.classList.contains('settings-panel_opened')).toBe(false);
 });
 
-test('persists locale and rule changes', async () => {
+test('persists locale and rule changes and sends them as visit parameters', async () => {
     const root = await mountApp();
     const locale = root.querySelector<HTMLSelectElement>('.typograf-locale-select__set-locale')!;
     await act(async () => {
@@ -207,12 +209,14 @@ test('persists locale and rule changes', async () => {
         locale.dispatchEvent(new Event('change', { bubbles: true }));
     });
     expect(window.localStorage.getItem('settings.locale')).toContain('en-US');
+    expect(params).toHaveBeenCalledWith('28700106', { actions: { 'select-locale': 'en-US' } });
 
     const rule = root.querySelector<HTMLInputElement>('.rule-group__rule-checkbox')!;
     const before = rule.checked;
     await act(async () => rule.click());
     expect(rule.checked).toBe(!before);
     expect(window.localStorage.getItem('settings.rules')).toContain('enabled');
+    expect(params).toHaveBeenCalledWith('28700106', { actions: { 'settings-click-rule': 1 } });
 });
 
 test('keeps entity settings and preview in sync, then resets them', async () => {
