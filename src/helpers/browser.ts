@@ -15,3 +15,7 @@ export function isFirefox() {
 export function isOpera() {
     return navigator.userAgent.search(' OPR/') > -1;
 }
+
+export function isMacPlatform() {
+    return navigator.platform.startsWith('Mac');
+}

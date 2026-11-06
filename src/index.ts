@@ -32,7 +32,7 @@ function renderUI() {
     const footer = h(Footer, { language, onLanguageChange: updateLanguage });
     if (!mounted) {
         const canHydrate = language === 'ru' && config.locale === 'ru' && config.mode === 'default' &&
-            !config.onlyInvisible && !config.text && !config.rules.enabled.length &&
+            !config.onlyInvisible && !config.text && !config.preview && !config.rules.enabled.length &&
             !config.rules.disabled.length && config.theme === 'system' && !window.location.hash;
         if (appRoot) {
             if (canHydrate && appRoot.firstElementChild) hydrate(app, appRoot);

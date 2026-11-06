@@ -53,11 +53,6 @@
         }
     }
 
-    &__rule-checkbox
-    {
-        margin-right: 8px;
-    }
-
     &__rule-lang
     {
         color: var(--accent-color);

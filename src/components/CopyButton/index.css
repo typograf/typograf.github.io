@@ -10,3 +10,9 @@
     vertical-align: middle;
     top: -2px;
 }
+
+.copy-button__anchor
+{
+    display: flex;
+    position: relative;
+}

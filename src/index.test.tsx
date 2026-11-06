@@ -82,10 +82,11 @@ test('hydrates prerendered editor markup instead of replacing it', async () => {
         input.value = 'Привет "мир"';
         input.dispatchEvent(new Event('input', { bubbles: true }));
     });
-    expect(root.querySelector<HTMLTextAreaElement>('.result-panel__text')?.value).toBe('Привет «мир»');
+    await act(async () => root.querySelector<HTMLButtonElement>('.editor-panel__execute')!.click());
+    expect(input.value).toBe('Привет «мир»');
     await act(async () => footerRoot.querySelector<HTMLElement>('.interface-language-toggle')!.click());
     expect(root.querySelector('.header__menu-item_tab_editor')?.textContent).toBe('Editor');
-    expect(root.querySelector<HTMLTextAreaElement>('.source-text-input__text')?.value).toBe('Привет "мир"');
+    expect(root.querySelector<HTMLTextAreaElement>('.source-text-input__text')?.value).toBe('Привет «мир»');
 });
 
 test('uses stored text and language when the prerendered defaults differ', async () => {
@@ -104,4 +105,17 @@ test('uses stored text and language when the prerendered defaults differ', async
     expect(root.querySelector('.header__menu-item_tab_editor')?.textContent).toBe('Editor');
     expect(document.querySelector('#footer .interface-language-toggle')?.textContent).toBe('English');
     expect(document.querySelector('#footer .footer__right')?.textContent).toContain('Powered by');
+});
+
+test('restores an open preview when the prerendered editor has it closed', async () => {
+    const { renderInitialPage } = await import('./ssr');
+    const root = document.getElementById('app')!;
+    root.innerHTML = renderInitialPage().app;
+
+    vi.resetModules();
+    window.localStorage.setItem('settings.preview', 'true');
+    await act(async () => { await import('./index'); });
+
+    expect(root.querySelector<HTMLInputElement>('.editor-panel__preview-toggle')?.checked).toBe(true);
+    expect(root.querySelector('.result-panel__html')).toBeTruthy();
 });

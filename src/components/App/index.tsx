@@ -18,7 +18,7 @@ export function App({ language }: AppProps) {
         <Header tab={tab} onSelect={selectTab} theme={theme} onThemeChange={changeTheme} />
         <Container>
             <SettingsPanel opened={tab === 'prefs'} language={language} typograf={editor.typograf} value={editor.settings} onChange={editor.changeSettings} />
-            <EditorPanel {...editor} />
+            <EditorPanel {...editor} active={tab === 'editor'} />
         </Container>
         <Tooltip message={editor.toast} onClose={editor.closeToast} />
     </>;

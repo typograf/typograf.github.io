@@ -1,17 +1,26 @@
 .footer
 {
-    margin-top: 30px;
+    margin-top: 20px;
     font-size: 13px;
 
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px 20px;
     box-sizing: border-box;
     width: 100%;
-    padding: 10px 20px;
+    padding: 16px 20px;
 
     border-top: 1px solid var(--border-color);
 
     &__line {
         display: flex;
-        margin-bottom: 10px;
+        align-items: baseline;
+    }
+
+    &__line + &__line {
+        margin-top: 10px;
     }
 
     &__tg-icon {
@@ -28,8 +37,6 @@
         
     &__left
     {
-       float: left;
-
         .footer__item
         {            
             margin-left: 20px;
@@ -47,23 +54,17 @@
 
     &__right
     {
-        float: right;
-
-        .footer__item
-        {
-            float: right;
-
-            margin-left: 20px;
-        }
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: baseline;
+        gap: 20px;
+        margin-inline-start: auto;
     }
 }
 
 .footer__version
 {
     font-size: 10px;
-
-    position: relative;
-    top: -5px;
 
     display: inline-block;
 

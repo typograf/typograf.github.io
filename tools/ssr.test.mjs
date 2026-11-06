@@ -12,9 +12,9 @@ test('published HTML contains rendered interface and crawlable article before Ja
     expect(html).toContain('<article class="about-article">');
     expect(html).toContain('<h1>Типограф</h1>');
     const document = new JSDOM(html).window.document;
-    expect(document.querySelector('#app .result-panel__text')).toBeTruthy();
-    expect(document.querySelector('#app .result-panel__html')).toBeNull();
-    expect(document.querySelector('#app .result-panel__diff')).toBeNull();
+    expect(document.querySelector('#app .editor-panel__execute')?.textContent).toBe('Типографировать');
+    expect(document.querySelector('#app .editor-panel__preview-toggle')?.checked).toBe(false);
+    expect(document.querySelector('#app .editor-columns__right')).toBeNull();
     expect(document.querySelector('#app .header__theme-select')?.value).toBe('system');
     expect(document.querySelector('#app .header__menu-item_tab_about')?.textContent).toBe('О сервисе');
     expect(document.documentElement.hasAttribute('data-tab')).toBe(false);

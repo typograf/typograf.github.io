@@ -1,4 +1,5 @@
 export interface CopyButtonProps {
-    getText: () => string;
-    onFeedback: (text: string, type: 'ok' | 'error') => void;
+    getContent: () => { text: string; partial: boolean };
+    hasPartialSelection: boolean;
+    disabled: boolean;
 }

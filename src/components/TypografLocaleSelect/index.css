@@ -1,4 +1,13 @@
-.typograf-locale-select__set-locale
+.typograf-locale-select
 {
-    max-width: 100%;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+
+    &__set-locale
+    {
+        min-width: 0;
+        max-width: 100%;
+    }
 }

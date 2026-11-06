@@ -10,8 +10,16 @@ export const keysets: I18nKeysets = {
         ru: 'Типограф'
     },
     'to-typograf': {
-        'en-US': 'Make beautiful',
-        ru: 'Сделать красиво'
+        'en-US': 'Typograph',
+        ru: 'Типографировать'
+    },
+    'to-typograf-selection': {
+        'en-US': 'Typograph selection',
+        ru: 'Типографировать выбранное'
+    },
+    preview: {
+        'en-US': 'Preview',
+        ru: 'Предпросмотр'
     },
     'close': {
         'en-US': 'Close',
@@ -26,7 +34,7 @@ export const keysets: I18nKeysets = {
         ru: 'Настройки'
     },
     about: {
-        'en-US': 'About the service',
+        'en-US': 'About',
         ru: 'О сервисе'
     },
     theme: {
@@ -85,13 +93,25 @@ export const keysets: I18nKeysets = {
         'en-US': 'Copy',
         ru: 'Скопировать'
     },
+    'copy-all': {
+        'en-US': 'Copy all',
+        ru: 'Скопировать всё'
+    },
+    'copy-selection': {
+        'en-US': 'Copy selection',
+        ru: 'Скопировать выбранное'
+    },
     share: {
         'en-US': 'Share',
         ru: 'Поделиться'
     },
-    copied: {
-        'en-US': 'Copied',
-        ru: 'Скопировано'
+    'copied-all': {
+        'en-US': 'All text copied',
+        ru: 'Весь текст скопирован'
+    },
+    'copied-selection': {
+        'en-US': 'Selected text copied',
+        ru: 'Выделенный текст скопирован'
     },
     save: {
         'en-US': 'Save',
@@ -108,6 +128,10 @@ export const keysets: I18nKeysets = {
     'select-all': {
         'en-US': 'Select all',
         ru: 'Выбрать всё'
+    },
+    'select-all-text': {
+        'en-US': 'Select all',
+        ru: 'Выделить всё'
     },
     'default': {
         'en-US': 'Default',
@@ -128,6 +152,26 @@ export const keysets: I18nKeysets = {
     html: {
         'en-US': 'HTML',
         ru: 'HTML'
+    },
+    'editor-format': {
+        'en-US': 'Format',
+        ru: 'Формат'
+    },
+    'editor-column': {
+        'en-US': 'Column',
+        ru: 'Столбец'
+    },
+    'editor-line': {
+        'en-US': 'Line',
+        ru: 'Строка'
+    },
+    'editor-characters': {
+        'en-US': 'Characters',
+        ru: 'Символов'
+    },
+    'editor-selected': {
+        'en-US': 'Selected',
+        ru: 'Выбрано'
     },
     'diff-1': {
         'en-US': 'Diffe',

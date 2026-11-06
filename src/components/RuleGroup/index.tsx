@@ -6,6 +6,7 @@ import { block } from '../../helpers/bem';
 import { Ripple } from '../Ripple';
 import { useRipple } from '../Ripple/hooks/useRipple';
 import { getRuleGroupTitle, getRuleTitle } from './utils';
+import { Checkbox } from '../ui/Checkbox';
 import type { RuleGroupProps } from './types';
 import './index.css';
 
@@ -38,7 +39,7 @@ export function RuleGroup({ rules, matchingRules, searchQuery, language, typogra
         <div class={b('group-rules')} aria-hidden={!opened}>
             <div class={b('group-rules-inner')}>
                 {matchingRules.map(rule => <div class={b('rule')} title={rule.name} key={rule.name}>
-                    <input type="checkbox" class={b('rule-checkbox')} id={`setting-${rule.name}`} name={rule.name} checked={typograf.isEnabledRule(rule.name)} onChange={changeRule} />
+                    <Checkbox class={b('rule-checkbox')} id={`setting-${rule.name}`} name={rule.name} checked={typograf.isEnabledRule(rule.name)} onChange={changeRule} />
                     <label for={`setting-${rule.name}`}><span dangerouslySetInnerHTML={{ __html: getRuleTitle(rule, language) }} />{rule.locale !== 'common' && <span class={b('rule-lang')}>{rule.locale}</span>}</label>
                 </div>)}
             </div>

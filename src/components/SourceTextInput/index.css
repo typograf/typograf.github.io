@@ -75,8 +75,38 @@
 
 .source-text-input
 {
+    &__field
+    {
+        position: relative;
+        flex: 1;
+        min-height: 0;
+    }
+
+    &__status
+    {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 16px;
+        padding: 6px 10px;
+        border: 2px solid var(--field-border);
+        border-top: 0;
+        border-radius: 0 0 4px 4px;
+        background: var(--status-bg);
+        color: var(--status-text);
+        font-size: 13px;
+        font-variant-numeric: tabular-nums;
+        user-select: none;
+    }
+
+    &__status-format
+    {
+        margin-inline-start: auto;
+    }
+
     &__text
     {
+        display: block;
+        border-radius: 4px 4px 0 0;
         resize: none;
     }
 

@@ -1,11 +1,53 @@
 .editor-panel
 {
+    --editor-side-padding: 20px;
+
+    display: flex;
+    flex-direction: column;
     height: 100%;
 
     &__head
     {
+        display: flex;
+        align-items: center;
+        gap: 16px;
         margin-bottom: 3px;
+    }
+
+    &__preview
+    {
+        display: inline-flex;
+        align-items: center;
+        margin-inline-start: auto;
         white-space: nowrap;
+
+        & > input
+        {
+            margin-block: 0;
+        }
+    }
+
+    &__actions
+    {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1em;
+
+        & > .save-file-button
+        {
+            display: none;
+            margin-inline-start: auto;
+        }
+    }
+
+    &__execute-selection_hidden
+    {
+        visibility: hidden;
+    }
+
+    &__select-all
+    {
+        margin-inline-start: 1em;
     }
 }
 
@@ -13,14 +55,26 @@
 {
     position: absolute;
     left: 0;
+    right: 0;
     top: -35px;
     z-index: 3;
     min-height: 30px;
+    max-width: 100%;
+}
+
+.page_desktop .editor-panel__actions
+{
+    margin: 6px var(--editor-side-padding) 0;
 }
 
 .page_mobile .editor-panel
 {
     box-sizing: border-box;
-    margin: 0 20px;
+    margin: 0 var(--editor-side-padding);
     position: relative;
+}
+
+.page_mobile .editor-panel__actions
+{
+    margin-top: 16px;
 }

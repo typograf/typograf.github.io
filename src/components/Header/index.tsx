@@ -6,6 +6,7 @@ import type { HeaderProps } from './types';
 import type { ThemePreference } from '../../lib/Config';
 import { Ripple } from '../Ripple';
 import { useRipple } from '../Ripple/hooks/useRipple';
+import { Select } from '../ui/Select';
 import './index.css';
 
 const b = block('header');
@@ -33,11 +34,11 @@ export function Header({ tab, onSelect, theme, onThemeChange }: HeaderProps) {
 
     return <header class={b()}>
         <div class={b('title')}><span class={b('title-text')}>{i18n('typograf')}</span></div>
-        <select class={b('theme-select')} aria-label={i18n('theme')} title={i18n('theme')} value={theme} onChange={selectTheme}>
+        <Select class={b('theme-select')} aria-label={i18n('theme')} title={i18n('theme')} value={theme} onChange={selectTheme}>
             <option value="system">{i18n('theme-system')}</option>
             <option value="light">{i18n('theme-light')}</option>
             <option value="dark">{i18n('theme-dark')}</option>
-        </select>
+        </Select>
         <ul class={b('menu')}>
             <li class={b('menu-item', { tab: 'editor', selected: tab === 'editor' })} onClick={selectEditor}>{i18n('editor')}<Ripple waves={editorWaves} /></li>
             <li class={b('menu-item', { tab: 'prefs', selected: tab === 'prefs' })} onClick={selectPrefs}>{i18n('prefs')}<Ripple waves={prefsWaves} /></li>

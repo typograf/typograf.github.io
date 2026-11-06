@@ -5,6 +5,7 @@ import { block } from '../../helpers/bem';
 import { trackMetrikaAction } from '../../services/metrika';
 import { RuleGroup } from '../RuleGroup';
 import { filterRuleGroups, getVisibleRules, normalizeRuleSearch } from './utils';
+import { Checkbox } from '../ui/Checkbox';
 import type { RuleSettingsProps } from './types';
 import './index.css';
 
@@ -47,7 +48,8 @@ export function RuleSettings({ groups, language, typograf, onChange }: RuleSetti
         <div class={b('rules-title')}>{i18n('rules')}</div>
         <input type="search" class={b('search')} value={query} onInput={changeQuery} placeholder={i18n('search-rules')} aria-label={i18n('search-rules')} />
         <div class={b('top')}>
-            <input type="checkbox" class={b('all-rules')} id="rule-settings__all-rules" checked={allChecked} disabled={visibleRules.length === 0} ref={setAllRulesRef} onChange={selectAll} /> <label for="rule-settings__all-rules">{i18n('select-all')}</label>
+            <Checkbox class={b('all-rules')} id="rule-settings__all-rules" checked={allChecked} disabled={visibleRules.length === 0} ref={setAllRulesRef} onChange={selectAll} />
+            <label for="rule-settings__all-rules">{i18n('select-all')}</label>
         </div>
         <div class={b('rules')}>
             {filteredGroups.map(({ group, matchingRules }) => <RuleGroup key={group[0].group} rules={group} matchingRules={matchingRules} searchQuery={normalizedQuery} language={language} typograf={typograf} onToggle={toggleRule} />)}

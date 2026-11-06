@@ -18,22 +18,28 @@
     text-align: center;
     white-space: nowrap;
 
-    &:hover
+    &:hover:not(:disabled)
     {
         background: var(--button-hover-bg);
     }
 
-    &:active
+    &:active:not(:disabled)
     {
         transform: scale(0.9658);
     }
 
+    &:disabled
+    {
+        cursor: default;
+        opacity: .5;
+    }
+
     &_type_action
     {
-        background: var(--header-bg);
+        background: var(--button-action-bg);
         color: #fff;
 
-        &:hover
+        &:hover:not(:disabled)
         {
             background: var(--button-action-hover-bg);
         }
@@ -50,4 +56,36 @@ button.button
     font: inherit;
     line-height: inherit;
     appearance: none;
+}
+
+@media (prefers-reduced-motion: no-preference)
+{
+    button.button_type_action::after
+    {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, .32) 50%, transparent 70%);
+        pointer-events: none;
+        animation: button-action-shine 850ms ease-out 200ms 1 both;
+    }
+
+    button.button_type_action:disabled::after
+    {
+        animation-play-state: paused;
+        visibility: hidden;
+    }
+}
+
+@keyframes button-action-shine
+{
+    from
+    {
+        transform: translateX(-100%);
+    }
+
+    to
+    {
+        transform: translateX(100%);
+    }
 }

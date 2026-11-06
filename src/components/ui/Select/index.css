@@ -1,0 +1,28 @@
+.select
+{
+    box-sizing: border-box;
+    padding: 4px 8px;
+    border: 1px solid var(--choice-border);
+    border-radius: 4px;
+    color: var(--field-text);
+    background-color: var(--surface-bg);
+    cursor: pointer;
+
+    &:focus-visible
+    {
+        outline: 2px solid var(--choice-selected-bg);
+        outline-offset: 2px;
+    }
+
+    &:disabled
+    {
+        opacity: .5;
+        cursor: default;
+    }
+
+    & option
+    {
+        color: var(--text-color);
+        background-color: var(--surface-bg);
+    }
+}

@@ -1,0 +1,17 @@
+.checkbox
+{
+    margin-inline-end: 10px;
+    border-radius: 4px;
+
+    &:checked
+    {
+        background-image: svg-load('./assets/check.svg');
+        background-size: 12px;
+    }
+
+    &:indeterminate
+    {
+        background-image: linear-gradient(#fff, #fff);
+        background-size: 8px 2px;
+    }
+}

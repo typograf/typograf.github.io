@@ -1,15 +1,15 @@
-import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
+import { useCallback, useMemo, useState } from 'preact/hooks';
 import { getHashParam } from '../../../helpers/hash';
 import { Typograf } from '../../../helpers/typograf';
 import { trackMetrikaAction } from '../../../services/metrika';
 import type { SettingsData } from '../../SettingsPanel/types';
 import type { ResultType } from '../../ResultPanel/types';
+import type { TextSelection } from '../../SourceTextInput/types';
 import type { TooltipMessage } from '../../ui/Tooltip/types';
 import { config } from '../../../lib/Config';
 import { formatHtml } from '../utils';
 
 export function useEditorState() {
-    const [eyoLoaded, setEyoLoaded] = useState(() => Boolean(window.safeEyo));
     const typograf = useMemo(() => {
         const instance = new Typograf({ locale: ['ru'] });
         instance.enableRule(config.rules.enabled);
@@ -23,8 +23,9 @@ export function useEditorState() {
         onlyInvisible: config.onlyInvisible,
         rules: config.rules,
     }));
-    const [pair, setPair] = useState(() => ({ before: text, result: formatHtml(text, typograf, settings) }));
-    const [resultType, setResultType] = useState<ResultType>('text');
+    const [previewOpened, setPreviewOpened] = useState(() => config.preview);
+    const [resultType, setResultType] = useState<ResultType>('html');
+    const [pair, setPair] = useState({ before: '', result: '' });
     const [toast, setToast] = useState<TooltipMessage | null>(null);
     const closeToast = useCallback(() => setToast(null), []);
     const changeSettings = useCallback((value: SettingsData) => {
@@ -34,30 +35,32 @@ export function useEditorState() {
         config.rules = value.rules;
         setSettings(value);
     }, []);
-    const formatted = useMemo(() => formatHtml(text, typograf, settings), [text, settings, typograf, eyoLoaded]);
-
-    useEffect(() => {
-        const script = document.querySelector<HTMLScriptElement>('script[src*="/dist/eyo.js"]');
-        const onLoad = () => {
-            if (window.safeEyo) setEyoLoaded(true);
-        };
-        script?.addEventListener('load', onLoad);
-        onLoad();
-        return () => script?.removeEventListener('load', onLoad);
-    }, []);
-
-    useEffect(() => {
-        if (text.length < 10000) {
-            setPair({ before: text, result: formatted });
-            return;
-        }
-        const timer = window.setTimeout(() => setPair({ before: text, result: formatted }), 250);
-        return () => window.clearTimeout(timer);
-    }, [text, formatted]);
 
     const changeText = useCallback((value: string) => {
         config.text = value;
         setText(value);
+    }, []);
+
+    const execute = useCallback((selection?: Pick<TextSelection, 'start' | 'end'>) => {
+        let start = selection?.start ?? 0;
+        let end = selection?.end ?? text.length;
+        if (start === end) return;
+        if (selection) {
+            // A textarea counts CRLF as one character, but stored text can retain both.
+            for (let index = text.indexOf('\r\n'); index !== -1 && index < end; index = text.indexOf('\r\n', index + 2)) {
+                if (index < start) start++;
+                end++;
+            }
+        }
+        const formatted = formatHtml(text.slice(start, end), typograf, settings);
+        const result = text.slice(0, start) + formatted + text.slice(end);
+        changeText(result);
+        setPair({ before: text, result });
+    }, [changeText, text, typograf, settings]);
+
+    const changePreview = useCallback((opened: boolean) => {
+        config.preview = opened;
+        setPreviewOpened(opened);
     }, []);
 
     const changeLocale = useCallback((value: string) => {
@@ -74,14 +77,16 @@ export function useEditorState() {
         text,
         settings,
         pair,
+        previewOpened,
         resultType,
         toast,
-        formatted,
+        execute,
         setResultType,
         closeToast,
         changeSettings,
         changeText,
         changeLocale,
+        changePreview,
         showToast,
     };
 }

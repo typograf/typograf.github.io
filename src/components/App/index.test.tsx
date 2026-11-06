@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { beforeEach, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { h, render } from 'preact';
 import { act } from 'preact/test-utils';
 import Typograf from 'typograf';
@@ -22,6 +22,11 @@ beforeEach(() => {
     document.documentElement.removeAttribute('data-theme');
     document.documentElement.removeAttribute('data-tab');
     document.body.innerHTML = '<div id="app"></div><main id="about-content"><article class="about-article">О сервисе</article></main>';
+});
+
+afterEach(async () => {
+    const root = document.getElementById('app');
+    if (root) await act(async () => render(null, root));
 });
 
 test('changes the theme from the header and saves the choice', async () => {
@@ -93,11 +98,140 @@ test('renders the editor and typographs entered text', async () => {
         input.dispatchEvent(new Event('input', { bubbles: true }));
     });
 
-    expect(root.querySelector<HTMLTextAreaElement>('.result-panel__text')?.value).toBe('Привет «мир»');
-    expect(window.localStorage.getItem('text')).toContain('Привет');
+    expect(input.value).toBe('Привет "мир"');
+    expect(root.querySelector('.editor-columns__right')).toBeNull();
+    const execute = root.querySelector<HTMLButtonElement>('.editor-panel__execute');
+    expect(execute?.textContent).toBe('Типографировать');
+    await act(async () => execute!.click());
+    expect(input.value).toBe('Привет «мир»');
+    expect(window.localStorage.getItem('text')).toBe(JSON.stringify(input.value));
 });
 
-test('reformats text when the eyo script finishes loading', async () => {
+test('shows the source format, caret coordinates and text length', async () => {
+    const root = await mountApp();
+    const input = root.querySelector<HTMLTextAreaElement>('.source-text-input__text')!;
+    const readStatus = () => Array.from(root.querySelector('.source-text-input__status')?.children ?? [],
+        item => item.textContent);
+    expect(readStatus()).toEqual(['Строка 1, Столбец 1', 'Символов: 0', 'Формат: Текст']);
+
+    await act(async () => {
+        input.value = '<b>😀</b>\nтекст';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    expect(readStatus()).toEqual(['Строка 2, Столбец 6', 'Символов: 14', 'Формат: HTML']);
+
+    await act(async () => {
+        input.setSelectionRange(5, 5);
+        input.dispatchEvent(new Event('selectionchange'));
+    });
+    expect(readStatus()).toEqual(['Строка 1, Столбец 5', 'Символов: 14', 'Формат: HTML']);
+
+    await act(async () => {
+        input.setSelectionRange(6, 6);
+        input.dispatchEvent(new Event('selectionchange'));
+    });
+    expect(readStatus()).toEqual(['Строка 1, Столбец 6', 'Символов: 14', 'Формат: HTML']);
+
+    await act(async () => root.querySelector<HTMLButtonElement>('.source-text-input__clear')!.click());
+    expect(readStatus()).toEqual(['Строка 1, Столбец 1', 'Символов: 0', 'Формат: Текст']);
+});
+
+test('only enables typographing when the source field has text', async () => {
+    const root = await mountApp();
+    const input = root.querySelector<HTMLTextAreaElement>('.source-text-input__text')!;
+    const execute = root.querySelector<HTMLButtonElement>('.editor-panel__execute')!;
+    expect(execute.disabled).toBe(true);
+
+    await act(async () => {
+        input.value = 'Текст';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    expect(execute.disabled).toBe(false);
+
+    await act(async () => root.querySelector<HTMLButtonElement>('.source-text-input__clear')!.click());
+    expect(execute.disabled).toBe(true);
+});
+
+test('counts selected characters even when the caret stays in place', async () => {
+    const root = await mountApp();
+    const input = root.querySelector<HTMLTextAreaElement>('.source-text-input__text')!;
+    const status = root.querySelector('.source-text-input__status')!;
+    await act(async () => {
+        input.value = '😀\nа';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.setSelectionRange(0, 2, 'backward');
+        input.dispatchEvent(new Event('selectionchange'));
+    });
+    expect(Array.from(status.children, item => item.textContent))
+        .toEqual(['Выбрано: 1', 'Символов: 3', 'Формат: Текст']);
+
+    await act(async () => {
+        input.setSelectionRange(0, 4, 'backward');
+        input.dispatchEvent(new Event('selectionchange'));
+    });
+    expect(status.textContent).toContain('Выбрано: 3');
+
+    await act(async () => {
+        input.setSelectionRange(0, 0);
+        input.dispatchEvent(new Event('selectionchange'));
+    });
+    expect(Array.from(status.children, item => item.textContent))
+        .toEqual(['Строка 1, Столбец 1', 'Символов: 3', 'Формат: Текст']);
+});
+
+test.each([
+    ['MacIntel', { metaKey: true }, '⌘ + Enter'],
+    ['Win32', { ctrlKey: true }, 'Ctrl + Enter'],
+] as const)('typographs with the platform shortcut on %s', async (platform, modifier, shortcut) => {
+    const platformMock = vi.spyOn(window.navigator, 'platform', 'get').mockReturnValue(platform);
+    try {
+        const root = await mountApp();
+        const input = root.querySelector<HTMLTextAreaElement>('.source-text-input__text')!;
+        expect(root.querySelector<HTMLButtonElement>('.editor-panel__execute')?.title).toBe(`Типографировать (${shortcut})`);
+        await act(async () => {
+            input.value = 'Привет "мир"';
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+        await act(async () => {
+            input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+        });
+        expect(input.value).toBe('Привет "мир"');
+
+        const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true, ...modifier });
+        await act(async () => { input.dispatchEvent(event); });
+        expect(event.defaultPrevented).toBe(true);
+        expect(input.value).toBe('Привет «мир»');
+        expect(window.localStorage.getItem('text')).toBe(JSON.stringify(input.value));
+
+        await act(async () => {
+            input.value = 'Привет  "мир"';
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+        const selectionShortcut = () => new KeyboardEvent('keydown', {
+            key: 'Enter', bubbles: true, cancelable: true, shiftKey: true, ...modifier,
+        });
+        const withoutSelection = selectionShortcut();
+        await act(async () => { input.dispatchEvent(withoutSelection); });
+        expect(withoutSelection.defaultPrevented).toBe(false);
+        expect(input.value).toBe('Привет  "мир"');
+
+        await act(async () => {
+            input.setSelectionRange(8, 13);
+            input.dispatchEvent(new Event('selectionchange'));
+        });
+        expect(root.querySelector<HTMLButtonElement>('.editor-panel__execute-selection')?.title)
+            .toBe(`Типографировать выбранное (${shortcut.replace('Enter', 'Shift + Enter')})`);
+        const withSelection = selectionShortcut();
+        await act(async () => { input.dispatchEvent(withSelection); });
+        expect(withSelection.defaultPrevented).toBe(true);
+        expect(input.value).toBe('Привет  «мир»');
+        expect(input.value.slice(input.selectionStart, input.selectionEnd)).toBe('«мир»');
+    } finally {
+        platformMock.mockRestore();
+    }
+});
+
+test('uses the eyo script on demand without typographing the preview automatically', async () => {
     Reflect.deleteProperty(window, 'safeEyo');
     const script = document.createElement('script');
     script.src = '/dist/eyo.js';
@@ -105,15 +239,19 @@ test('reformats text when the eyo script finishes loading', async () => {
     try {
         const root = await mountApp();
         const input = root.querySelector<HTMLTextAreaElement>('.source-text-input__text')!;
+        await act(async () => root.querySelector<HTMLInputElement>('.editor-panel__preview-toggle')!.click());
         await act(async () => {
-            input.value = 'Ежик шел';
+            input.value = 'Ежик шел "домой"';
             input.dispatchEvent(new Event('input', { bubbles: true }));
         });
-        expect(root.querySelector<HTMLTextAreaElement>('.result-panel__text')?.value).toBe('Ежик шел');
+        expect(root.querySelector('.result-panel__html')?.textContent).toBe('Ежик шел "домой"');
 
         window.safeEyo = { restore: text => text.replace('Ежик шел', 'Ёжик шёл') };
         await act(async () => { script.dispatchEvent(new Event('load')); });
-        expect(root.querySelector<HTMLTextAreaElement>('.result-panel__text')?.value).toBe('Ёжик шёл');
+        expect(root.querySelector('.result-panel__html')?.textContent).toBe('Ежик шел "домой"');
+        await act(async () => root.querySelector<HTMLButtonElement>('.editor-panel__execute')!.click());
+        expect(input.value).toBe('Ёжик шёл «домой»');
+        expect(root.querySelector('.result-panel__html')?.textContent).toBe('Ёжик шёл «домой»');
     } finally {
         script.remove();
         Reflect.deleteProperty(window, 'safeEyo');
@@ -183,8 +321,9 @@ test('syncs settings with hash changes and restores page scrolling after unmount
 
 test('switches result views and returns from settings to the editor', async () => {
     const root = await mountApp();
-    expect(root.querySelector('.result-panel__text')).toBeTruthy();
-    expect(root.querySelector('.result-panel__html')).toBeNull();
+    await act(async () => root.querySelector<HTMLInputElement>('.editor-panel__preview-toggle')!.click());
+    expect(root.querySelector('.result-panel__html')).toBeTruthy();
+    expect(root.querySelector('.result-panel__as-text')).toBeNull();
     expect(root.querySelector('.result-panel__diff')).toBeNull();
     await act(async () => {
         root.querySelector<HTMLInputElement>('.result-panel__as-diff')!.click();
@@ -367,11 +506,11 @@ test('loads saved text unless a hash supplies another text', async () => {
 
 test('keeps HTML preview markup without executable attributes', async () => {
     const root = await mountApp();
+    await act(async () => root.querySelector<HTMLInputElement>('.editor-panel__preview-toggle')!.click());
     const input = root.querySelector<HTMLTextAreaElement>('.source-text-input__text')!;
     await act(async () => {
         input.value = '<b>Привет</b><img src=x onerror=alert(1)>';
         input.dispatchEvent(new Event('input', { bubbles: true }));
-        root.querySelector<HTMLInputElement>('.result-panel__as-html')!.click();
     });
 
     const preview = root.querySelector<HTMLElement>('.result-panel__html')!;
@@ -379,28 +518,37 @@ test('keeps HTML preview markup without executable attributes', async () => {
     expect(preview.querySelector('img')?.hasAttribute('onerror')).toBe(false);
 });
 
-test('keeps manual edits in the text result while switching views', async () => {
+test('remembers preview visibility between visits', async () => {
+    window.localStorage.setItem('settings.preview', 'true');
+    window.localStorage.setItem('text', JSON.stringify('Сохранённый текст'));
     const root = await mountApp();
-    const result = root.querySelector<HTMLTextAreaElement>('.result-panel__text')!;
-    expect(result.readOnly).toBe(false);
-    result.value = 'Мой вариант';
-    await act(async () => root.querySelector<HTMLInputElement>('.result-panel__as-html')!.click());
-    expect(result.isConnected).toBe(false);
+    const toggle = root.querySelector<HTMLInputElement>('.editor-panel__preview-toggle')!;
+    expect(toggle.checked).toBe(true);
+    expect(root.querySelector('.result-panel__html')?.textContent).toBe('Сохранённый текст');
+
+    await act(async () => toggle.click());
+    expect(root.querySelector('.editor-columns__right')).toBeNull();
+    expect(window.localStorage.getItem('settings.preview')).toBe('false');
+
+    await act(async () => toggle.click());
     expect(root.querySelector('.result-panel__html')).toBeTruthy();
-    await act(async () => root.querySelector<HTMLInputElement>('.result-panel__as-text')!.click());
-    expect(root.querySelector<HTMLTextAreaElement>('.result-panel__text')?.value).toBe('Мой вариант');
+    expect(window.localStorage.getItem('settings.preview')).toBe('true');
 });
 
-test('shows the latest formatted text after editing while HTML view is selected', async () => {
+test('shows the changes from the last typograph action after opening preview', async () => {
     const root = await mountApp();
-    await act(async () => root.querySelector<HTMLInputElement>('.result-panel__as-html')!.click());
     const input = root.querySelector<HTMLTextAreaElement>('.source-text-input__text')!;
     await act(async () => {
         input.value = 'Привет "мир"';
         input.dispatchEvent(new Event('input', { bubbles: true }));
     });
-    await act(async () => root.querySelector<HTMLInputElement>('.result-panel__as-text')!.click());
-    expect(root.querySelector<HTMLTextAreaElement>('.result-panel__text')?.value).toBe('Привет «мир»');
+    await act(async () => root.querySelector<HTMLButtonElement>('.editor-panel__execute')!.click());
+    await act(async () => root.querySelector<HTMLInputElement>('.editor-panel__preview-toggle')!.click());
+    expect(root.querySelector('.result-panel__html')?.textContent).toBe(input.value);
+
+    await act(async () => root.querySelector<HTMLInputElement>('.result-panel__as-diff')!.click());
+    expect(root.querySelector('.result-panel__diff del')?.textContent).toBe('"');
+    expect(root.querySelector('.result-panel__diff ins')?.textContent).toBe('«');
 });
 
 test('typographs string values in JSON', async () => {
@@ -410,44 +558,223 @@ test('typographs string values in JSON', async () => {
         input.value = JSON.stringify({ message: 'Привет "мир"' });
         input.dispatchEvent(new Event('input', { bubbles: true }));
     });
-    const result = root.querySelector<HTMLTextAreaElement>('.result-panel__text')!.value;
-    expect(JSON.parse(result).message).toBe('Привет «мир»');
+    await act(async () => root.querySelector<HTMLButtonElement>('.editor-panel__execute')!.click());
+    expect(JSON.parse(input.value).message).toBe('Привет «мир»');
 });
 
-test('delays showing a result for long input', async () => {
+test('applies new settings only on the next typograph action', async () => {
     const root = await mountApp();
     const input = root.querySelector<HTMLTextAreaElement>('.source-text-input__text')!;
-    vi.useFakeTimers();
+    const execute = root.querySelector<HTMLButtonElement>('.editor-panel__execute')!;
+    await act(async () => root.querySelector<HTMLInputElement>('.editor-panel__preview-toggle')!.click());
+    await act(async () => {
+        input.value = 'Привет "мир"';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    await act(async () => execute.click());
+    await act(async () => {
+        input.value = 'Новый "текст"';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        root.querySelector<HTMLElement>('.header__menu-item_tab_prefs')!.click();
+    });
+    const mode = root.querySelector<HTMLSelectElement>('.html-entity-settings__set-mode')!;
+    await act(async () => {
+        mode.value = 'name';
+        mode.dispatchEvent(new Event('change', { bubbles: true }));
+        root.querySelector<HTMLElement>('.header__menu-item_tab_editor')!.click();
+    });
+    expect(input.value).toBe('Новый "текст"');
+    expect(root.querySelector('.result-panel__html')?.textContent).toBe('Новый "текст"');
+
+    await act(async () => execute.click());
+    expect(input.value).toBe('Новый &laquo;текст&raquo;');
+    expect(root.querySelector('.result-panel__html')?.textContent).toBe('Новый «текст»');
+});
+
+test('updates HTML on input and shows changes only after typographing', async () => {
+    const root = await mountApp();
+    await act(async () => root.querySelector<HTMLInputElement>('.editor-panel__preview-toggle')!.click());
+    const input = root.querySelector<HTMLTextAreaElement>('.source-text-input__text')!;
+    const execute = root.querySelector<HTMLButtonElement>('.editor-panel__execute')!;
+    await act(async () => {
+        input.value = 'Привет "мир"';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    expect(root.querySelector('.result-panel__html')?.textContent).toBe('Привет "мир"');
+    await act(async () => root.querySelector<HTMLInputElement>('.result-panel__as-diff')!.click());
+    expect(root.querySelector('.result-panel__diff')?.textContent).toBe('');
+    await act(async () => root.querySelector<HTMLInputElement>('.result-panel__as-html')!.click());
+    await act(async () => execute.click());
+
+    await act(async () => {
+        input.value = 'Новый "текст"';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    expect(root.querySelector('.result-panel__html')?.textContent).toBe('Новый "текст"');
+    await act(async () => root.querySelector<HTMLInputElement>('.result-panel__as-diff')!.click());
+    expect(root.querySelector('.result-panel__diff')?.textContent).toContain('Привет');
+    expect(root.querySelector('.result-panel__diff ins')?.textContent).toBe('«');
+
+    await act(async () => execute.click());
+    expect(root.querySelector('.result-panel__diff')?.textContent).toContain('Новый');
+    await act(async () => root.querySelector<HTMLInputElement>('.result-panel__as-html')!.click());
+    expect(root.querySelector('.result-panel__html')?.textContent).toBe('Новый «текст»');
+});
+
+test('saves the text currently in the editor', async () => {
+    const root = await mountApp();
+    const input = root.querySelector<HTMLTextAreaElement>('.source-text-input__text')!;
+    await act(async () => {
+        input.value = 'Привет "мир"';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    await act(async () => root.querySelector<HTMLButtonElement>('.save-file-button')!.click());
+    expect(saveFile).toHaveBeenLastCalledWith('Привет "мир"');
+
+    await act(async () => root.querySelector<HTMLButtonElement>('.editor-panel__execute')!.click());
+    await act(async () => root.querySelector<HTMLButtonElement>('.save-file-button')!.click());
+    expect(saveFile).toHaveBeenLastCalledWith('Привет «мир»');
+});
+
+test('keeps the selection when clicking actions under the editor', async () => {
+    const root = await mountApp();
+    const input = root.querySelector<HTMLTextAreaElement>('.source-text-input__text')!;
+    await act(async () => {
+        input.value = 'Привет  "мир"';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.focus();
+        input.setSelectionRange(8, 13, 'backward');
+    });
+
+    const save = root.querySelector<HTMLButtonElement>('.save-file-button')!;
+    const press = new MouseEvent('mousedown', { bubbles: true, cancelable: true });
+    await act(async () => { save.dispatchEvent(press); });
+    expect(press.defaultPrevented).toBe(true);
+    await act(async () => save.click());
+    expect(saveFile).toHaveBeenLastCalledWith('Привет  "мир"');
+    expect(document.activeElement).toBe(input);
+    expect(input.selectionStart).toBe(8);
+    expect(input.selectionEnd).toBe(13);
+
+    await act(async () => root.querySelector<HTMLButtonElement>('.editor-panel__execute')!.click());
+    expect(input.value.slice(input.selectionStart, input.selectionEnd)).toBe('«мир»');
+    expect(input.selectionDirection).toBe('backward');
+});
+
+test('selects the full editor text from the button before Copy', async () => {
+    const root = await mountApp();
+    const input = root.querySelector<HTMLTextAreaElement>('.source-text-input__text')!;
+    const selectAll = root.querySelector<HTMLButtonElement>('.editor-panel__select-all');
+    expect(selectAll?.textContent).toBe('Выделить всё');
+    expect(selectAll?.previousElementSibling).toBe(root.querySelector('.editor-panel__execute-selection'));
+    expect(selectAll?.nextElementSibling?.contains(root.querySelector('.copy-button'))).toBe(true);
+    expect(selectAll?.disabled).toBe(true);
+
+    await act(async () => {
+        input.value = 'Первая\nВторая';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    expect(selectAll?.disabled).toBe(false);
+    await act(async () => selectAll!.click());
+    expect(document.activeElement).toBe(input);
+    expect(input.selectionStart).toBe(0);
+    expect(input.selectionEnd).toBe(input.value.length);
+    await vi.waitFor(() => {
+        expect(root.querySelector('.source-text-input__status')?.textContent).toContain('Выбрано: 13');
+        expect(root.querySelector('.editor-panel__execute-selection')).toBeTruthy();
+    });
+});
+
+test('keeps the copy label stable and copies the indicated text', async () => {
+    const copied: string[] = [];
+    const selectedHtml = '<b>мир &amp; &lt;i&gt; 😀123456789</b><img src=x onerror=alert(1)>';
+    const text = `Привет, ${selectedHtml}!`;
+    Object.defineProperty(document, 'execCommand', {
+        configurable: true,
+        value: () => {
+            copied.push(document.querySelector<HTMLTextAreaElement>('body > textarea')!.value);
+            return true;
+        },
+    });
     try {
+        const root = await mountApp();
+        const input = root.querySelector<HTMLTextAreaElement>('.source-text-input__text')!;
+        const copy = root.querySelector<HTMLButtonElement>('.copy-button')!;
+        expect(copy.disabled).toBe(true);
         await act(async () => {
-            input.value = 'а'.repeat(10001);
+            input.value = text;
             input.dispatchEvent(new Event('input', { bubbles: true }));
+            input.setSelectionRange(8, 8 + selectedHtml.length);
+            input.dispatchEvent(new Event('selectionchange'));
         });
-        expect(root.querySelector<HTMLTextAreaElement>('.result-panel__text')?.value).toBe('');
-        await act(async () => { vi.advanceTimersByTime(250); });
-        expect(root.querySelector<HTMLTextAreaElement>('.result-panel__text')!.value.length).toBeGreaterThan(10000);
+        expect(copy.disabled).toBe(false);
+        expect(copy.textContent).toBe('Скопировать');
+        expect(copy.title).toBe('Скопировать выбранное');
+        await act(async () => copy.click());
+        const feedback = () => copy.parentElement?.querySelector('.tooltip_anchored');
+        expect(feedback()?.firstChild?.textContent).toBe('Выделенный текст скопирован:');
+        const excerpt = feedback()?.querySelector('.tooltip__excerpt');
+        expect(excerpt?.textContent).toBe('мир & <i> 😀12345…');
+        expect(excerpt?.querySelector('i, img')).toBeNull();
+
+        await act(async () => {
+            input.select();
+            input.dispatchEvent(new Event('selectionchange'));
+        });
+        expect(copy.textContent).toBe('Скопировать');
+        expect(copy.title).toBe('Скопировать всё');
+        await act(async () => copy.click());
+        expect(feedback()?.textContent).toBe('Весь текст скопирован');
+
+        await act(async () => {
+            input.setSelectionRange(8, 8);
+            input.dispatchEvent(new Event('selectionchange'));
+        });
+        expect(copy.textContent).toBe('Скопировать');
+        expect(copy.title).toBe('Скопировать всё');
+        await act(async () => copy.click());
+        expect(feedback()?.textContent).toBe('Весь текст скопирован');
+        expect(copied).toEqual([selectedHtml, text, text]);
+
+        await act(async () => root.querySelector<HTMLButtonElement>('.source-text-input__clear')!.click());
+        expect(copy.disabled).toBe(true);
     } finally {
-        vi.useRealTimers();
+        Reflect.deleteProperty(document, 'execCommand');
     }
 });
 
-test('saves the latest long result before the delayed display updates', async () => {
+test('typographs only the selected fragment and keeps it selected', async () => {
+    window.localStorage.setItem('text', JSON.stringify('До\r\n  "мир  всем"  после'));
     const root = await mountApp();
     const input = root.querySelector<HTMLTextAreaElement>('.source-text-input__text')!;
-    vi.useFakeTimers();
-    try {
-        await act(async () => {
-            input.value = 'а'.repeat(10001);
-            input.dispatchEvent(new Event('input', { bubbles: true }));
-        });
-        await act(async () => root.querySelector<HTMLButtonElement>('.save-file-button')!.click());
-        expect(vi.mocked(saveFile).mock.calls[0][0].length).toBe(10001);
-    } finally {
-        vi.useRealTimers();
-    }
+    const execute = root.querySelector<HTMLButtonElement>('.editor-panel__execute-selection');
+    expect(execute?.classList.contains('editor-panel__execute-selection_hidden')).toBe(true);
+
+    await act(async () => {
+        input.setSelectionRange(5, 16, 'backward');
+        input.dispatchEvent(new Event('selectionchange'));
+    });
+    expect(execute?.textContent).toBe('Типографировать выбранное');
+    expect(execute?.classList.contains('editor-panel__execute-selection_hidden')).toBe(false);
+    await act(async () => execute!.click());
+    expect(input.value).toBe('До\n  «мир всем»  после');
+    expect(input.value.slice(input.selectionStart, input.selectionEnd)).toBe('«мир всем»');
+    expect(input.selectionDirection).toBe('backward');
+    expect(window.localStorage.getItem('text')).toBe(JSON.stringify('До\r\n  «мир всем»  после'));
+
+    await act(async () => {
+        input.setSelectionRange(5, 5);
+        input.dispatchEvent(new Event('selectionchange'));
+    });
+    expect(root.querySelector('.editor-panel__execute-selection')).toBe(execute);
+    expect(execute?.classList.contains('editor-panel__execute-selection_hidden')).toBe(true);
+
+    await act(async () => root.querySelector<HTMLInputElement>('.editor-panel__preview-toggle')!.click());
+    await act(async () => root.querySelector<HTMLInputElement>('.result-panel__as-diff')!.click());
+    expect(root.querySelector('.result-panel__diff ins')?.textContent).toBe('«');
 });
 
-test('renders action icons and shares the current result when supported', async () => {
+test('renders action icons and shares the current editor text when supported', async () => {
     const canShare = vi.fn(() => true);
     const share = vi.fn(async () => undefined);
     Object.defineProperty(window.navigator, 'canShare', { configurable: true, value: canShare });
@@ -462,7 +789,7 @@ test('renders action icons and shares the current result when supported', async 
             input.dispatchEvent(new Event('input', { bubbles: true }));
         });
         await act(async () => root.querySelector<HTMLButtonElement>('.share-button')!.click());
-        expect(share).toHaveBeenCalledWith({ text: 'Привет «мир»', title: 'Typograf' });
+        expect(share).toHaveBeenCalledWith({ text: 'Привет "мир"', title: 'Typograf' });
     } finally {
         Reflect.deleteProperty(window.navigator, 'canShare');
         Reflect.deleteProperty(window.navigator, 'share');

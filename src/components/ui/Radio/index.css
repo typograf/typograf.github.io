@@ -1,0 +1,10 @@
+.radio
+{
+    margin-inline-end: 10px;
+    border-radius: 50%;
+
+    &:checked
+    {
+        background-image: radial-gradient(circle, #fff 3px, transparent 3.5px);
+    }
+}

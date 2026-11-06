@@ -17,6 +17,7 @@ export class Config {
     private modeInner: TypografHtmlEntity['type'];
     private onlyInvisibleInner = false;
     private textInner = '';
+    private previewInner = false;
     private themeInner: ThemePreference = 'system';
 
     constructor() {
@@ -35,6 +36,7 @@ export class Config {
         this.modeInner = myLocalStorage.getItem<TypografHtmlEntity['type']>('settings.mode', 'default');
         this.onlyInvisibleInner = myLocalStorage.getItem('settings.onlyInvisible', false);
         this.textInner = myLocalStorage.getItem('text', '');
+        this.previewInner = myLocalStorage.getItem<boolean>('settings.preview', false) === true;
 
         const theme = myLocalStorage.getItem<ThemePreference>('settings.theme', 'system');
         this.themeInner = theme === 'light' || theme === 'dark' ? theme : 'system';
@@ -83,7 +85,16 @@ export class Config {
     set text(value: string) {
         this.textInner = value;
         myLocalStorage.setItem('text', value);
-    }    
+    }
+
+    get preview() {
+        return this.previewInner;
+    }
+
+    set preview(value: boolean) {
+        this.previewInner = value;
+        myLocalStorage.setItem('settings.preview', value);
+    }
 
     get theme() {
         return this.themeInner;

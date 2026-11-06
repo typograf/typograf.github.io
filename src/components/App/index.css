@@ -16,7 +16,11 @@
     --field-border: rgba(0, 0, 0, .2);
     --field-border-hover: rgba(0, 0, 0, .3);
     --field-text: #000;
+    --choice-border: #767676;
+    --choice-selected-bg: var(--button-action-hover-bg);
     --muted-text: #999;
+    --status-bg: #e6e6e6;
+    --status-text: #595959;
     --success-color: #187a43;
     --accent-color: #00acc7;
     --header-bg: #00acc7;
@@ -27,6 +31,7 @@
     --header-selected-text: #000;
     --button-bg: #e6e6e6;
     --button-hover-bg: #dbdbdb;
+    --button-action-bg: var(--header-bg);
     --button-action-hover-bg: #009cb7;
     --panel-actions-bg: rgba(255, 255, 255, .8);
     --preview-border: #a0a0a0;
@@ -52,7 +57,11 @@
     --field-border: #52606c;
     --field-border-hover: #8795a1;
     --field-text: #f2f5f7;
+    --choice-border: #8795a1;
+    --choice-selected-bg: #247f96;
     --muted-text: #aeb8c2;
+    --status-bg: #343e48;
+    --status-text: #aeb8c2;
     --success-color: #87d8a3;
     --accent-color: #55c9df;
     --header-bg: #1d5e70;
@@ -61,8 +70,9 @@
     --header-tab-hover-bg: #2c7b91;
     --header-selected-bg: #20262d;
     --header-selected-text: #edf1f5;
-    --button-bg: #343e48;
-    --button-hover-bg: #46515c;
+    --button-bg: #465463;
+    --button-hover-bg: #536273;
+    --button-action-bg: #257489;
     --button-action-hover-bg: #247f96;
     --panel-actions-bg: rgba(32, 38, 45, .9);
     --preview-border: #52606c;

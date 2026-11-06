@@ -1,31 +1,31 @@
-.page_desktop .editor-columns
+.editor-columns
 {
     box-sizing: border-box;
-    width: 100%;
-    height: 100%;
-    padding: 10px 20px;
+    display: flex;
+    flex: 1;
+    gap: 10px;
+    min-height: 0;
 
     &__left,
     &__right
     {
         position: relative;
 
-        box-sizing: border-box;
-        width: 50%;
-        height: 100%;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 0;
+        min-height: 0;
     }
 
-    &__left
-    {
-        float: left;
+}
 
-        padding-right: 10px;
-    }
+.page_desktop .editor-columns
+{
+    padding: 10px var(--editor-side-padding, 20px);
+}
 
-    &__right
-    {
-        float: right;
-
-        box-sizing: border-box;
-    }
+.page_mobile .editor-columns
+{
+    flex-direction: column;
 }
